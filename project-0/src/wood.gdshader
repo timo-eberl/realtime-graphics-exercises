@@ -4,6 +4,8 @@ shader_type canvas_item;
 // for built-ins
 
 uniform vec3 knot_color : source_color;
+uniform vec4 bevel_color : source_color;
+uniform vec2 planks_num = vec2(1.5, 3.0);
 uniform float knot_size = 0.1;
 uniform float age = 20.0;
 uniform float snarl = 0.5;
@@ -20,14 +22,30 @@ void fragment() {
 
 	// the Panel that is used for rendering this shader has fixed aspect ratio
 	float aspectRatio = 16.0 / 9.0;
-	
+	aspectRatio *= planks_num.y / planks_num.x;
+
 	vec2 center = vec2(0.5); // TODO randomize
 	vec2 knot_pos = vec2(0.3, 0.2); // TODO randomize
 	vec2 knot_stretch = vec2(1.7, 1); // TODO randomize
 
 	vec2 coords = UV; // centered at the midpoint
+
+	coords = coords * planks_num;
+	ivec2 grid = ivec2(coords);
+
+	if (grid.y % 2 == 0) {
+		coords.x += 0.5;
+	}
+
+	coords = fract(coords);
+
 	coords.y = -coords.y + 1.0;
 	coords -= center;
+
+	float bevel = 0.0;
+	float diff = 0.005;
+	bevel += smoothstep(0.5 - diff              , 0.5, abs(coords.x));
+	bevel += smoothstep(0.5 - diff * aspectRatio, 0.5, abs(coords.y));
 
 	if (aspectRatio > 1.0) {
 		coords = vec2(coords.x * aspectRatio, coords.y ); // compensate for aspect ratio distortion
@@ -59,4 +77,6 @@ void fragment() {
 		t1 = smoothstep(1,0,t1);
 		COLOR.xyz = mix(COLOR.xyz, knot_color, t1);
 	}
+
+	COLOR.xyz = mix(COLOR.xyz, bevel_color.xyz, bevel * bevel_color.w);
 }
