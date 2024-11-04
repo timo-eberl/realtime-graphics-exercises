@@ -18,7 +18,7 @@ colors = PackedColorArray(0.243517, 0.151482, 0.103671, 1, 0.55013, 0.348369, 0.
 gradient = SubResource("Gradient_rt3b8")
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_3bd6o"]
-frequency = 0.0048
+frequency = 0.0043
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_q6mgm"]
 seamless = true
@@ -28,9 +28,10 @@ noise = SubResource("FastNoiseLite_3bd6o")
 shader = ExtResource("1_241pq")
 shader_parameter/bevel_color = Color(0.268236, 0.178567, 0.12164, 0.764706)
 shader_parameter/planks_num = Vector2(1.745, 2.785)
-shader_parameter/knot_size = 0.085
-shader_parameter/age = 12.805
+shader_parameter/knot_size = 0.08
+shader_parameter/age = 12.74
 shader_parameter/snarl = 0.5
+shader_parameter/seed = 3.64
 shader_parameter/noise_texture = SubResource("NoiseTexture2D_q6mgm")
 shader_parameter/gradient = SubResource("GradientTexture1D_s6nju")
 shader_parameter/knot_color_gradient = SubResource("GradientTexture1D_gjnvv")

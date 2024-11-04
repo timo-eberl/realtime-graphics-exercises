@@ -8,6 +8,7 @@ uniform vec2 planks_num = vec2(1.5, 3.0);
 uniform float knot_size = 0.1;
 uniform float age = 20.0;
 uniform float snarl = 0.5;
+uniform float seed = 0.0;
 
 uniform sampler2D noise_texture : filter_linear, repeat_enable;
 uniform sampler2D gradient : filter_linear, repeat_enable;
@@ -24,28 +25,37 @@ void fragment() {
 	float aspectRatio = 16.0 / 9.0;
 	aspectRatio *= planks_num.y / planks_num.x;
 
-	vec2 center = vec2(0.5); // TODO randomize
-	vec2 knot_pos = vec2(0.3, 0.2); // TODO randomize
-	vec2 knot_stretch = vec2(1.7, 1); // TODO randomize
-
 	vec2 coords = UV; // centered at the midpoint
 
 	coords = coords * planks_num;
 	ivec2 grid = ivec2(coords);
-
 	if (grid.y % 2 == 0) {
 		coords.x += 0.5;
 	}
+	grid = ivec2(coords);
 
 	coords = fract(coords);
 
+	vec2 rand_uv = vec2(grid+1) / planks_num;
+	float rand_sample  = texture(noise_texture, rand_uv + seed).x;
+	float rand_sample2 = texture(noise_texture, rand_uv + seed + 0.1).x;
+	float rand_sample3 = texture(noise_texture, rand_uv + seed + 0.2).x;
+	float rand_sample4 = texture(noise_texture, rand_uv + seed + 0.3).x;
+	float rand_sample5 = texture(noise_texture, rand_uv + seed + 0.4).x;
+	float rand_sample6 = texture(noise_texture, rand_uv + seed + 0.5).x;
+
+	vec2 center = vec2(rand_sample, rand_sample2) * 1.5;
+	vec2 knot_pos = vec2(rand_sample3, rand_sample4) - 0.5;
+	vec2 knot_stretch = vec2(mix(0.5,1.3,rand_sample5), mix(0.4,0.8,rand_sample6));
+
 	coords.y = -coords.y + 1.0;
+	vec2 ccoords = coords - vec2(0.5);
 	coords -= center;
 
 	float bevel = 0.0;
 	float diff = 0.005;
-	bevel += smoothstep(0.5 - diff              , 0.5, abs(coords.x));
-	bevel += smoothstep(0.5 - diff * aspectRatio, 0.5, abs(coords.y));
+	bevel += smoothstep(0.5 - diff              , 0.5, abs(ccoords.x));
+	bevel += smoothstep(0.5 - diff * aspectRatio, 0.5, abs(ccoords.y));
 
 	if (aspectRatio > 1.0) {
 		coords = vec2(coords.x * aspectRatio, coords.y ); // compensate for aspect ratio distortion
@@ -80,4 +90,6 @@ void fragment() {
 	}
 
 	COLOR.xyz = mix(COLOR.xyz, bevel_color.xyz, bevel * bevel_color.w);
+
+	//COLOR.xyz = vec3(rand_sample3);
 }
