@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://hvoagqtln2c4"]
+[gd_scene load_steps=10 format=3 uid="uid://hvoagqtln2c4"]
 
 [ext_resource type="Shader" path="res://wood.gdshader" id="1_241pq"]
 [ext_resource type="PackedScene" uid="uid://df52fqkkdq2te" path="res://licenser/license_screen_loader_button.tscn" id="2_ftd01"]
@@ -10,6 +10,13 @@ colors = PackedColorArray(0.796897, 0.566378, 0.353211, 1, 0.717647, 0.443137, 0
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_s6nju"]
 gradient = SubResource("Gradient_twofu")
 
+[sub_resource type="Gradient" id="Gradient_rt3b8"]
+offsets = PackedFloat32Array(0, 0.311111, 0.614815, 1)
+colors = PackedColorArray(0.243517, 0.151482, 0.103671, 1, 0.55013, 0.348369, 0.152492, 1, 0.484019, 0.305617, 0.12718, 1, 0.243137, 0.152941, 0.101961, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_gjnvv"]
+gradient = SubResource("Gradient_rt3b8")
+
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_3bd6o"]
 frequency = 0.0039
 
@@ -19,14 +26,14 @@ noise = SubResource("FastNoiseLite_3bd6o")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vpmjg"]
 shader = ExtResource("1_241pq")
-shader_parameter/knot_color = Color(0.475923, 0.2492, 0.107687, 1)
 shader_parameter/bevel_color = Color(0.268236, 0.178567, 0.12164, 0.764706)
 shader_parameter/planks_num = Vector2(1.745, 2.785)
-shader_parameter/knot_size = 0.075
-shader_parameter/age = 13.465
-shader_parameter/snarl = 0.37
+shader_parameter/knot_size = 0.085
+shader_parameter/age = 12.805
+shader_parameter/snarl = 0.545
 shader_parameter/noise_texture = SubResource("NoiseTexture2D_q6mgm")
 shader_parameter/gradient = SubResource("GradientTexture1D_s6nju")
+shader_parameter/knot_color_gradient = SubResource("GradientTexture1D_gjnvv")
 
 [node name="Tester" type="Control"]
 layout_mode = 3

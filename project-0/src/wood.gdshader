@@ -3,7 +3,6 @@ shader_type canvas_item;
 // see https://docs.godotengine.org/en/stable/tutorials/shaders/shader_reference/canvas_item_shader.html
 // for built-ins
 
-uniform vec3 knot_color : source_color;
 uniform vec4 bevel_color : source_color;
 uniform vec2 planks_num = vec2(1.5, 3.0);
 uniform float knot_size = 0.1;
@@ -12,6 +11,7 @@ uniform float snarl = 0.5;
 
 uniform sampler2D noise_texture : filter_linear, repeat_enable;
 uniform sampler2D gradient : filter_linear, repeat_enable;
+uniform sampler2D knot_color_gradient : filter_linear, repeat_enable;
 
 float inv_lerp(float a, float b, float v) {
 	return (v-a) / (b-a);
@@ -62,19 +62,20 @@ void fragment() {
 	float d1 = distance(coords / knot_stretch, knot_pos / knot_stretch);
 	vec2 ft = knot_pos - (coords / knot_stretch);
 
-	float tk = inv_lerp(knot_size * 3.0, knot_size * 0.0, d1);
+	float tk = inv_lerp(knot_size * 4.0, knot_size * 0.0, d1);
 	tk = smoothstep(0,1,tk);
-	tk = pow(tk, 6.0);
+	tk = pow(tk, 7.0);
 
-	distorted_coords += tk * ft * knot_size * 100.0;
+	distorted_coords += tk * ft * knot_size * 50.0;
 	float dd = length(distorted_coords * vec2(2, 10));
 	dd *= age / 10.0;
 	float w = abs(dd) * pow(dd, age / 10.0 * 0.1);
 	COLOR.xyz = texture(gradient, vec2(w, 0)).xyz;
 
 	if (d1 < knot_size) {
-		float t1 = inv_lerp(knot_size * 0.75, knot_size, d1 + noise2 * 0.02);
+		float t1 = inv_lerp(knot_size * 0.7, knot_size, d1 + noise2 * 0.02);
 		t1 = smoothstep(1,0,t1);
+		vec3 knot_color = texture(knot_color_gradient, vec2(d1 * 90. + noise2 * 1.5, 0)).xyz;
 		COLOR.xyz = mix(COLOR.xyz, knot_color, t1);
 	}
 
