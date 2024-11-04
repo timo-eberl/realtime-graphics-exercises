@@ -1,0 +1,52 @@
+[gd_scene load_steps=4 format=3 uid="uid://cvt8baepp7g47"]
+
+[ext_resource type="Script" path="res://licenser/license_screen.gd" id="1_iiqvi"]
+[ext_resource type="FontFile" uid="uid://bjurxg7cw4l22" path="res://fonts/inconsolata/static/Inconsolata-Medium.ttf" id="2_vfilu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_31s7l"]
+bg_color = Color(0, 0, 0, 0.752941)
+
+[node name="License Screen" type="CanvasLayer"]
+script = ExtResource("1_iiqvi")
+project_credits = "© 2023, 2024 Martin Fuchs"
+scroller_suffix = "That's all, folks!"
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_31s7l")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -4.0
+offset_right = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Panel/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_fonts/mono_font = ExtResource("2_vfilu")
+theme_override_font_sizes/bold_italics_font_size = 24
+theme_override_font_sizes/italics_font_size = 24
+theme_override_font_sizes/mono_font_size = 24
+theme_override_font_sizes/normal_font_size = 24
+theme_override_font_sizes/bold_font_size = 24
+bbcode_enabled = true
+fit_content = true
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+
+[connection signal="resized" from="Panel" to="." method="adapt_size"]
