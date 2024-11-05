@@ -1,0 +1,37 @@
+[gd_resource type="ShaderMaterial" load_steps=8 format=3 uid="uid://c7rs0ac36gsui"]
+
+[ext_resource type="Shader" path="res://wood.gdshader" id="1_8kyce"]
+
+[sub_resource type="Gradient" id="Gradient_twofu"]
+offsets = PackedFloat32Array(0, 0.778689, 1)
+colors = PackedColorArray(0.788235, 0.537255, 0.431373, 1, 0.556863, 0.305882, 0.207843, 1, 0.788235, 0.537255, 0.431373, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_s6nju"]
+gradient = SubResource("Gradient_twofu")
+
+[sub_resource type="Gradient" id="Gradient_rt3b8"]
+colors = PackedColorArray(0.205117, 0.205117, 0.205117, 1, 0.203922, 0.203922, 0.203922, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_gjnvv"]
+gradient = SubResource("Gradient_rt3b8")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_3bd6o"]
+frequency = 0.0043
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_q6mgm"]
+seamless = true
+noise = SubResource("FastNoiseLite_3bd6o")
+
+[resource]
+shader = ExtResource("1_8kyce")
+shader_parameter/planks_num = Vector2(0.5, 2.785)
+shader_parameter/border_color = Color(0.811478, 0.551833, 0.335055, 1)
+shader_parameter/border_thickness = 1.06
+shader_parameter/age = 76.316
+shader_parameter/ring_compression = 0.0
+shader_parameter/snarl = 0.103
+shader_parameter/seed = 0.234
+shader_parameter/knot_size = 0.035
+shader_parameter/knot_color_gradient = SubResource("GradientTexture1D_gjnvv")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_q6mgm")
+shader_parameter/gradient = SubResource("GradientTexture1D_s6nju")
