@@ -26,15 +26,17 @@ noise = SubResource("FastNoiseLite_3bd6o")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vpmjg"]
 shader = ExtResource("1_241pq")
-shader_parameter/bevel_color = Color(0.268236, 0.178567, 0.12164, 0.764706)
 shader_parameter/planks_num = Vector2(1.745, 2.785)
-shader_parameter/knot_size = 0.08
+shader_parameter/border_color = Color(0.266667, 0.180392, 0.121569, 0.764706)
+shader_parameter/border_thickness = 1.455
 shader_parameter/age = 12.74
+shader_parameter/ring_compression = 0.1
 shader_parameter/snarl = 0.5
-shader_parameter/seed = 3.64
+shader_parameter/seed = 0.425
+shader_parameter/knot_size = 0.1
+shader_parameter/knot_color_gradient = SubResource("GradientTexture1D_gjnvv")
 shader_parameter/noise_texture = SubResource("NoiseTexture2D_q6mgm")
 shader_parameter/gradient = SubResource("GradientTexture1D_s6nju")
-shader_parameter/knot_color_gradient = SubResource("GradientTexture1D_gjnvv")
 
 [node name="Tester" type="Control"]
 layout_mode = 3
