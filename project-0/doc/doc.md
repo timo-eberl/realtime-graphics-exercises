@@ -42,6 +42,12 @@ th, td {
 
 A configurable shader that can represent many kinds of wood panels. This document contains a video showcasing how the shader parameters influence the output and additionally lists 5 examples of how to configure the shader to imitate a photograph of hardwood panels.
 
+<!-- ## Playable version
+
+<iframe src="../export/index.html">
+	Can't load iframe
+</iframe> -->
+
 ## Showcase video
 
 <video width="90%" alt="some colorful animation" controls>
