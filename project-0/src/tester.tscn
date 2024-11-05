@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://hvoagqtln2c4"]
 
-[ext_resource type="Material" uid="uid://c8al73sh53jkm" path="res://materials/wood_4.tres" id="1_otdbh"]
 [ext_resource type="PackedScene" uid="uid://df52fqkkdq2te" path="res://licenser/license_screen_loader_button.tscn" id="2_ftd01"]
+[ext_resource type="Material" uid="uid://bhrjmupiheqqr" path="res://materials/wood_test.tres" id="2_s3tk8"]
 
 [node name="Tester" type="Control"]
 layout_mode = 3
@@ -12,7 +12,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Panel" type="Panel" parent="."]
-material = ExtResource("1_otdbh")
+material = ExtResource("2_s3tk8")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
