@@ -23,6 +23,19 @@ th, td {
 	padding: 0.25em;
 	text-align: left;
 }
+/* dark mode */
+@media (prefers-color-scheme: dark) {
+	body {
+		color: #cac5be;
+		background-color: #181a1b;
+	}
+	td {
+		border-bottom: 1px solid #aaa;
+	}
+	th {
+		border-bottom: 2px solid #aaa;
+	}
+}
 </style>
 
 # Project 0 - A shader for hardwood panels
