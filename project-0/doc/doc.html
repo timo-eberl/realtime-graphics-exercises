@@ -1,0 +1,301 @@
+<style>
+body {
+    max-width: 60em;
+    line-height: 150%;
+    font-family: sans-serif;
+    padding: 1em;
+    margin: 0 auto;
+}
+img, video {
+    width: 100%;
+}
+table {
+    border-collapse: collapse;
+    margin: 1em 3em;
+}
+th {
+    border-bottom: 2px solid #333;
+}
+td {
+    border-bottom: 1px solid #333;
+}
+th, td {
+    padding: 0.25em;
+    text-align: left;
+}
+</style>
+<h1 id="project-0---a-shader-for-hardwood-panels">Project 0 - A shader
+for hardwood panels</h1>
+<p>A configurable shader that can represent many kinds of wood panels.
+This document contains a video showcasing how the shader parameters
+influence the output and additionally lists 5 examples of how to
+configure the shader to imitate a photograph of hardwood panels.</p>
+<h2 id="showcase-video">Showcase video</h2>
+<video width="90%" alt="some colorful animation" controls>
+<source src="videos/parameter-showcase.mp4">
+</video>
+<h2 id="examples">Examples</h2>
+<p>Listed are 5 examples of how to configure the shader parameters to
+imitate a photograph of hardwood panels. Parameters for color gradients
+and noise textures are not listed, you need to open the godot project to
+see their settings.</p>
+<h3 id="example-1">Example 1</h3>
+<figure>
+<img src="images/wood_1.jpg" alt="Reference photo 1" />
+<figcaption aria-hidden="true">Reference photo 1</figcaption>
+</figure>
+<figure>
+<img src="images/render_1.png" alt="Shader output 1" />
+<figcaption aria-hidden="true">Shader output 1</figcaption>
+</figure>
+<p>Shader parameters:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Planks Num</td>
+<td>(0.5, 3.0)</td>
+</tr>
+<tr class="even">
+<td>Border Color</td>
+<td>#442e1fc3</td>
+</tr>
+<tr class="odd">
+<td>Border Thickness</td>
+<td>0.1</td>
+</tr>
+<tr class="even">
+<td>Age</td>
+<td>4.611</td>
+</tr>
+<tr class="odd">
+<td>Ring Compression</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>Snarl</td>
+<td>0.28</td>
+</tr>
+<tr class="odd">
+<td>Seed</td>
+<td>0.126</td>
+</tr>
+<tr class="even">
+<td>Knot Size</td>
+<td>0.1</td>
+</tr>
+</tbody>
+</table>
+<h3 id="example-2">Example 2</h3>
+<figure>
+<img src="images/wood_2.jpg" alt="Reference photo 2" />
+<figcaption aria-hidden="true">Reference photo 2</figcaption>
+</figure>
+<figure>
+<img src="images/render_2.png" alt="Shader output 2" />
+<figcaption aria-hidden="true">Shader output 2</figcaption>
+</figure>
+<p>Shader parameters:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Planks Num</td>
+<td>(0.5, 2.785)</td>
+</tr>
+<tr class="even">
+<td>Border Color</td>
+<td>#cf8d55</td>
+</tr>
+<tr class="odd">
+<td>Border Thickness</td>
+<td>1.06</td>
+</tr>
+<tr class="even">
+<td>Age</td>
+<td>76.316</td>
+</tr>
+<tr class="odd">
+<td>Ring Compression</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>Snarl</td>
+<td>0.103</td>
+</tr>
+<tr class="odd">
+<td>Seed</td>
+<td>0.234</td>
+</tr>
+<tr class="even">
+<td>Knot Size</td>
+<td>0.035</td>
+</tr>
+</tbody>
+</table>
+<h3 id="example-3">Example 3</h3>
+<figure>
+<img src="images/wood_3.jpg" alt="Reference photo 3" />
+<figcaption aria-hidden="true">Reference photo 3</figcaption>
+</figure>
+<figure>
+<img src="images/render_3.png" alt="Shader output 3" />
+<figcaption aria-hidden="true">Shader output 3</figcaption>
+</figure>
+<p>Shader parameters:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Planks Num</td>
+<td>(1.0, 2.785)</td>
+</tr>
+<tr class="even">
+<td>Border Color</td>
+<td>#ffffffff</td>
+</tr>
+<tr class="odd">
+<td>Border Thickness</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>Age</td>
+<td>15.135</td>
+</tr>
+<tr class="odd">
+<td>Ring Compression</td>
+<td>0.088</td>
+</tr>
+<tr class="even">
+<td>Snarl</td>
+<td>0.321</td>
+</tr>
+<tr class="odd">
+<td>Seed</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>Knot Size</td>
+<td>0.1</td>
+</tr>
+</tbody>
+</table>
+<h3 id="example-4">Example 4</h3>
+<figure>
+<img src="images/wood_4.jpg" alt="Reference photo 4" />
+<figcaption aria-hidden="true">Reference photo 4</figcaption>
+</figure>
+<figure>
+<img src="images/render_4.png" alt="Shader output 4" />
+<figcaption aria-hidden="true">Shader output 4</figcaption>
+</figure>
+<p>Shader parameters:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Planks Num</td>
+<td>(1.0, 2.0)</td>
+</tr>
+<tr class="even">
+<td>Border Color</td>
+<td>#442e1fc3</td>
+</tr>
+<tr class="odd">
+<td>Border Thickness</td>
+<td>0.45</td>
+</tr>
+<tr class="even">
+<td>Age</td>
+<td>16.026</td>
+</tr>
+<tr class="odd">
+<td>Ring Compression</td>
+<td>0.053</td>
+</tr>
+<tr class="even">
+<td>Snarl</td>
+<td>0.652</td>
+</tr>
+<tr class="odd">
+<td>Seed</td>
+<td>0.947</td>
+</tr>
+<tr class="even">
+<td>Knot Size</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<h3 id="example-5">Example 5</h3>
+<figure>
+<img src="images/wood_5.jpg" alt="Reference photo 5" />
+<figcaption aria-hidden="true">Reference photo 5</figcaption>
+</figure>
+<figure>
+<img src="images/render_5.png" alt="Shader output 5" />
+<figcaption aria-hidden="true">Shader output 5</figcaption>
+</figure>
+<p>Shader parameters:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Planks Num</td>
+<td>(1.435, 4.0)</td>
+</tr>
+<tr class="even">
+<td>Border Color</td>
+<td>#442e1fc3</td>
+</tr>
+<tr class="odd">
+<td>Border Thickness</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td>Age</td>
+<td>5.518</td>
+</tr>
+<tr class="odd">
+<td>Ring Compression</td>
+<td>0.807</td>
+</tr>
+<tr class="even">
+<td>Snarl</td>
+<td>0.526</td>
+</tr>
+<tr class="odd">
+<td>Seed</td>
+<td>0.295</td>
+</tr>
+<tr class="even">
+<td>Knot Size</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
