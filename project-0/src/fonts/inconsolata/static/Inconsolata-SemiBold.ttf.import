@@ -15,7 +15,6 @@ dest_files=["res://.godot/imported/Inconsolata-SemiBold.ttf-12fd6f2fb4de5af222a6
 Rendering=null
 antialiasing=1
 generate_mipmaps=false
-disable_embedded_bitmaps=true
 multichannel_signed_distance_field=false
 msdf_pixel_range=8
 msdf_size=48
