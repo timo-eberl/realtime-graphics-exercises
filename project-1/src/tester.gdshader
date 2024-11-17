@@ -298,13 +298,47 @@ vec3 background(Ray ray) {
 //
 // eventual modifications are limited to make them work in this code environment and/or cosmetic
 
-// ... paste here ...
+float sdSphere( vec3 p, float s ) {
+	return length(p)-s;
+}
+
+float sdBox( vec3 p, vec3 b ) {
+	vec3 q = abs(p) - b;
+	return length(max(q,0.0)) + min(max(q.x,max(q.y,q.z)),0.0);
+}
+
+float sdBoxFrame( vec3 p, vec3 b, float e ) {
+	p = abs(p)-b;
+	vec3 q = abs(p+e)-e;
+	return min(min(
+	length(max(vec3(p.x,q.y,q.z),0.0))+min(max(p.x,max(q.y,q.z)),0.0),
+	length(max(vec3(q.x,p.y,q.z),0.0))+min(max(q.x,max(p.y,q.z)),0.0)),
+	length(max(vec3(q.x,q.y,p.z),0.0))+min(max(q.x,max(q.y,p.z)),0.0));
+}
+
+float sdCappedCylinder( vec3 p, float h, float r ) {
+	vec2 d = abs(vec2(length(p.xz),p.y)) - vec2(r,h);
+	return min(max(d.x,d.y),0.0) + length(max(d,0.0));
+}
+
+float opOnion( in float sdf, in float thickness ) {
+	return abs(sdf)-thickness;
+}
+
+float opSubtraction( float d1, float d2 ) { 
+	return max(-d1,d2); 
+}
 
 // end of SDF primitives and operations based on Inigo Quilez' code
 
-
 float sdf(vec3 p) {
-	return length(p - P) - lambda;
+	vec3 offset = vec3(0,-1,0);
+	p -= offset;
+	
+	float box = sdBox(p - P - vec3(0,4.0,0), vec3(2.0));
+	float cylinder = sdCappedCylinder(p - P - vec3(0,1.5,0), 1.5, 0.75);
+	float cylinder_boundary = opOnion(cylinder, 0.03);
+	return opSubtraction(box, cylinder_boundary);
 }
 
 vec3 gradient(vec3 p) {
@@ -319,6 +353,11 @@ vec3 gradient(vec3 p) {
 		 		 (sdf(p + dz) - sdf(p - dz))
 				/ (2.0 * GRADIENT_DT)
 	);
+}
+
+float calcTexcoordU(vec2 dir) {
+	float longitude = atan(-dir.y, dir.x); // [-pi;pi]
+	return (longitude / 3.141) * 0.5 + 0.5; // [0;1]
 }
 
 vec3 sphereTraceRay(Ray ray) {
@@ -338,7 +377,13 @@ vec3 sphereTraceRay(Ray ray) {
 
 	if (d < EPSILON) { // shade surface
 		vec3 normal = normalize(gradient(p));
-		return shade(_colorB, p, normal);
+		vec2 normal_plane = normalize(vec2(p.x, p.z));
+		vec3 color = _colorB;
+		vec2 uv = vec2(calcTexcoordU(normal_plane), (p.y * 0.5) + 0.5);
+		uv.x += 0.5 / 5.0;
+		color = vec3(float(fract(uv.x * 5.0) < 0.2));
+		return color;
+		//return shade(color, p, normal);
 	} else {
 		return background(ray);
 	}
