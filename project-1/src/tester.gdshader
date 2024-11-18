@@ -378,12 +378,36 @@ vec3 sphereTraceRay(Ray ray) {
 	if (d < EPSILON) { // shade surface
 		vec3 normal = normalize(gradient(p));
 		vec2 normal_plane = normalize(vec2(p.x, p.z));
-		vec3 color = _colorB;
 		vec2 uv = vec2(calcTexcoordU(normal_plane), (p.y * 0.5) + 0.5);
-		uv.x += 0.5 / 5.0;
-		color = vec3(float(fract(uv.x * 5.0) < 0.2));
-		return color;
-		//return shade(color, p, normal);
+		uv.x += smoothstep(0, 1, uv.y) * 0.2;
+		float frequency = 10.0;
+		float thickness = 0.03;
+		
+		// candle
+		vec3 light_pos = vec3(0, -0.5, 0);
+		float d = distance(light_pos, p);
+		vec3 l = normalize(p - light_pos);
+		float nDotL = dot(normal, l);
+		float lightStrength = 3.0;
+		float lightTransparencyStrength = 3.0;
+		float lighting = nDotL * lightStrength / (d*d);
+		float alpha = 0.7;
+		
+		bool isSideStrip = fract(uv.x * frequency) < thickness * frequency;
+		bool isTopOrBottom = abs(normal.y) > 0.1;
+		if (isSideStrip || isTopOrBottom) {
+			// metal material
+			vec3 light = max(0,(-lighting)) * _colorA * 0.15;
+			return light + shade(_colorB, p, normal);
+		}
+		else {
+			bool isInside = lighting < 0.0;
+			vec3 light = abs(lighting) * _colorA;
+			vec3 shading = light + shade(vec3(1), p, normal) * 0.25;
+			return isInside
+				? mix(background(ray), shading, alpha)
+				: shading * lightTransparencyStrength;
+		}
 	} else {
 		return background(ray);
 	}
