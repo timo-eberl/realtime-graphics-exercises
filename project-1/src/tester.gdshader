@@ -242,6 +242,19 @@ vec3 shade(vec3 albedo, vec3 point, vec3 normal) {
 	return res;
 }
 
+vec3 shadeSpecular(vec3 albedo, vec3 point, vec3 normal, vec3 viewDir, float shininess) {
+	vec3 r = reflect(-sunDirection, normal);
+
+	// sun : Specular Phong reflection
+	vec3 res = albedo * pow(max(0,(-dot(r, viewDir))), shininess);
+	res += albedo * max(0.0, normal.y) * _zenithColor;
+	res += albedo * vec3(0.1); // ambient
+
+	// point can be used later for a simple shadow calculation
+
+	return res;
+}
+
 vec3 groundColor(vec3 p) {
 	vec3 quadrantMultiplier = vec3(0.2, 0.2, 0.2);
 	if (p.x >= 0.0) {
@@ -376,32 +389,40 @@ vec3 sphereTraceRay(Ray ray) {
 	}
 
 	if (d < EPSILON) { // shade surface
+		float frequency = 10.0;
+		float thickness = 0.025;
+		float bendStrength = 0.2;
+		vec3 light_pos = vec3(0, -0.5, 0);
+		float lightStrength = 3.0;
+		float lightTransparencyStrength = 1.8;
+		float metalShininess = 20.0;
+		
 		vec3 normal = normalize(gradient(p));
 		vec2 normal_plane = normalize(vec2(p.x, p.z));
 		vec2 uv = vec2(calcTexcoordU(normal_plane), (p.y * 0.5) + 0.5);
-		uv.x += smoothstep(0, 1, uv.y) * 0.2;
-		float frequency = 10.0;
-		float thickness = 0.03;
+		vec2 bentUV = uv;
+		bentUV.x += smoothstep(0, 1, uv.y) * bendStrength;
 		
 		// candle
-		vec3 light_pos = vec3(0, -0.5, 0);
 		float d = distance(light_pos, p);
-		vec3 l = normalize(p - light_pos);
+		vec3 l = normalize(light_pos - p);
+		vec3 r = reflect(-l, normal);
+		vec3 v = ray.dir;
 		float nDotL = dot(normal, l);
-		float lightStrength = 3.0;
-		float lightTransparencyStrength = 3.0;
 		float lighting = nDotL * lightStrength / (d*d);
 		float alpha = 0.7;
 		
-		bool isSideStrip = fract(uv.x * frequency) < thickness * frequency;
+		bool isSideStrip = fract(bentUV.x * frequency) < thickness * frequency;
 		bool isTopOrBottom = abs(normal.y) > 0.1;
 		if (isSideStrip || isTopOrBottom) {
 			// metal material
-			vec3 light = max(0,(-lighting)) * _colorA * 0.15;
-			return light + shade(_colorB, p, normal);
+			vec3 light = max(0,(lighting)) * _colorA * 0.15;
+			float s = pow(max(0,(-dot(r, v))), metalShininess);
+			light = s * _colorB * _colorA;
+			return light + shadeSpecular(_colorB,p,normal,ray.dir,metalShininess);
 		}
 		else {
-			bool isInside = lighting < 0.0;
+			bool isInside = lighting > 0.0;
 			vec3 light = abs(lighting) * _colorA;
 			vec3 shading = light + shade(vec3(1), p, normal) * 0.25;
 			return isInside
