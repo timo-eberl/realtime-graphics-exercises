@@ -102,6 +102,9 @@ varying vec3 _groundAlbedoB;
 varying vec3  _sunDirection;
 varying float _cosSunRadius;
 
+uniform sampler2D noise_texture : filter_linear, repeat_enable;
+uniform sampler2D normal_noise_texture : filter_linear, repeat_enable, hint_normal;
+
 struct Ray {
 	vec3 p;
 	vec3 dir;
@@ -396,6 +399,7 @@ vec3 sphereTraceRay(Ray ray) {
 		float lightStrength = 3.0;
 		float lightTransparencyStrength = 1.8;
 		float metalShininess = 20.0;
+		vec3 colorMetal = _colorB;
 		
 		vec3 normal = normalize(gradient(p));
 		vec2 normal_plane = normalize(vec2(p.x, p.z));
@@ -403,12 +407,24 @@ vec3 sphereTraceRay(Ray ray) {
 		vec2 bentUV = uv;
 		bentUV.x += smoothstep(0, 1, uv.y) * bendStrength;
 		
+		float noise = texture(noise_texture, uv * vec2(2,1)).x;
+		vec3 normal_noise = texture(normal_noise_texture, uv * vec2(2,1)).xyz;
+		normal_noise = normal_noise * 2.0 - 1.0;
+		colorMetal += (noise * 2.0 - 1.0) * 0.2;
+		
+		// this is not how you would actually use a normal map, for that
+		// you would need a tangent and binormal
+		normal = normalize(
+			normal + normal_noise * 0.16
+		);
+		
 		// candle
 		float d = distance(light_pos, p);
 		vec3 l = normalize(light_pos - p);
 		vec3 r = reflect(-l, normal);
 		vec3 v = ray.dir;
 		float nDotL = dot(normal, l);
+		//lightStrength *= 1.0 - noise * 0.7;
 		float lighting = nDotL * lightStrength / (d*d);
 		float alpha = 0.7;
 		
@@ -418,8 +434,8 @@ vec3 sphereTraceRay(Ray ray) {
 			// metal material
 			vec3 light = max(0,(lighting)) * _colorA * 0.15;
 			float s = pow(max(0,(-dot(r, v))), metalShininess);
-			light = s * _colorB * _colorA;
-			return light + shadeSpecular(_colorB,p,normal,ray.dir,metalShininess);
+			light = s * colorMetal * _colorA;
+			return light + shadeSpecular(colorMetal,p,normal,ray.dir,metalShininess);
 		}
 		else {
 			bool isInside = lighting > 0.0;

@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://hvoagqtln2c4"]
+[gd_scene load_steps=8 format=3 uid="uid://hvoagqtln2c4"]
 
 [ext_resource type="Shader" path="res://tester.gdshader" id="1_241pq"]
 
@@ -320,6 +320,20 @@ func _input(event):
 		
 "
 
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_64gli"]
+frequency = 0.02
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_65lvo"]
+seamless = true
+noise = SubResource("FastNoiseLite_64gli")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ssfoc"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ro007"]
+seamless = true
+as_normal_map = true
+noise = SubResource("FastNoiseLite_ssfoc")
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vpmjg"]
 shader = ExtResource("1_241pq")
 shader_parameter/P = Vector3(0, 0, 0)
@@ -350,6 +364,8 @@ shader_parameter/groundAlbedoA = Color(0.3, 0.3, 0.3, 1)
 shader_parameter/groundAlbedoB = Color(0.7, 0.7, 0.7, 1)
 shader_parameter/L_white = 2.0
 shader_parameter/exposure = 0.0
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_65lvo")
+shader_parameter/normal_noise_texture = SubResource("NoiseTexture2D_ro007")
 
 [node name="Tester" type="Control"]
 layout_mode = 3
