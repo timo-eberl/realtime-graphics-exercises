@@ -419,6 +419,12 @@ vec3 sphereTraceRay(Ray ray) {
 		normal = normalize(
 			normal + normal_noise * 0.16
 		);
+		
+		float flickerValue =
+			(cos(TIME * 1.0 * PI) + 2.0) * 0.1
+			+ (cos(TIME * 2.0 * PI) + 1.0) * 0.15
+			+ (cos((TIME + 23.4536) * 2.5 * PI) + 1.0) * 0.15;
+		lightStrength *= 0.6 * flickerValue;
 
 		// candle
 		float d = distance(light_pos, p);
