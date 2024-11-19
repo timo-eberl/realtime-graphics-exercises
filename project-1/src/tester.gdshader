@@ -347,12 +347,22 @@ float opSubtraction( float d1, float d2 ) {
 
 // end of SDF primitives and operations based on Inigo Quilez' code
 
+vec2 calcPosOnGrid(vec2 p, float gridSize) {
+	return gridSize * round(p / gridSize);
+}
+
+vec3 lanternPos(vec3 p) {
+	vec3 pos = P;
+	pos.xz += calcPosOnGrid(p.xz, 10.0);
+	return pos;
+}
+
 float sdf(vec3 p) {
 	vec3 offset = vec3(0,-1,0);
 	p -= offset;
 
-	float box = sdBox(p - P - vec3(0,4.0,0), vec3(2.0));
-	float cylinder = sdCappedCylinder(p - P - vec3(0,1.5,0), 1.5, 0.75);
+	float box = sdBox(p - lanternPos(p) - vec3(0,4.0,0), vec3(2.0));
+	float cylinder = sdCappedCylinder(p - lanternPos(p) - vec3(0,1.5,0), 1.5, 0.75);
 	float cylinder_boundary = opOnion(cylinder, 0.03);
 	return opSubtraction(box, cylinder_boundary);
 }
@@ -395,14 +405,14 @@ vec3 sphereTraceRay(Ray ray) {
 		float frequency = 10.0;
 		float thickness = 0.025;
 		float bendStrength = 0.2;
-		vec3 lightPos = vec3(0, -0.5, 0) + P;
+		vec3 lightPos = vec3(0, -0.5, 0) + lanternPos(p);
 		float lightStrength = 3.0;
 		float lightTransparencyStrength = 1.8;
 		float metalShininess = 20.0;
 		vec3 colorMetal = _colorB;
 
 		vec3 normal = normalize(gradient(p));
-		vec2 normal_plane = normalize(vec2(p.x, p.z) - P.xz);
+		vec2 normal_plane = normalize(vec2(p.x, p.z) - lanternPos(p).xz);
 		vec2 uv = vec2(calcTexcoordU(normal_plane), (p.y * 0.5) + 0.5);
 		vec2 bentUV = uv;
 		bentUV.x += smoothstep(0, 1, uv.y) * bendStrength;
@@ -490,7 +500,6 @@ vec3 tonemap(vec3 v) {
 }
 
 void fragment() {
-
 	// center on (0.0) ; make the y range from -1 to 1 and point upwards
 	vec2 xy = (UV - vec2(0.5,0.5)) * 2.0;
 	xy.y *= -1.0;
