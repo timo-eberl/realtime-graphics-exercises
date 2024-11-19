@@ -395,31 +395,31 @@ vec3 sphereTraceRay(Ray ray) {
 		float frequency = 10.0;
 		float thickness = 0.025;
 		float bendStrength = 0.2;
-		vec3 light_pos = vec3(0, -0.5, 0);
+		vec3 lightPos = vec3(0, -0.5, 0) + P;
 		float lightStrength = 3.0;
 		float lightTransparencyStrength = 1.8;
 		float metalShininess = 20.0;
 		vec3 colorMetal = _colorB;
 
 		vec3 normal = normalize(gradient(p));
-		vec2 normal_plane = normalize(vec2(p.x, p.z));
+		vec2 normal_plane = normalize(vec2(p.x, p.z) - P.xz);
 		vec2 uv = vec2(calcTexcoordU(normal_plane), (p.y * 0.5) + 0.5);
 		vec2 bentUV = uv;
 		bentUV.x += smoothstep(0, 1, uv.y) * bendStrength;
 
 		float noise = texture(noise_texture, uv * vec2(2,1)).x;
-		vec3 normal_noise = texture(normal_noise_texture, uv * vec2(2,1)).xyz;
-		normal_noise = normal_noise * 2.0 - 1.0;
-		colorMetal += (noise * 2.0 - 1.0) * 0.2;
-
-		bentUV += (noise * 2.0 - 1.0) * 0.0025;
-
+		
 		// this is not how you would actually use a normal map, for that
 		// you would need a tangent and binormal
-		normal = normalize(
-			normal + normal_noise * 0.16
-		);
+		// but it looks fine like this
+		vec3 normal_noise = texture(normal_noise_texture, uv * vec2(2,1)).xyz;
+		normal_noise = normal_noise * 2.0 - 1.0;
 		
+		colorMetal += (noise * 2.0 - 1.0) * 0.2;
+		
+		bentUV += (noise * 2.0 - 1.0) * 0.0025;
+		
+		// make light flicker
 		float flickerValue =
 			(cos(TIME * 1.0 * PI) + 2.0) * 0.1
 			+ (cos(TIME * 2.0 * PI) + 1.0) * 0.15
@@ -427,28 +427,37 @@ vec3 sphereTraceRay(Ray ray) {
 		lightStrength *= 0.6 * flickerValue;
 
 		// candle
-		float d = distance(light_pos, p);
-		vec3 l = normalize(light_pos - p);
+		float d = distance(lightPos, p);
+		vec3 l = normalize(lightPos - p);
 		vec3 r = reflect(-l, normal);
 		vec3 v = ray.dir;
-		float nDotL = dot(normal, l);
-		//lightStrength *= 1.0 - noise * 0.7;
-		float lighting = nDotL * lightStrength / (d*d);
+		lightStrength *= 1.0 - noise * 0.4;
 		float alpha = 0.7;
 
 		bool isSideStrip = fract(bentUV.x * frequency) < thickness * frequency;
 		bool isTopOrBottom = abs(normal.y) > 0.1;
 		if (isSideStrip || isTopOrBottom) {
 			// metal material
-			vec3 light = max(0,(lighting)) * _colorA * 0.15;
+			
+			normal = normalize(
+				normal + normal_noise * 0.13
+			);
+			
 			float s = pow(max(0,(-dot(r, v))), metalShininess);
-			light = s * colorMetal * _colorA;
+			vec3 light = s * colorMetal * _colorA;
 			return light + shadeSpecular(colorMetal,p,normal,ray.dir,metalShininess);
 		}
 		else {
+			normal = normalize(
+				normal + normal_noise * 0.35
+			);
+			float nDotL = dot(normal, l);
+			//return vec3(abs(nDotL));
+			//return vec3(1.0 / (d*d));
+			float lighting = nDotL * lightStrength / (d*d);
 			bool isInside = lighting > 0.0;
 			vec3 light = abs(lighting) * _colorA;
-			vec3 shading = light + shade(vec3(1), p, normal) * 0.25;
+			vec3 shading = light + shade(vec3(1), p, normal) * 0.15;
 			return isInside
 				? mix(background(ray), shading, alpha)
 				: shading * lightTransparencyStrength;
