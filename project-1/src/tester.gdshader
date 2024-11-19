@@ -341,8 +341,8 @@ float opOnion( in float sdf, in float thickness ) {
 	return abs(sdf)-thickness;
 }
 
-float opSubtraction( float d1, float d2 ) { 
-	return max(-d1,d2); 
+float opSubtraction( float d1, float d2 ) {
+	return max(-d1,d2);
 }
 
 // end of SDF primitives and operations based on Inigo Quilez' code
@@ -350,7 +350,7 @@ float opSubtraction( float d1, float d2 ) {
 float sdf(vec3 p) {
 	vec3 offset = vec3(0,-1,0);
 	p -= offset;
-	
+
 	float box = sdBox(p - P - vec3(0,4.0,0), vec3(2.0));
 	float cylinder = sdCappedCylinder(p - P - vec3(0,1.5,0), 1.5, 0.75);
 	float cylinder_boundary = opOnion(cylinder, 0.03);
@@ -400,24 +400,26 @@ vec3 sphereTraceRay(Ray ray) {
 		float lightTransparencyStrength = 1.8;
 		float metalShininess = 20.0;
 		vec3 colorMetal = _colorB;
-		
+
 		vec3 normal = normalize(gradient(p));
 		vec2 normal_plane = normalize(vec2(p.x, p.z));
 		vec2 uv = vec2(calcTexcoordU(normal_plane), (p.y * 0.5) + 0.5);
 		vec2 bentUV = uv;
 		bentUV.x += smoothstep(0, 1, uv.y) * bendStrength;
-		
+
 		float noise = texture(noise_texture, uv * vec2(2,1)).x;
 		vec3 normal_noise = texture(normal_noise_texture, uv * vec2(2,1)).xyz;
 		normal_noise = normal_noise * 2.0 - 1.0;
 		colorMetal += (noise * 2.0 - 1.0) * 0.2;
-		
+
+		bentUV += (noise * 2.0 - 1.0) * 0.0025;
+
 		// this is not how you would actually use a normal map, for that
 		// you would need a tangent and binormal
 		normal = normalize(
 			normal + normal_noise * 0.16
 		);
-		
+
 		// candle
 		float d = distance(light_pos, p);
 		vec3 l = normalize(light_pos - p);
@@ -427,7 +429,7 @@ vec3 sphereTraceRay(Ray ray) {
 		//lightStrength *= 1.0 - noise * 0.7;
 		float lighting = nDotL * lightStrength / (d*d);
 		float alpha = 0.7;
-		
+
 		bool isSideStrip = fract(bentUV.x * frequency) < thickness * frequency;
 		bool isTopOrBottom = abs(normal.y) > 0.1;
 		if (isSideStrip || isTopOrBottom) {
