@@ -1,272 +1,167 @@
 shader_type canvas_item;
-
 // for numeric test
-
 const float FAR = 10000.0;   // distance to background
 const float EPSILON = 0.001; // larger than 0, but so small every smaller value is negative …
 const float GRADIENT_DT = 0.05; // half of the step size
-
 // generic shader parameters ...
-
 // .. Vectors
-
 uniform vec3 P;
 uniform vec3 Q;
 uniform vec3 R;
 uniform vec3 S;
-
 // ... scalars
-
 uniform float lambda;
 uniform float mu;
 uniform float nu;
-
 // ... angles, in degrees
-
 uniform float theta;
 uniform float phi;
-
 // converted to radians
-
 varying float _theta;
 varying float _phi;
-
 // in sRGB curve
-
 uniform vec3 colorA;
 uniform vec3 colorB;
 uniform vec3 colorC;
 uniform vec3 colorD;
-
 // linearized
-
 varying vec3 _colorA;
 varying vec3 _colorB;
 varying vec3 _colorC;
 varying vec3 _colorD;
-
 // camera
-
 uniform float ASPECT_RATIO = 1.77777777778; // 16.0/9.0
-
 uniform float cameraDistance = 1.0;
 uniform float azimuth = 0.0;
 uniform float elevation = 0.0;
-
 uniform float vFoV_degrees : hint_range(0.0, 180.0)= 45.0;
-
 // sky
-
 uniform vec3 zenithColor  : source_color = vec3(0.2,0.3,0.5);
 uniform vec3 horizonColor : source_color = vec3(0.2,0.45,0.75);
-
 uniform vec3 sunColor : source_color = vec3(1.0);
 uniform vec3 sunDirection = vec3(0.7,0.7,-0.7); // normalized in shader
 uniform float sunRadiusDegrees : hint_range(0.0,90.0) = 0.5;
-
 // ground
-
 uniform float groundLevel = -1.0;
 uniform vec3 groundAlbedoA : source_color = vec3(0.3);
 uniform vec3 groundAlbedoB : source_color = vec3(0.7);
-
 // tone mapper
-
 uniform float L_white : hint_range(0.0, 10.0) = 1.0;
 uniform float exposure : hint_range(-10.0, 10.0) = 0.0;
-
 // ray marcher
-
 const int MAX_STEPS = 100;
 const float BACKGROUND_DISTANCE = 10.0; // from surface; if we are that far, we will never hit anything
-
 // the coordinates that are used by the ray generator
-
 varying vec3 _eye;
-
 varying vec3 _right;
 varying vec3 _up;
 varying vec3 _forward;
-
 // linearized colors
-
 varying vec3 _zenithColor;
 varying vec3 _horizonColor;
 varying vec3 _sunColor;
-
 varying vec3 _groundAlbedoA;
 varying vec3 _groundAlbedoB;
-
 // sky varyings
-
 varying vec3  _sunDirection;
 varying float _cosSunRadius;
-
+// noise textures
 uniform sampler2D noise_texture : filter_linear, repeat_enable;
 uniform sampler2D normal_noise_texture : filter_linear, repeat_enable, hint_normal;
-
+uniform sampler2D blue_noise_texture : filter_nearest, repeat_enable;
 struct Ray {
 	vec3 p;
 	vec3 dir;
 };
-
 // tone mapping and sRGB conversion
-
-/**
- * sRGB response curve. See: https://en.wikipedia.org/wiki/SRGB#Specification_of_the_transformation
- */
-
-float linearize( float c ) {
-  return (c < 0.04045) ? (c / 12.92) : (pow( (c + 0.055) / 1.055, 2.4));
-}
-
-vec3 sRGB_to_linear( vec3 sRGB) {
-
-  // alpha channel is always linear: pass it through
-
-  return vec3( linearize(sRGB.r), linearize(sRGB.g), linearize(sRGB.b));
-}
-
-float unlinearize(float f) {
-
-  // alpha channel is always linear: pass it through
-
- return (f < 0.0031308) ? (12.92 * f) : (1.055 * pow(f, 0.416666667) - 0.055);
-}
-
-vec3 linear_to_sRGB( vec3 RGB) {
-
-  // alpha channel is always linear: pass it through
-
-  return vec3( unlinearize(RGB.r),
-               unlinearize(RGB.g),
-			   unlinearize(RGB.b));
-}
-
-
+// sRGB response curve. See: https://en.wikipedia.org/wiki/SRGB#Specification_of_the_transformation
+float linearize( float c ) { return (c < 0.04045) ? (c / 12.92) : (pow( (c + 0.055) / 1.055, 2.4)); }
+vec3 sRGB_to_linear( vec3 sRGB) { return vec3( linearize(sRGB.r), linearize(sRGB.g), linearize(sRGB.b)); }
+float unlinearize(float f) { return (f < 0.0031308) ? (12.92 * f) : (1.055 * pow(f, 0.416666667) - 0.055); }
+vec3 linear_to_sRGB( vec3 RGB) { return vec3( unlinearize(RGB.r), unlinearize(RGB.g), unlinearize(RGB.b)); }
 
 void vertex() {
-		// set up forward, up and right vectors
-
+	// set up forward, up and right vectors
 	// start with a standard system: look towards -z
 	vec3 forward = vec3( 0.0,  0.0,  1.0);
 	vec3 right   = vec3( 1.0,  0.0,  0.0);
 	vec3 up      = vec3( 0.0,  1.0,  0.0);
-
 	// then, rotate by azimuth and elevation
 	float _azimuth  = radians(azimuth);
 	float _elevation = radians(elevation);
-
 	// for easier readability, use generic rotation matrices
-
 	// Godot's GLSL constructs matrices out of colum vectors
 	// write them as rows
 	mat3 rotateX = transpose(
-		mat3( vec3(1.0,                0.0,              0.0),
-	          vec3(0.0,    cos(_elevation),   -sin(_elevation)),
-			  vec3(0.0,    sin(_elevation),    cos(_elevation))
-			));
-
+		mat3(vec3(1.0,                0.0,                0.0),
+			 vec3(0.0,    cos(_elevation),   -sin(_elevation)),
+			 vec3(0.0,    sin(_elevation),    cos(_elevation))
+		));
 	mat3 rotateY = transpose(
-		mat3( vec3(cos(_azimuth), 0.0, -sin(_azimuth)),
-	          vec3(          0.0, 1.0,            0.0),
-			  vec3(sin(_azimuth), 0.0,  cos(_azimuth))
-			));
-
+		mat3(vec3(cos(_azimuth), 0.0, -sin(_azimuth)),
+			 vec3(          0.0, 1.0,            0.0),
+			 vec3(sin(_azimuth), 0.0,  cos(_azimuth))
+		));
 	mat3 combined_rotation = rotateY * rotateX;
-
 	_forward = combined_rotation * forward;
 	_right   = combined_rotation * right;
 	_up      = combined_rotation * up;
-
 	_eye = -_forward * cameraDistance;
-
 	// scale camera for FoV and focal length
-
 	// our y coordinate system is 2 high, from -1.0 to 1,0
-
 	float focalLength = 2.0 / (2.0 * tan(radians(vFoV_degrees / 2.0))) ;
-
 	// scale vectors; by construction, they are already normalized
-
 	_right = _right * ASPECT_RATIO;
 	_forward = _forward * focalLength;
-
 	// sky precompations
-
 	_sunDirection = normalize(sunDirection);
 	_cosSunRadius = cos(radians(sunRadiusDegrees));
-
 	// color space conversions
-
 	_zenithColor = sRGB_to_linear(zenithColor);
 	_horizonColor = sRGB_to_linear(horizonColor);
 	_sunColor = sRGB_to_linear(sunColor);
-
 	_groundAlbedoA = sRGB_to_linear(groundAlbedoA);
 	_groundAlbedoB = sRGB_to_linear(groundAlbedoB);
-
 	_colorA = sRGB_to_linear(colorA);
 	_colorB = sRGB_to_linear(colorB);
 	_colorC = sRGB_to_linear(colorC);
 	_colorD = sRGB_to_linear(colorD);
-
 	// angle conversions
-
 	_theta = radians(theta);
 	_phi = radians(phi);
-
 }
-
 
 vec3 sky(vec3 dir) {
 	dir = normalize(dir);
-	return mix(mix(_horizonColor, _zenithColor, dir.y),
-			   _sunColor,
-			   smoothstep(_cosSunRadius*0.9999,
-						  _cosSunRadius,
-						  dot(dir,_sunDirection)));
-
+	return mix(mix(_horizonColor, _zenithColor, dir.y), _sunColor,
+		smoothstep(_cosSunRadius*0.9999, _cosSunRadius, dot(dir,_sunDirection)));
 }
 
-// normal is normalized
-
 vec3 shade(vec3 albedo, vec3 point, vec3 normal) {
-
 	// sun : Lambertian
 	// the integral over the upper hemisphere times cos(theta) equals to pi
 	// this cancels out with albedo/pi from lambertian BRDF
 	vec3 res = albedo * max(0.0, dot(normal, sunDirection));
 	res += albedo * max(0.0, normal.y) * _zenithColor;
 	res += albedo * vec3(0.1); // ambient
-
 	// point can be used later for a simple shadow calculation
-
 	return res;
 }
 
 vec3 shadeSpecular(vec3 albedo, vec3 point, vec3 normal, vec3 viewDir, float shininess) {
 	vec3 r = reflect(-sunDirection, normal);
-
 	// sun : Specular Phong reflection
 	vec3 res = albedo * pow(max(0,(-dot(r, viewDir))), shininess);
 	res += albedo * max(0.0, normal.y) * _zenithColor;
 	res += albedo * vec3(0.1); // ambient
-
 	// point can be used later for a simple shadow calculation
-
 	return res;
 }
 
 vec3 groundColor(vec3 p) {
 	vec3 quadrantMultiplier = vec3(0.2, 0.2, 0.2);
-	if (p.x >= 0.0) {
-		quadrantMultiplier.r = 1.0;
-	}
-	if (p.z >= 0.0) {
-		quadrantMultiplier.g = 1.0;
-	}
-
+	if (p.x >= 0.0) { quadrantMultiplier.r = 1.0; }
+	if (p.z >= 0.0) { quadrantMultiplier.g = 1.0; }
 	vec3 pf = fract(p * 0.5); // make grid cell 1m large
 	// checkerboard
 	if ((pf.x > 0.5) == (pf.z > 0.5)) {
@@ -278,7 +173,6 @@ vec3 groundColor(vec3 p) {
 
 vec3 background(Ray ray) {
 	// intersect against ground plane
-
 	float t = (groundLevel - ray.p.y) / (ray.dir.y);
 	if (t <= 0.0) { // intersection not in front? show background
 		return sky(ray.dir);
@@ -292,10 +186,6 @@ vec3 background(Ray ray) {
 		}
 	}
 }
-
-// SDF primitives ============================================================
-
-// ... insert here ...
 
 // SDF primitives and operations from
 //
@@ -313,47 +203,31 @@ vec3 background(Ray ray) {
 // THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 // eventual modifications are limited to make them work in this code environment and/or cosmetic
-
-float sdSphere( vec3 p, float s ) {
-	return length(p)-s;
-}
-
 float sdBox( vec3 p, vec3 b ) {
 	vec3 q = abs(p) - b;
 	return length(max(q,0.0)) + min(max(q.x,max(q.y,q.z)),0.0);
 }
-
-float sdBoxFrame( vec3 p, vec3 b, float e ) {
-	p = abs(p)-b;
-	vec3 q = abs(p+e)-e;
-	return min(min(
-	length(max(vec3(p.x,q.y,q.z),0.0))+min(max(p.x,max(q.y,q.z)),0.0),
-	length(max(vec3(q.x,p.y,q.z),0.0))+min(max(q.x,max(p.y,q.z)),0.0)),
-	length(max(vec3(q.x,q.y,p.z),0.0))+min(max(q.x,max(q.y,p.z)),0.0));
-}
-
 float sdCappedCylinder( vec3 p, float h, float r ) {
 	vec2 d = abs(vec2(length(p.xz),p.y)) - vec2(r,h);
 	return min(max(d.x,d.y),0.0) + length(max(d,0.0));
 }
-
 float opOnion( in float sdf, in float thickness ) {
 	return abs(sdf)-thickness;
 }
-
 float opSubtraction( float d1, float d2 ) {
 	return max(-d1,d2);
 }
-
 // end of SDF primitives and operations based on Inigo Quilez' code
 
-vec2 calcPosOnGrid(vec2 p, float gridSize) {
+const float gridSize = 10.0;
+
+vec2 calcPosOnGrid(vec2 p) {
 	return gridSize * round(p / gridSize);
 }
 
 vec3 lanternPos(vec3 p) {
 	vec3 pos = P;
-	pos.xz += calcPosOnGrid(p.xz, 10.0);
+	pos.xz += calcPosOnGrid(p.xz);
 	return pos;
 }
 
