@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://hvoagqtln2c4"]
+[gd_scene load_steps=9 format=3 uid="uid://hvoagqtln2c4"]
 
 [ext_resource type="Shader" path="res://tester.gdshader" id="1_241pq"]
+[ext_resource type="PackedScene" uid="uid://df52fqkkdq2te" path="res://licenser/license_screen_loader_button.tscn" id="2_ci1sb"]
 
 [sub_resource type="GDScript" id="GDScript_fjbdq"]
 script/source = "@tool
@@ -393,3 +394,8 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="License Screen Loader Button" parent="." instance=ExtResource("2_ci1sb")]
+layout_mode = 1
+offset_left = -372.0
+offset_right = 372.0
