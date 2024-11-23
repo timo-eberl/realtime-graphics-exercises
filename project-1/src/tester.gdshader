@@ -219,39 +219,67 @@ float opSubtraction( float d1, float d2 ) {
 }
 // end of SDF primitives and operations based on Inigo Quilez' code
 
-const float gridSize = 10.0;
+vec4 blueNoiseAtID(vec2 id) {
+	vec2 uv = id / 1024.0; // map one lantern to one pixel (1024 is noise map resolution)
+	return texture(blue_noise_texture, uv);
+}
 
-vec2 calcPosOnGrid(vec2 p) {
-	return gridSize * round(p / gridSize);
+const float gridSize = 7.0; // size of one tile
+
+vec2 offset(vec2 noise) {
+	return (noise * 2.0 - 1.0) * (gridSize * 0.5 - 0.75 + 0.15); // 0.75 is the radius of the lantern
 }
 
 vec3 lanternPos(vec3 p) {
 	vec3 pos = P;
-	pos.xz += calcPosOnGrid(p.xz);
+	
+	vec2 id = round(p.xz/gridSize);
+	vec4 blueNoise = blueNoiseAtID(id);
+	vec2 gridPos = id * gridSize;
+	
+	pos.xz += gridPos - offset(blueNoise.xy);
 	return pos;
 }
 
-float sdf(vec3 p) {
+float sdfLantern(vec3 p) {
 	vec3 offset = vec3(0,-1,0);
 	p -= offset;
 
-	float box = sdBox(p - lanternPos(p) - vec3(0,4.0,0), vec3(2.0));
-	float cylinder = sdCappedCylinder(p - lanternPos(p) - vec3(0,1.5,0), 1.5, 0.75);
+	float box = sdBox(p - vec3(0,4.0,0), vec3(2.0));
+	float cylinder = sdCappedCylinder(p - vec3(0,1.5,0), 1.5, 0.75);
 	float cylinder_boundary = opOnion(cylinder, 0.03);
 	return opSubtraction(box, cylinder_boundary);
+}
+
+// https://iquilezles.org/articles/sdfrepetition/
+float repeated( vec3 p3) {
+	vec2 p = p3.xz;
+	vec2 id = round(p/gridSize);
+	vec2  o = sign(p-gridSize*id); // neighbor offset direction
+
+	float d = 1e20;
+	for( int j=0; j<2; j++ )
+	for( int i=0; i<2; i++ ) {
+		vec2 rid = id + vec2(float(i),float(j))*o;
+		vec2 r = p - gridSize*rid;
+		vec4 blueNoise = blueNoiseAtID(rid);
+		r += offset(blueNoise.xy);
+		d = min( d, sdfLantern(vec3(r.x, p3.y, r.y)) );
+	}
+	return d;
+}
+
+float sdf(vec3 p) {
+	return repeated(p);
 }
 
 vec3 gradient(vec3 p) {
 	const vec3 dx = vec3(GRADIENT_DT, 0.0, 0.0);
 	const vec3 dy = vec3(0.0, GRADIENT_DT, 0.0);
 	const vec3 dz = vec3(0.0, 0.0, GRADIENT_DT);
-
-	return vec3( (sdf(p + dx) - sdf(p - dx))
-				/ (2.0 * GRADIENT_DT),
-				 (sdf(p + dy) - sdf(p - dy))
-				/ (2.0 * GRADIENT_DT),
-		 		 (sdf(p + dz) - sdf(p - dz))
-				/ (2.0 * GRADIENT_DT)
+	return vec3( (sdf(p + dx) - sdf(p - dx)) / (2.0 * GRADIENT_DT),
+				 (sdf(p + dy) - sdf(p - dy)) / (2.0 * GRADIENT_DT),
+		 		 (sdf(p + dz) - sdf(p - dz)) / (2.0 * GRADIENT_DT)
 	);
 }
 
@@ -261,12 +289,8 @@ float calcTexcoordU(vec2 dir) {
 }
 
 vec3 sphereTraceRay(Ray ray) {
-
-	// step front-to-back over the ray
-
 	vec3 p = ray.p;
 	float d;
-
 	for (int i = 0; i < MAX_STEPS; ++i) {
 		d = sdf(p);
 		if (d < EPSILON || d > BACKGROUND_DISTANCE) {
@@ -284,6 +308,8 @@ vec3 sphereTraceRay(Ray ray) {
 		float lightTransparencyStrength = 1.8;
 		float metalShininess = 20.0;
 		vec3 colorMetal = _colorB;
+		
+		//p -= lanternPos(p);
 
 		vec3 normal = normalize(gradient(p));
 		vec2 normal_plane = normalize(vec2(p.x, p.z) - lanternPos(p).xz);
@@ -336,8 +362,6 @@ vec3 sphereTraceRay(Ray ray) {
 				normal + normal_noise * 0.35
 			);
 			float nDotL = dot(normal, l);
-			//return vec3(abs(nDotL));
-			//return vec3(1.0 / (d*d));
 			float lighting = nDotL * lightStrength / (d*d);
 			bool isInside = lighting > 0.0;
 			vec3 light = abs(lighting) * _colorA;
@@ -352,14 +376,11 @@ vec3 sphereTraceRay(Ray ray) {
 }
 
 Ray makeRay(vec2 xy) {
-	// construct ray
-
 	Ray ray;
 	ray.p = _eye;
 	ray.dir = normalize(_forward + xy.x * _right + xy.y * _up);
 	return ray;
 }
-
 
 /* see: Equation (4) in
  *
