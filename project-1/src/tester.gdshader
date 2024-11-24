@@ -67,6 +67,7 @@ varying vec3  _sunDirection;
 varying float _cosSunRadius;
 // noise textures
 uniform sampler2D noise_texture : filter_linear, repeat_enable;
+uniform sampler3D noise_3d_texture : filter_linear, repeat_enable;
 uniform sampler2D normal_noise_texture : filter_linear, repeat_enable, hint_normal;
 uniform sampler2D blue_noise_texture : filter_nearest, repeat_enable;
 struct Ray {
@@ -211,11 +212,30 @@ float sdCappedCylinder( vec3 p, float h, float r ) {
 	vec2 d = abs(vec2(length(p.xz),p.y)) - vec2(r,h);
 	return min(max(d.x,d.y),0.0) + length(max(d,0.0));
 }
+float sdCappedCylinderOffset( vec3 p, float h, float r, vec2 offset ) {
+	vec2 d = abs(vec2(distance(p.xz, offset),p.y)) - vec2(r,h);
+	return min(max(d.x,d.y),0.0) + length(max(d,0.0));
+}
+float sdTorus( vec3 p, vec2 t ) {
+	vec2 q = vec2(length(p.xz)-t.x,p.y);
+	return length(q)-t.y;
+}
 float opOnion( in float sdf, in float thickness ) {
 	return abs(sdf)-thickness;
 }
 float opSubtraction( float d1, float d2 ) {
 	return max(-d1,d2);
+}
+float opUnion( float d1, float d2 ) {
+	return min(d1,d2);
+}
+float opSmoothUnion( float d1, float d2, float k ) {
+	float h = clamp( 0.5 + 0.5*(d2-d1)/k, 0.0, 1.0 );
+	return mix( d2, d1, h ) - k*h*(1.0-h);
+}
+vec3 opSymXZ(vec3 p) {
+	p.xz = abs(p.xz);
+	return p;
 }
 // end of SDF primitives and operations based on Inigo Quilez' code
 
@@ -231,17 +251,14 @@ vec2 offset(vec2 noise) {
 }
 
 vec3 lanternPos(vec3 p) {
-	vec3 pos = P;
-	
 	vec2 id = round(p.xz/gridSize);
 	vec4 blueNoise = blueNoiseAtID(id);
 	vec2 gridPos = id * gridSize;
-	
-	pos.xz += gridPos - offset(blueNoise.xy);
-	return pos;
+	vec2 pos = gridPos - offset(blueNoise.xy);
+	return vec3(pos.x, 0, pos.y);
 }
 
-float sdfLantern(vec3 p) {
+float sdfSinglePaper(vec3 p) {
 	vec3 offset = vec3(0,-1,0);
 	p -= offset;
 
@@ -251,8 +268,21 @@ float sdfLantern(vec3 p) {
 	return opSubtraction(box, cylinder_boundary);
 }
 
+float sdfSingleMetal(vec3 p) {
+	vec3 offset = vec3(0,-1,0);
+	p -= offset;
+
+	float torus1 = sdTorus(p, vec2(0.75, 0.05));
+	float torus2 = sdTorus(p + vec3(0,-2.0,0), vec2(0.75, 0.05));
+	float tori = opUnion(torus1, torus2);
+	
+	float cylindri = sdCappedCylinderOffset(opSymXZ(p + vec3(0,-1,0)), 1.03, 0.05, vec2(0.75 * 0.707));
+	
+	return opSmoothUnion(cylindri, tori, 0.1);
+}
+
 // https://iquilezles.org/articles/sdfrepetition/
-float repeated( vec3 p3) {
+float repeated( vec3 p3, int sdfIndex ) {
 	vec2 p = p3.xz;
 	vec2 id = round(p/gridSize);
 	vec2  o = sign(p-gridSize*id); // neighbor offset direction
@@ -264,13 +294,21 @@ float repeated( vec3 p3) {
 		vec2 r = p - gridSize*rid;
 		vec4 blueNoise = blueNoiseAtID(rid);
 		r += offset(blueNoise.xy);
-		d = min( d, sdfLantern(vec3(r.x, p3.y, r.y)) );
+		
+		vec3 finalP = vec3(r.x, p3.y, r.y);
+		float newD;
+		switch (sdfIndex) {
+			case 1: newD = sdfSinglePaper(finalP); break;
+			case 2: newD = sdfSingleMetal(finalP); break;
+			default: newD = opUnion(sdfSinglePaper(finalP), sdfSingleMetal(finalP)); break;
+		}
+		d = min(d, newD);
 	}
 	return d;
 }
 
 float sdf(vec3 p) {
-	return repeated(p);
+	return repeated(p, 0);
 }
 
 vec3 gradient(vec3 p) {
@@ -303,31 +341,28 @@ vec3 sphereTraceRay(Ray ray) {
 		float frequency = 10.0;
 		float thickness = 0.025;
 		float bendStrength = 0.2;
-		vec3 lightPos = vec3(0, -0.5, 0) + lanternPos(p);
+		vec3 lightPos = vec3(0, -0.5, 0);
 		float lightStrength = 3.0;
 		float lightTransparencyStrength = 1.8;
 		float metalShininess = 20.0;
 		vec3 colorMetal = _colorB;
 		
-		//p -= lanternPos(p);
+		vec3 localP = p - lanternPos(p);
 
 		vec3 normal = normalize(gradient(p));
-		vec2 normal_plane = normalize(vec2(p.x, p.z) - lanternPos(p).xz);
+		vec2 normal_plane = normalize(vec2(localP.x, localP.z));
 		vec2 uv = vec2(calcTexcoordU(normal_plane), (p.y * 0.5) + 0.5);
-		vec2 bentUV = uv;
-		bentUV.x += smoothstep(0, 1, uv.y) * bendStrength;
 
 		float noise = texture(noise_texture, uv * vec2(2,1)).x;
+		//vec4 noise3d = texture(noise_3d_texture, p);
+		//vec4 noise3d_1_5 = texture(noise_3d_texture, p * 1.5);
+		//return noise3d.xyz;
 		
-		// this is not how you would actually use a normal map, for that
-		// you would need a tangent and binormal
+		// this is not how you would actually use a normal map
+		// (to do it properly we would need a tangent and binormal)
 		// but it looks fine like this
 		vec3 normal_noise = texture(normal_noise_texture, uv * vec2(2,1)).xyz;
 		normal_noise = normal_noise * 2.0 - 1.0;
-		
-		colorMetal += (noise * 2.0 - 1.0) * 0.2;
-		
-		bentUV += (noise * 2.0 - 1.0) * 0.0025;
 		
 		// make light flicker
 		float flickerValue =
@@ -337,22 +372,20 @@ vec3 sphereTraceRay(Ray ray) {
 		lightStrength *= 0.6 * flickerValue;
 
 		// candle
-		float d = distance(lightPos, p);
-		vec3 l = normalize(lightPos - p);
+		float d = distance(lightPos, localP);
+		vec3 l = normalize(lightPos - localP);
 		vec3 r = reflect(-l, normal);
 		vec3 v = ray.dir;
 		lightStrength *= 1.0 - noise * 0.4;
 		float alpha = 0.7;
+		
+		bool isMetal = repeated(p, 1) > repeated(p, 2);
 
-		bool isSideStrip = fract(bentUV.x * frequency) < thickness * frequency;
-		bool isTopOrBottom = abs(normal.y) > 0.1;
-		if (isSideStrip || isTopOrBottom) {
-			// metal material
-			
+		if (isMetal) {
 			normal = normalize(
 				normal + normal_noise * 0.13
 			);
-			
+			colorMetal += (noise * 2.0 - 1.0) * 0.2;
 			float s = pow(max(0,(-dot(r, v))), metalShininess);
 			vec3 light = s * colorMetal * _colorA;
 			return light + shadeSpecular(colorMetal,p,normal,ray.dir,metalShininess);
@@ -366,9 +399,7 @@ vec3 sphereTraceRay(Ray ray) {
 			bool isInside = lighting > 0.0;
 			vec3 light = abs(lighting) * _colorA;
 			vec3 shading = light + shade(vec3(1), p, normal) * 0.15;
-			return isInside
-				? mix(background(ray), shading, alpha)
-				: shading * lightTransparencyStrength;
+			return shading * lightTransparencyStrength;
 		}
 	} else {
 		return background(ray);
