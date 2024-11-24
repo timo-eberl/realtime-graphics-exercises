@@ -280,8 +280,24 @@ float sdfSingleMetal(vec3 p) {
 }
 
 float sdfWater(vec3 p) {
-	return sdPlane(p, vec3(0,1,0), 1.0)
-		+ sin(TIME * 2.0 + p.x * 2.0) * 0.05;
+	vec2[] dirs = {
+		normalize(vec2(-0.4,  1.0)),
+		normalize(vec2( 0.0, -1.0)),
+		normalize(vec2(-0.8,  1.0)),
+		normalize(vec2(-1.2, -1.0)),
+		normalize(vec2( 0.4,  1.0))
+	};
+	float displacement = 0.0;
+	float a = 0.15;
+	float w = 0.4;
+	for (int i = 0; i < 5; i++) {
+		a *= 0.6;
+		w *= 1.4;
+		vec2 dir = dirs[i];
+		float dxz = dot(dir, p.xz);
+		displacement += a * sin(dxz * w + TIME * 2.5);
+	}
+	return sdPlane(p, vec3(0,1,0), 1.0) + displacement;
 }
 
 // https://iquilezles.org/articles/sdfrepetition/
