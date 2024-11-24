@@ -49,8 +49,8 @@ uniform vec3 groundAlbedoB : source_color = vec3(0.7);
 uniform float L_white : hint_range(0.0, 10.0) = 1.0;
 uniform float exposure : hint_range(-10.0, 10.0) = 0.0;
 // ray marcher
-const int MAX_STEPS = 200;
-const float BACKGROUND_DISTANCE = 10.0; // from surface; if we are that far, we will never hit anything
+const int MAX_STEPS = 150;
+const float BACKGROUND_DISTANCE = 100.0; // from surface; if we are that far, we will never hit anything
 // the coordinates that are used by the ray generator
 varying vec3 _eye;
 varying vec3 _right;

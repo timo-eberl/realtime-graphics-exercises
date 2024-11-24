@@ -397,6 +397,7 @@ horizon_color = Color(0.165709, 0.254252, 0.674615, 1)
 sun_color = Color(0.183623, 0.379107, 0.613182, 1)
 sun_direction = Vector3(-0.7, 0.7, -0.7)
 ground_level = -1.5
+mouse_look_speed = -0.2
 vertical_fov_degrees = 60.0
 step_size = 0.003
 bounding_box_radii = Vector3(1.5, 1.5, 1.5)
