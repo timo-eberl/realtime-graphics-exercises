@@ -142,9 +142,14 @@ void vertex() {
 
 vec3 sky(vec3 dir) {
 	dir = normalize(dir);
+	float fog = clamp(mix(1, -1.5, dir.y),0,1);
+	fog = smoothstep(0,1,fog);
+	fog = pow(fog, 15.0);
 	float thetaa = acos(dir.y);
 	float phii = atan(dir.z, dir.x);
-	return texture(environment, vec2(phii/TAU, thetaa/PI)).rgb;
+	return mix(
+		texture(environment, vec2(phii/TAU, thetaa/PI)).rgb,
+		_colorD, fog);
 }
 
 vec3 shade(vec3 albedo, vec3 point, vec3 normal) {
@@ -369,6 +374,14 @@ vec3 shadePaper(
 	return shading;
 }
 
+vec3 fog(vec3 p, Ray ray, vec3 color) {
+	float density = 0.04;
+	float depth = distance(p, ray.p);
+	// exponential squared fog
+	float fog = pow( 2.0, -pow(depth*density,2.0) );
+	return mix(_colorD, color, fog);
+}
+
 vec3 shadeLanterns(vec3 p, Ray ray, vec3 normal, float dPaper, float dMetal) {
 	vec2 id = round(p.xz/gridSize);
 	vec4 blueNoise = blueNoiseAtID(id);
@@ -380,7 +393,7 @@ vec3 shadeLanterns(vec3 p, Ray ray, vec3 normal, float dPaper, float dMetal) {
 	vec2 uv = calcCylindricalUVs(normalXZ, localP);
 
 	float noise = texture(noise_texture, uv * vec2(2,1)).x;
-	//vec4 noise3d = texture(noise_3d_texture, p);
+	//vec4 noise3d = texture(noise_3d_texture, p);f
 	//vec4 noise3d_1_5 = texture(noise_3d_texture, p * 1.5);
 	
 	// this is not how you would actually use a normal map
@@ -392,6 +405,7 @@ vec3 shadeLanterns(vec3 p, Ray ray, vec3 normal, float dPaper, float dMetal) {
 	vec3 lightPos = vec3(0, -0.5, 0);
 	vec3 l = normalize(lightPos - localP);
 	bool isMetal = dPaper > dMetal;
+	
 	if (isMetal) { return shadeMetal(ray, l, normal, normalNoise, noise); }
 	else { return shadePaper(ray, l, normal, normalNoise, noise, blueNoise, localP, lightPos); }
 }
@@ -406,8 +420,11 @@ bool march(in Ray ray, in bool includeWater, out vec3 hitPosition) {
 		}
 		p = p + ray.dir * d;
 	}
-	hitPosition = p;
-	return d < EPSILON;
+	if (d < EPSILON) {
+		hitPosition = p;
+		return true;
+	}
+	return false;
 }
 
 vec3 sphereTraceRay(Ray ray) {
@@ -415,19 +432,27 @@ vec3 sphereTraceRay(Ray ray) {
 	if (march(ray, true, p)) {
 		vec3 normal = normalize(gradient(p));
 		float dPaper = repeated(p, 1); float dMetal = repeated(p, 2); float dWater = sdfWater(p);
+		bool isWaterReflection = false;
+		vec3 waterColor = vec3(0.5, 0.5, 1.0);
 		
 		if (dWater < dPaper && dWater < dMetal) {
-			Ray reflectedRay = Ray(p, reflect(ray.dir, normal));
-			if (!march(reflectedRay, false, p)) { // no lantern hit
-				return sky(reflectedRay.dir) * vec3(0.5, 0.5, 1.0); // shade water
+			Ray reflectedRay = Ray(p, reflect(ray.dir, normal)); // reflect from water surface
+			vec3 rp = p;
+			if (!march(reflectedRay, false, rp)) { // no lantern hit
+				return fog(p, ray,
+					sky(reflectedRay.dir) * waterColor
+				); // shade water
 			}
 			else { // lantern hit
-				dPaper = repeated(p, 1); dMetal = repeated(p, 2);
-				ray = reflectedRay;
-				normal = normalize(gradient(p));
+				dPaper = repeated(rp, 1); dMetal = repeated(rp, 2);
+				normal = normalize(gradient(rp)); isWaterReflection = true;
+				p = rp;
 			}
 		}
-		return shadeLanterns(p, ray, normal, dPaper, dMetal);
+		return fog(p, ray,
+			shadeLanterns(p, ray, normal, dPaper, dMetal)
+			* (isWaterReflection ? waterColor : vec3(1.0))
+		);
 	} else {
 		return background(ray);
 	}
