@@ -279,7 +279,7 @@ float sdfSingleMetal(vec3 p) {
 	return opSmoothUnion(cylindri, tori, 0.1);
 }
 
-float sdfWater(vec3 p) {
+float waterHeightAt(vec2 p) {
 	vec2[] dirs = {
 		normalize(vec2(-0.4,  1.0)),
 		normalize(vec2( 0.0, -1.0)),
@@ -294,10 +294,65 @@ float sdfWater(vec3 p) {
 		a *= 0.6;
 		w *= 1.4;
 		vec2 dir = dirs[i];
-		float dxz = dot(dir, p.xz);
+		float dxz = dot(dir, p);
 		displacement += a * sin(dxz * w + TIME * 2.5);
 	}
-	return sdPlane(p, vec3(0,1,0), 1.0) + displacement;
+	return displacement;
+}
+
+float waterHeightRoughAt(vec2 p) {
+	float a = 0.15;
+	float w = 0.4;
+	vec2 dir = normalize(vec2(-0.4,  1.0));
+	float dxz = dot(dir, p);
+	return a * sin(dxz * w + (TIME+0.2) * 2.5);
+}
+
+float sdfWater(vec3 p) {
+	return sdPlane(p, vec3(0,1,0), 1.0) + waterHeightAt(p.xz);
+}
+
+float sdfWaterRough(vec3 p) {
+	return sdPlane(p, vec3(0,1,0), 1.0) + waterHeightRoughAt(p.xz);
+}
+
+vec3 gradientWaterRough(vec3 p) {
+	const vec3 dx = vec3(GRADIENT_DT, 0.0, 0.0);
+	const vec3 dy = vec3(0.0, GRADIENT_DT, 0.0);
+	const vec3 dz = vec3(0.0, 0.0, GRADIENT_DT);
+	return vec3( (sdfWaterRough(p + dx) - sdfWaterRough(p - dx)) / (2.0 * GRADIENT_DT),
+				 (sdfWaterRough(p + dy) - sdfWaterRough(p - dy)) / (2.0 * GRADIENT_DT),
+		 		 (sdfWaterRough(p + dz) - sdfWaterRough(p - dz)) / (2.0 * GRADIENT_DT)
+	);
+}
+
+mat3 getPitchRotMatAtID(vec2 id, vec4 blueNoise) {
+	float pitch = blueNoise.x * PI;
+	return transpose(mat3(
+		vec3(cos(pitch),0,sin(pitch)),
+		vec3(0,1,0),
+		vec3(-sin(pitch),0,cos(pitch))
+	));
+}
+
+mat3 getRotMatAtID(vec2 id, vec4 blueNoise) {
+	vec2 gridPos = id * gridSize;
+	vec2 lanternPos = gridPos - offset(blueNoise.xy);
+	vec3 normal = gradientWaterRough(vec3(lanternPos.x, waterHeightRoughAt(lanternPos), lanternPos.y));
+	
+	float roll = -normal.z * PI * 0.4;
+	mat3 mrx = transpose(mat3(
+		vec3(1,0,0),
+		vec3(0,cos(roll),-sin(roll)),
+		vec3(0,sin(roll),cos(roll))
+	));
+	float yaw = normal.x * PI * 0.4;
+	mat3 mrz = transpose(mat3(
+		vec3(cos(yaw),-sin(yaw),0),
+		vec3(sin(yaw),cos(yaw),0),
+		vec3(0,0,1)
+	));
+	return mrz * mrx;
 }
 
 // https://iquilezles.org/articles/sdfrepetition/
@@ -310,11 +365,11 @@ float repeated( vec3 p3, int sdfIndex ) {
 	for( int j=0; j<2; j++ )
 	for( int i=0; i<2; i++ ) {
 		vec2 rid = id + vec2(float(i),float(j))*o;
-		vec2 r = p - gridSize*rid;
 		vec4 blueNoise = blueNoiseAtID(rid);
-		r += offset(blueNoise.xy);
-		
-		vec3 finalP = vec3(r.x, p3.y, r.y);
+		vec2 rCenterPos = gridSize*rid - offset(blueNoise.xy);
+		vec2 r = p - rCenterPos;
+		vec3 finalP = vec3(r.x, p3.y + waterHeightAt(rCenterPos), r.y);
+		finalP = getPitchRotMatAtID(rid, blueNoise) * getRotMatAtID(rid, blueNoise) * finalP;
 		float newD;
 		switch (sdfIndex) {
 			case 1: newD = sdfSinglePaper(finalP); break;
@@ -403,7 +458,8 @@ vec3 shadeLanterns(vec3 p, Ray ray, vec3 normal, float dPaper, float dMetal) {
 	vec4 blueNoise = blueNoiseAtID(id);
 	vec2 gridPos = id * gridSize;
 	vec2 lp2 = gridPos - offset(blueNoise.xy);
-	vec3 localP = p - vec3(lp2.x, 0, lp2.y);
+	vec3 localP = p - vec3(lp2.x, -waterHeightAt(lp2), lp2.y);
+	localP = getRotMatAtID(id, blueNoise) * localP;
 
 	vec2 normalXZ = normalize(vec2(localP.x, localP.z));
 	vec2 uv = calcCylindricalUVs(normalXZ, localP);
@@ -449,15 +505,16 @@ vec3 sphereTraceRay(Ray ray) {
 		vec3 normal = normalize(gradient(p));
 		float dPaper = repeated(p, 1); float dMetal = repeated(p, 2); float dWater = sdfWater(p);
 		bool isWaterReflection = false;
-		vec3 waterColor = vec3(0.5, 0.5, 1.0);
+		vec3 waterColor = _colorC;
+		float waterReflectionStrength = 0.3;
 		
 		if (dWater < dPaper && dWater < dMetal) {
 			Ray reflectedRay = Ray(p, reflect(ray.dir, normal)); // reflect from water surface
 			vec3 rp = p;
-			if (!march(reflectedRay, false, rp)) { // no lantern hit
+			if (!march(reflectedRay, false, rp)) { // no lantern hit - shade water
 				return fog(p, ray,
-					sky(reflectedRay.dir) * waterColor
-				); // shade water
+					sky(reflectedRay.dir) * waterReflectionStrength + waterColor
+				);
 			}
 			else { // lantern hit
 				dPaper = repeated(rp, 1); dMetal = repeated(rp, 2);
@@ -465,10 +522,11 @@ vec3 sphereTraceRay(Ray ray) {
 				p = rp;
 			}
 		}
-		return fog(p, ray,
-			shadeLanterns(p, ray, normal, dPaper, dMetal)
-			* (isWaterReflection ? waterColor : vec3(1.0))
-		);
+		vec3 lanternColor = shadeLanterns(p, ray, normal, dPaper, dMetal);
+		if (isWaterReflection) {
+			lanternColor = lanternColor * waterReflectionStrength + waterColor;
+		}
+		return fog(p, ray, lanternColor);
 	} else {
 		return background(ray);
 	}
