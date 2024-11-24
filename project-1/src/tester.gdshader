@@ -65,6 +65,8 @@ varying vec3 _groundAlbedoB;
 // sky varyings
 varying vec3  _sunDirection;
 varying float _cosSunRadius;
+// environment map
+uniform sampler2D environment : filter_linear, repeat_enable; 
 // noise textures
 uniform sampler2D noise_texture : filter_linear, repeat_enable;
 uniform sampler3D noise_3d_texture : filter_linear, repeat_enable;
@@ -132,17 +134,24 @@ void vertex() {
 	_phi = radians(phi);
 }
 
+//vec3 sky(vec3 dir) {
+	//dir = normalize(dir);
+	//return mix(mix(_horizonColor, _zenithColor, dir.y), _sunColor,
+		//smoothstep(_cosSunRadius*0.9999, _cosSunRadius, dot(dir,_sunDirection)));
+//}
+
 vec3 sky(vec3 dir) {
 	dir = normalize(dir);
-	return mix(mix(_horizonColor, _zenithColor, dir.y), _sunColor,
-		smoothstep(_cosSunRadius*0.9999, _cosSunRadius, dot(dir,_sunDirection)));
+	float thetaa = acos(dir.y);
+	float phii = atan(dir.z, dir.x);
+	return texture(environment, vec2(phii/TAU, thetaa/PI)).rgb;
 }
 
 vec3 shade(vec3 albedo, vec3 point, vec3 normal) {
 	// sun : Lambertian
 	// the integral over the upper hemisphere times cos(theta) equals to pi
 	// this cancels out with albedo/pi from lambertian BRDF
-	vec3 res = albedo * max(0.0, dot(normal, sunDirection));
+	vec3 res = albedo * max(0.0, dot(normal, sunDirection)) * _sunColor;
 	res += albedo * max(0.0, normal.y) * _zenithColor;
 	res += albedo * vec3(0.1); // ambient
 	// point can be used later for a simple shadow calculation
@@ -152,7 +161,7 @@ vec3 shade(vec3 albedo, vec3 point, vec3 normal) {
 vec3 shadeSpecular(vec3 albedo, vec3 point, vec3 normal, vec3 viewDir, float shininess) {
 	vec3 r = reflect(-sunDirection, normal);
 	// sun : Specular Phong reflection
-	vec3 res = albedo * pow(max(0,(-dot(r, viewDir))), shininess);
+	vec3 res = albedo * pow(max(0,(-dot(r, viewDir))), shininess) * _sunColor;
 	res += albedo * max(0.0, normal.y) * _zenithColor;
 	res += albedo * vec3(0.1); // ambient
 	// point can be used later for a simple shadow calculation

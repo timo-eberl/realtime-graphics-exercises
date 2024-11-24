@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://hvoagqtln2c4"]
+[gd_scene load_steps=13 format=3 uid="uid://hvoagqtln2c4"]
 
 [ext_resource type="Shader" path="res://tester.gdshader" id="1_241pq"]
 [ext_resource type="PackedScene" uid="uid://df52fqkkdq2te" path="res://licenser/license_screen_loader_button.tscn" id="2_ci1sb"]
 [ext_resource type="Texture2D" uid="uid://cx2nga2o40snm" path="res://free-blue-noise-textures/1024_1024/LDR_RGBA_0.png" id="2_x83pq"]
+[ext_resource type="Texture2D" uid="uid://dfdqo7h38bb6r" path="res://kloppenheim_02/kloppenheim_02_4k_modified.exr" id="3_n0e4h"]
 
 [sub_resource type="GDScript" id="GDScript_fjbdq"]
 script/source = "@tool
@@ -362,17 +363,18 @@ shader_parameter/ASPECT_RATIO = 1.0
 shader_parameter/cameraDistance = 5.0
 shader_parameter/azimuth = 0.0
 shader_parameter/elevation = 0.0
-shader_parameter/vFoV_degrees = 45.0
-shader_parameter/zenithColor = Color(0.2, 0.3, 0.5, 1)
-shader_parameter/horizonColor = Color(0.443137, 0.568627, 0.956863, 1)
-shader_parameter/sunColor = Color(1, 1, 1, 1)
-shader_parameter/sunDirection = Vector3(0.7, 0.7, -0.7)
+shader_parameter/vFoV_degrees = 60.0
+shader_parameter/zenithColor = Color(0.196434, 0.101239, 0.600165, 1)
+shader_parameter/horizonColor = Color(0.165709, 0.254252, 0.674615, 1)
+shader_parameter/sunColor = Color(0.183623, 0.379107, 0.613182, 1)
+shader_parameter/sunDirection = Vector3(-0.7, 0.7, -0.7)
 shader_parameter/sunRadiusDegrees = 0.5
 shader_parameter/groundLevel = -1.5
 shader_parameter/groundAlbedoA = Color(0.3, 0.3, 0.3, 1)
 shader_parameter/groundAlbedoB = Color(0.7, 0.7, 0.7, 1)
 shader_parameter/L_white = 2.0
 shader_parameter/exposure = 0.0
+shader_parameter/environment = ExtResource("3_n0e4h")
 shader_parameter/noise_texture = SubResource("NoiseTexture2D_65lvo")
 shader_parameter/noise_3d_texture = SubResource("NoiseTexture3D_kr8yd")
 shader_parameter/normal_noise_texture = SubResource("NoiseTexture2D_ro007")
@@ -389,8 +391,12 @@ script = SubResource("GDScript_fjbdq")
 color_a = Color(0.829379, 0.573126, 0.275373, 1)
 color_b = Color(0.607462, 0.375439, 0.289998, 1)
 color_c = Color(0.165066, 0.94709, 0.918091, 1)
-horizon_color = Color(0.443137, 0.568627, 0.956863, 1)
+zenith_color = Color(0.196434, 0.101239, 0.600165, 1)
+horizon_color = Color(0.165709, 0.254252, 0.674615, 1)
+sun_color = Color(0.183623, 0.379107, 0.613182, 1)
+sun_direction = Vector3(-0.7, 0.7, -0.7)
 ground_level = -1.5
+vertical_fov_degrees = 60.0
 step_size = 0.003
 bounding_box_radii = Vector3(1.5, 1.5, 1.5)
 
