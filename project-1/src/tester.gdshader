@@ -396,24 +396,36 @@ vec3 shadeLanterns(vec3 p, Ray ray, vec3 normal, float dPaper, float dMetal) {
 	else { return shadePaper(ray, l, normal, normalNoise, noise, blueNoise, localP, lightPos); }
 }
 
-vec3 sphereTraceRay(Ray ray) {
+bool march(in Ray ray, in bool includeWater, out vec3 hitPosition) {
 	vec3 p = ray.p;
 	float d;
 	for (int i = 0; i < MAX_STEPS; ++i) {
-		d = sdf(p);
+		d = includeWater ? sdf(p) : repeated(p, 0);
 		if (d < EPSILON || d > BACKGROUND_DISTANCE) {
 			break;
 		}
 		p = p + ray.dir * d;
 	}
+	hitPosition = p;
+	return d < EPSILON;
+}
 
-	if (d < EPSILON) { // shade surface
+vec3 sphereTraceRay(Ray ray) {
+	vec3 p;
+	if (march(ray, true, p)) {
 		vec3 normal = normalize(gradient(p));
 		float dPaper = repeated(p, 1); float dMetal = repeated(p, 2); float dWater = sdfWater(p);
 		
 		if (dWater < dPaper && dWater < dMetal) {
 			Ray reflectedRay = Ray(p, reflect(ray.dir, normal));
-			return sky(reflectedRay.dir) * vec3(0.5, 0.5, 1.0); // shade water
+			if (!march(reflectedRay, false, p)) { // no lantern hit
+				return sky(reflectedRay.dir) * vec3(0.5, 0.5, 1.0); // shade water
+			}
+			else { // lantern hit
+				dPaper = repeated(p, 1); dMetal = repeated(p, 2);
+				ray = reflectedRay;
+				normal = normalize(gradient(p));
+			}
 		}
 		return shadeLanterns(p, ray, normal, dPaper, dMetal);
 	} else {
