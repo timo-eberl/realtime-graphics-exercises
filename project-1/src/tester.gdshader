@@ -2,7 +2,7 @@ shader_type canvas_item;
 // for numeric test
 const float FAR = 10000.0;   // distance to background
 const float EPSILON = 0.001; // larger than 0, but so small every smaller value is negative …
-const float GRADIENT_DT = 0.05; // half of the step size
+const float GRADIENT_DT = 0.0015; // half of the step size
 // generic shader parameters ...
 // .. Vectors
 uniform vec3 P;
@@ -275,7 +275,8 @@ float sdfSingleMetal(vec3 p) {
 }
 
 float sdfWater(vec3 p) {
-	return sdPlane(p, vec3(0,1,0), 1.0);
+	return sdPlane(p, vec3(0,1,0), 1.0)
+		+ sin(TIME * 2.0 + p.x * 2.0) * 0.05;
 }
 
 // https://iquilezles.org/articles/sdfrepetition/
@@ -357,12 +358,13 @@ vec3 shadePaper(
 		+ (cos( (TIME + blueNoise.x * 40.0) * 3.0 * PI) + 1.0) * 0.1
 		+ (cos( (TIME + blueNoise.x * 30.0) * 2.5 * PI) + 1.0) * 0.1;
 	lightStrength *= mix(0.3, 0.8, flickerValue);
-	lightStrength *= mix(0.0, 3.0, pow(blueNoise.x, 1.8));
+	lightStrength *= mix(0.05, 2.0, pow(blueNoise.x, 1.8));
 	
 	float nDotL = dot(normal, l);
 	float d = distance(lightPos, localP);
 	float lighting = nDotL * lightStrength / (d*d);
 	vec3 light = abs(lighting) * _colorA * lightTransparencyStrength;
+	light *= pow( max(0, 1.0 - 2.0 * dot(normalize(ray.dir), normal)), 1.5 ); // fresnel
 	vec3 shading = light + shade(vec3(1), ray.p, normal) * 0.15;
 	return shading;
 }
