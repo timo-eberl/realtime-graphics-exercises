@@ -247,7 +247,7 @@ vec4 blueNoiseAtID(vec2 id) {
 const float gridSize = 7.0; // size of one tile
 
 vec2 offset(vec2 noise) {
-	return (noise * 2.0 - 1.0) * (gridSize * 0.5 - 0.75 + 0.15); // 0.75 is the radius of the lantern
+	return (noise * 2.0 - 1.0) * (gridSize * 0.5 - 0.75 - 0.05); // 0.75 is the radius of the lantern
 }
 
 float sdfSinglePaper(vec3 p) {
@@ -386,7 +386,13 @@ vec3 sphereTraceRay(Ray ray) {
 				  (cos( (TIME + blueNoise.x * 50.0) * 2.0 * PI) + 2.0) * 0.15
 				+ (cos( (TIME + blueNoise.x * 40.0) * 3.0 * PI) + 1.0) * 0.1
 				+ (cos( (TIME + blueNoise.x * 30.0) * 2.5 * PI) + 1.0) * 0.1;
-			lightStrength *= mix(0.3, 0.8, flickerValue);
+			if (blueNoise.x < 0.1) {
+				lightStrength = 0.0;
+			}
+			else {
+				lightStrength *= mix(0.3, 0.8, flickerValue);
+				lightStrength *= mix(0.0, 2.0, blueNoise.x);
+			}
 			
 			float nDotL = dot(normal, l);
 			float d = distance(lightPos, localP);
