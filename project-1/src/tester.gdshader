@@ -250,14 +250,6 @@ vec2 offset(vec2 noise) {
 	return (noise * 2.0 - 1.0) * (gridSize * 0.5 - 0.75 + 0.15); // 0.75 is the radius of the lantern
 }
 
-vec3 lanternPos(vec3 p) {
-	vec2 id = round(p.xz/gridSize);
-	vec4 blueNoise = blueNoiseAtID(id);
-	vec2 gridPos = id * gridSize;
-	vec2 pos = gridPos - offset(blueNoise.xy);
-	return vec3(pos.x, 0, pos.y);
-}
-
 float sdfSinglePaper(vec3 p) {
 	vec3 offset = vec3(0,-1,0);
 	p -= offset;
@@ -321,9 +313,12 @@ vec3 gradient(vec3 p) {
 	);
 }
 
-float calcTexcoordU(vec2 dir) {
+vec2 calcCylindricalUVs(vec2 dir, vec3 p) {
 	float longitude = atan(-dir.y, dir.x); // [-pi;pi]
-	return (longitude / 3.141) * 0.5 + 0.5; // [0;1]
+	return vec2(
+		(longitude / 3.141) * 0.5 + 0.5,
+		(p.y * 0.5) + 0.5
+	);
 }
 
 vec3 sphereTraceRay(Ray ray) {
@@ -347,45 +342,35 @@ vec3 sphereTraceRay(Ray ray) {
 		float metalShininess = 20.0;
 		vec3 colorMetal = _colorB;
 		
-		vec3 localP = p - lanternPos(p);
+		vec2 id = round(p.xz/gridSize);
+		vec4 blueNoise = blueNoiseAtID(id);
+		vec2 gridPos = id * gridSize;
+		vec2 lp2 = gridPos - offset(blueNoise.xy);
+		vec3 localP = p - vec3(lp2.x, 0, lp2.y);
 
 		vec3 normal = normalize(gradient(p));
 		vec2 normal_plane = normalize(vec2(localP.x, localP.z));
-		vec2 uv = vec2(calcTexcoordU(normal_plane), (p.y * 0.5) + 0.5);
+		vec2 uv = calcCylindricalUVs(normal_plane, p);
 
 		float noise = texture(noise_texture, uv * vec2(2,1)).x;
 		//vec4 noise3d = texture(noise_3d_texture, p);
 		//vec4 noise3d_1_5 = texture(noise_3d_texture, p * 1.5);
-		//return noise3d.xyz;
 		
 		// this is not how you would actually use a normal map
 		// (to do it properly we would need a tangent and binormal)
 		// but it looks fine like this
 		vec3 normal_noise = texture(normal_noise_texture, uv * vec2(2,1)).xyz;
 		normal_noise = normal_noise * 2.0 - 1.0;
-		
-		// make light flicker
-		float flickerValue =
-			(cos(TIME * 1.0 * PI) + 2.0) * 0.1
-			+ (cos(TIME * 2.0 * PI) + 1.0) * 0.15
-			+ (cos((TIME + 23.4536) * 2.5 * PI) + 1.0) * 0.15;
-		lightStrength *= 0.6 * flickerValue;
 
-		// candle
-		float d = distance(lightPos, localP);
 		vec3 l = normalize(lightPos - localP);
-		vec3 r = reflect(-l, normal);
-		vec3 v = ray.dir;
-		lightStrength *= 1.0 - noise * 0.4;
-		float alpha = 0.7;
-		
 		bool isMetal = repeated(p, 1) > repeated(p, 2);
-
 		if (isMetal) {
 			normal = normalize(
 				normal + normal_noise * 0.13
 			);
 			colorMetal += (noise * 2.0 - 1.0) * 0.2;
+			vec3 r = reflect(-l, normal);
+			vec3 v = ray.dir;
 			float s = pow(max(0,(-dot(r, v))), metalShininess);
 			vec3 light = s * colorMetal * _colorA;
 			return light + shadeSpecular(colorMetal,p,normal,ray.dir,metalShininess);
@@ -394,9 +379,18 @@ vec3 sphereTraceRay(Ray ray) {
 			normal = normalize(
 				normal + normal_noise * 0.35
 			);
+			
+			lightStrength *= 1.0 - noise * 0.4;
+			// make light flicker
+			float flickerValue =
+				  (cos( (TIME + blueNoise.x * 50.0) * 2.0 * PI) + 2.0) * 0.15
+				+ (cos( (TIME + blueNoise.x * 40.0) * 3.0 * PI) + 1.0) * 0.1
+				+ (cos( (TIME + blueNoise.x * 30.0) * 2.5 * PI) + 1.0) * 0.1;
+			lightStrength *= mix(0.3, 0.8, flickerValue);
+			
 			float nDotL = dot(normal, l);
+			float d = distance(lightPos, localP);
 			float lighting = nDotL * lightStrength / (d*d);
-			bool isInside = lighting > 0.0;
 			vec3 light = abs(lighting) * _colorA;
 			vec3 shading = light + shade(vec3(1), p, normal) * 0.15;
 			return shading * lightTransparencyStrength;
