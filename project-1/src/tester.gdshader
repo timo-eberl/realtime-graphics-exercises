@@ -288,12 +288,12 @@ float sdfSingleMetal(vec3 p) {
 }
 
 float waterHeightAt(vec2 p) {
-	vec2[] dirs = {
-		normalize(vec2(-0.4,  1.0)),
-		normalize(vec2( 0.0, -1.0)),
-		normalize(vec2(-0.8,  1.0)),
-		normalize(vec2(-1.2, -1.0)),
-		normalize(vec2( 0.4,  1.0))
+	vec2[] dirs = { // normalized
+		vec2(-0.371391, 0.928477),
+		vec2( 0.0, -1.0),
+		vec2(-0.624695, 0.780869),
+		vec2(-0.768221, -0.640184),
+		vec2(0.371391, 0.928477)
 	};
 	float displacement = 0.0;
 	float a = 0.15;
@@ -311,9 +311,9 @@ float waterHeightAt(vec2 p) {
 float waterHeightRoughAt(vec2 p) {
 	float a = 0.15;
 	float w = 0.4;
-	vec2 dir = normalize(vec2(-0.4,  1.0));
+	vec2 dir = vec2(-0.371391, 0.928477); // normalized
 	float dxz = dot(dir, p);
-	return a * sin(dxz * w + (TIME+0.2) * 2.5);
+	return a * sin(dxz * w + (TIME-0.2) * 2.5);
 }
 
 float sdfWater(vec3 p) {
@@ -346,8 +346,8 @@ mat3 getPitchRotMatAtID(vec2 id, vec4 blueNoise) {
 mat3 getRotMatAtID(vec2 id, vec4 blueNoise) {
 	vec2 gridPos = id * gridSize;
 	vec2 lanternPos = gridPos - offset(blueNoise.xy);
-	vec3 normal = gradientWaterRough(vec3(lanternPos.x, waterHeightRoughAt(lanternPos), lanternPos.y));
-	
+	vec3 normal = gradientWaterRough(vec3(lanternPos.x, waterHeightAt(lanternPos), lanternPos.y));
+
 	float roll = -normal.z * PI * 0.4;
 	mat3 mrx = transpose(mat3(
 		vec3(1,0,0),
@@ -376,7 +376,7 @@ float repeated( vec3 p3, int sdfIndex ) {
 		vec4 blueNoise = blueNoiseAtID(rid);
 		vec2 rCenterPos = gridSize*rid - offset(blueNoise.xy);
 		vec2 r = p - rCenterPos;
-		vec3 finalP = vec3(r.x, p3.y + waterHeightAt(rCenterPos), r.y);
+		vec3 finalP = vec3(r.x, p3.y + waterHeightRoughAt(rCenterPos), r.y);
 		finalP = getPitchRotMatAtID(rid, blueNoise) * getRotMatAtID(rid, blueNoise) * finalP;
 		float newD;
 		switch (sdfIndex) {
