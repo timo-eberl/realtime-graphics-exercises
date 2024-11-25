@@ -483,7 +483,7 @@ vec3 shadePaper(
 }
 
 vec3 fog(vec3 p, Ray ray, vec3 color) {
-	float density = 0.04;
+	float density = lambda * 0.1;
 	float depth = distance(p, ray.p);
 	// exponential squared fog
 	float fog = pow( 2.0, -pow(depth*density,2.0) );
