@@ -1,0 +1,288 @@
+<style>
+body {
+    max-width: 60em;
+    line-height: 150%;
+    font-family: sans-serif;
+    padding: 1em;
+    margin: 0 auto;
+}
+img, video {
+    width: 100%;
+    max-width: 512px;
+}
+iframe {
+    width: 100%;
+    max-width: 512px;
+    height: 256px;
+}
+pre {
+    border: 1px solid black;
+    padding: 1em 2em;
+}
+/* dark mode */
+@media (prefers-color-scheme: dark) {
+    body {
+        color: #cac5be;
+        background-color: #181a1b;
+    }
+    pre {
+        border: 1px solid white;
+    }
+}
+</style>
+<h1 id="project-1---paper-lantern-festival">Project 1 - Paper lantern
+festival</h1>
+<p>Floating paper lanterns on a lake created using <strong>ray
+marching</strong> and <strong>signed distance functions</strong>
+(SDFs).</p>
+<h2 id="interactive-version">Interactive version</h2>
+<iframe src="../export/index.html">
+Can’t load iframe
+</iframe>
+<h2 id="step-by-step-documentation">Step by step documentation</h2>
+<h3 id="lantern-geometry-as-sdf">Lantern geometry as SDF</h3>
+<p><img src="images/1-sdf-raw.png" /></p>
+<p>The lantern is composed of multiple parts that all have their
+inidvidual SDFs: Paper, metal, wood. The SDFs use primitives and
+operations from <a
+href="https://iquilezles.org/articles/distfunctions/">this
+article</a>.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode glsl"><code class="sourceCode glsl"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> <span class="fu">sdfPaper</span><span class="op">(</span><span class="dt">vec3</span> p<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    p <span class="op">-=</span> <span class="dt">vec3</span><span class="op">(</span><span class="dv">0</span><span class="op">,-</span><span class="dv">1</span><span class="op">,</span><span class="dv">0</span><span class="op">);</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> box <span class="op">=</span> <span class="fu">sdBox</span><span class="op">(</span>p <span class="op">-</span> <span class="dt">vec3</span><span class="op">(</span><span class="dv">0</span><span class="op">,</span><span class="fl">4.0</span><span class="op">,</span><span class="dv">0</span><span class="op">),</span> <span class="dt">vec3</span><span class="op">(</span><span class="fl">2.0</span><span class="op">));</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> cylinder <span class="op">=</span> <span class="fu">sdCappedCylinder</span><span class="op">(</span>p <span class="op">-</span> <span class="dt">vec3</span><span class="op">(</span><span class="dv">0</span><span class="op">,</span><span class="fl">1.5</span><span class="op">,</span><span class="dv">0</span><span class="op">),</span> <span class="fl">1.5</span><span class="op">,</span> <span class="fl">0.75</span><span class="op">);</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> cylinder_boundary <span class="op">=</span> <span class="fu">opOnion</span><span class="op">(</span>cylinder<span class="op">,</span> <span class="fl">0.03</span><span class="op">);</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> <span class="fu">opSubtraction</span><span class="op">(</span>box<span class="op">,</span> cylinder_boundary<span class="op">);</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> <span class="fu">sdfWood</span><span class="op">(</span><span class="dt">vec3</span> p<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    p<span class="op">.</span><span class="fu">y</span> <span class="op">+=</span> <span class="fl">1.0</span><span class="op">;</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> <span class="fu">sdBox</span><span class="op">(</span>p<span class="op">,</span> <span class="dt">vec3</span><span class="op">(</span><span class="fl">1.1</span><span class="op">,</span> <span class="fl">0.04</span><span class="op">,</span> <span class="fl">1.1</span><span class="op">));</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> <span class="fu">sdfMetal</span><span class="op">(</span><span class="dt">vec3</span> p<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    p <span class="op">-=</span> <span class="dt">vec3</span><span class="op">(</span><span class="dv">0</span><span class="op">,-</span><span class="dv">1</span><span class="op">,</span><span class="dv">0</span><span class="op">);</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> torus1 <span class="op">=</span> <span class="fu">sdTorus</span><span class="op">(</span>p <span class="op">+</span> <span class="dt">vec3</span><span class="op">(</span><span class="dv">0</span><span class="op">,-</span><span class="fl">0.08</span><span class="op">,</span><span class="dv">0</span><span class="op">),</span> <span class="dt">vec2</span><span class="op">(</span><span class="fl">0.75</span><span class="op">,</span> <span class="fl">0.05</span><span class="op">));</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> torus2 <span class="op">=</span> <span class="fu">sdTorus</span><span class="op">(</span>p <span class="op">+</span> <span class="dt">vec3</span><span class="op">(</span><span class="dv">0</span><span class="op">,-</span><span class="fl">2.0</span><span class="op">,</span><span class="dv">0</span><span class="op">),</span> <span class="dt">vec2</span><span class="op">(</span><span class="fl">0.75</span><span class="op">,</span> <span class="fl">0.05</span><span class="op">));</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> tori <span class="op">=</span> <span class="fu">opUnion</span><span class="op">(</span>torus1<span class="op">,</span> torus2<span class="op">);</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> cylindri <span class="op">=</span> <span class="fu">sdCappedCylinderOffset</span><span class="op">(</span><span class="fu">opSymXZ</span><span class="op">(</span>p <span class="op">+</span> <span class="dt">vec3</span><span class="op">(</span><span class="dv">0</span><span class="op">,-</span><span class="dv">1</span><span class="op">,</span><span class="dv">0</span><span class="op">)),</span> <span class="fl">1.03</span><span class="op">,</span> <span class="fl">0.05</span><span class="op">,</span> <span class="dt">vec2</span><span class="op">(</span><span class="fl">0.75</span> <span class="op">*</span> <span class="fl">0.707</span><span class="op">));</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> <span class="fu">opSmoothUnion</span><span class="op">(</span>cylindri<span class="op">,</span> tori<span class="op">,</span> <span class="fl">0.1</span><span class="op">);</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3 id="transparent-and-opaque-parts">Transparent and opaque parts</h3>
+<p><img src="images/2-transparent-opaque.png" /></p>
+<p>The different parts are shaded differently. To distinguish between
+them while shading the SDFs of the indiviual components are evaluated
+again to check which shading function should be used.</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode glsl"><code class="sourceCode glsl"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> dPaper <span class="op">=</span> <span class="fu">sdfPaper</span><span class="op">(</span>p<span class="op">);</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> dWood <span class="op">=</span> <span class="fu">sdfWood</span><span class="op">(</span>p<span class="op">);</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> dMetal <span class="op">=</span> <span class="fu">sdfMetal</span><span class="op">(</span>p<span class="op">);</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> isMetal <span class="op">=</span> dMetal <span class="op">&lt;</span> dPaper <span class="op">&amp;&amp;</span> dMetal <span class="op">&lt;</span> dWood<span class="op">;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> isPaper <span class="op">=</span> dPaper <span class="op">&lt;</span> dMetal <span class="op">&amp;&amp;</span> dPaper <span class="op">&lt;</span> dWood<span class="op">;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="kw">if</span> <span class="op">(</span>isMetal<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> <span class="fu">shadeMetal</span><span class="op">(...);</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span>isPaper<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> <span class="fu">shadePaper</span><span class="op">(...);</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="kw">else</span> <span class="op">{</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> <span class="fu">shadeWood</span><span class="op">(...);</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3 id="surface-appearance">Surface appearance</h3>
+<p><img src="images/3-paper-normal.png" /></p>
+<p>To create a spatially variant surface appearance of the paper, a
+normal map is sampled and used to offset the normals of the surface. The
+resulting normal can be seen in the image above. Additionally, a simple
+noise map is sampled to change the albedo color of the paper. To sample
+these textures cylindrical UV coordinates are calculated.</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode glsl"><code class="sourceCode glsl"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">vec2</span> <span class="fu">calcCylindricalUVs</span><span class="op">(</span><span class="dt">vec2</span> dir<span class="op">,</span> <span class="dt">vec3</span> p<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> longitude <span class="op">=</span> <span class="bu">atan</span><span class="op">(-</span>dir<span class="op">.</span><span class="fu">y</span><span class="op">,</span> dir<span class="op">.</span><span class="fu">x</span><span class="op">);</span> <span class="co">// [-pi;pi]</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> <span class="dt">vec2</span><span class="op">(</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        <span class="op">(</span>longitude <span class="op">/</span> <span class="fl">3.141</span><span class="op">)</span> <span class="op">*</span> <span class="fl">0.5</span> <span class="op">+</span> <span class="fl">0.5</span><span class="op">,</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">(</span>p<span class="op">.</span><span class="fu">y</span> <span class="op">*</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span> <span class="fl">0.5</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">);</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>The sampling of the normal map does not yield a correct normal, but
+the visual result looks good, so this method is fine. Correct normal map
+sampling would be more complicated.</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode glsl"><code class="sourceCode glsl"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dt">vec2</span> normalXZ <span class="op">=</span> <span class="bu">normalize</span><span class="op">(</span><span class="dt">vec2</span><span class="op">(</span>p<span class="op">.</span><span class="fu">x</span><span class="op">,</span> p<span class="op">.</span><span class="fu">z</span><span class="op">));</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="dt">vec2</span> uv <span class="op">=</span> <span class="fu">calcCylindricalUVs</span><span class="op">(</span>normalXZ<span class="op">,</span> p<span class="op">);</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="dt">vec3</span> normalNoise <span class="op">=</span> <span class="bu">texture</span><span class="op">(</span>normal_noise_texture<span class="op">,</span> uv <span class="op">*</span> <span class="dt">vec2</span><span class="op">(</span><span class="dv">2</span><span class="op">,</span><span class="dv">1</span><span class="op">)).</span><span class="fu">xyz</span><span class="op">;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>normalNoise <span class="op">=</span> normalNoise <span class="op">*</span> <span class="fl">2.0</span> <span class="op">-</span> <span class="fl">1.0</span><span class="op">;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> <span class="bu">noise</span> <span class="op">=</span> <span class="bu">texture</span><span class="op">(</span>noise_texture<span class="op">,</span> uv <span class="op">*</span> <span class="dt">vec2</span><span class="op">(</span><span class="dv">2</span><span class="op">,</span><span class="dv">1</span><span class="op">)).</span><span class="fu">x</span><span class="op">;</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>normal <span class="op">=</span> <span class="bu">normalize</span><span class="op">(</span> normal <span class="op">+</span> normalNoise <span class="op">*</span> <span class="fl">0.35</span> <span class="op">);</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>albedo <span class="op">*=</span> <span class="fl">1.0</span> <span class="op">-</span> <span class="bu">noise</span> <span class="op">*</span> <span class="fl">0.4</span><span class="op">;</span></span></code></pre></div>
+<h3 id="lighting">Lighting</h3>
+<p><img src="images/4-lighting.png" /></p>
+<p>All materials (paper, metal, wood) have two types of shading: the
+shading from a directional light (the moon) and the shading from a point
+light (the candle). Lambertian reflection and the Phong reflection model
+are used.</p>
+<p>The lighting of the candle on the paper uses lambertian shading and
+takes the distance to the point light into account:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode glsl"><code class="sourceCode glsl"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dt">vec3</span> l <span class="op">=</span> <span class="bu">normalize</span><span class="op">(</span>lightPos <span class="op">-</span> p<span class="op">);</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> d <span class="op">=</span> <span class="bu">distance</span><span class="op">(</span>lightPos<span class="op">,</span> p<span class="op">);</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> nDotL <span class="op">=</span> <span class="bu">dot</span><span class="op">(</span>normal<span class="op">,</span> l<span class="op">);</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> lighting <span class="op">=</span> nDotL <span class="op">*</span> lightStrength <span class="op">/</span> <span class="op">(</span>d<span class="op">*</span>d<span class="op">);</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="dt">vec3</span> light <span class="op">=</span> <span class="bu">abs</span><span class="op">(</span>lighting<span class="op">)</span> <span class="op">*</span> lightColor<span class="op">;</span></span></code></pre></div>
+<h3 id="light-flickering">Light flickering</h3>
+<p><img src="images/5-flickering.gif" /></p>
+<p>To simulate soft light flickering the sum of multiple sin waves with
+different amplitudes and frequencies are used:</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode glsl"><code class="sourceCode glsl"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> flickerValue <span class="op">=</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>      <span class="op">(</span><span class="bu">cos</span><span class="op">(</span> TIME <span class="op">*</span> <span class="fl">2.0</span> <span class="op">*</span> PI<span class="op">)</span> <span class="op">+</span> <span class="fl">2.0</span><span class="op">)</span> <span class="op">*</span> <span class="fl">0.15</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> <span class="op">(</span><span class="bu">cos</span><span class="op">(</span> TIME <span class="op">*</span> <span class="fl">3.0</span> <span class="op">*</span> PI<span class="op">)</span> <span class="op">+</span> <span class="fl">1.0</span><span class="op">)</span> <span class="op">*</span> <span class="fl">0.1</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> <span class="op">(</span><span class="bu">cos</span><span class="op">(</span> TIME <span class="op">*</span> <span class="fl">2.5</span> <span class="op">*</span> PI<span class="op">)</span> <span class="op">+</span> <span class="fl">1.0</span><span class="op">)</span> <span class="op">*</span> <span class="fl">0.1</span><span class="op">;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>lightStrength <span class="op">*=</span> <span class="bu">mix</span><span class="op">(</span><span class="fl">0.3</span><span class="op">,</span> <span class="fl">0.8</span><span class="op">,</span> flickerValue<span class="op">);</span></span></code></pre></div>
+<h3 id="irregular-repetition">Irregular repetition</h3>
+<p><img src="images/6-repetition.png" /></p>
+<p>When creating an SDF of infinitely many SDFs that are not symmetric,
+one has to take special care as explained in <a
+href="https://iquilezles.org/articles/sdfrepetition/">this article</a>.
+Every one of our lanterns has a unique offset (acquired by sampling a
+blue noise texture), so they are not symmetric. Code from the article
+above has been taken and modified to fit these needs:</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode glsl"><code class="sourceCode glsl"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> <span class="fu">repeated</span><span class="op">(</span> <span class="dt">vec3</span> p3 <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">vec2</span> p <span class="op">=</span> p3<span class="op">.</span><span class="fu">xz</span><span class="op">;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">vec2</span> id <span class="op">=</span> <span class="bu">round</span><span class="op">(</span>p<span class="op">/</span>gridSize<span class="op">);</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">vec2</span>  o <span class="op">=</span> <span class="bu">sign</span><span class="op">(</span>p<span class="op">-</span>gridSize<span class="op">*</span>id<span class="op">);</span> <span class="co">// neighbor offset direction</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> d <span class="op">=</span> <span class="fl">1e20</span><span class="op">;</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">for</span><span class="op">(</span> <span class="dt">int</span> j<span class="op">=</span><span class="dv">0</span><span class="op">;</span> j<span class="op">&lt;</span><span class="dv">2</span><span class="op">;</span> j<span class="op">++</span> <span class="op">)</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">for</span><span class="op">(</span> <span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i<span class="op">&lt;</span><span class="dv">2</span><span class="op">;</span> i<span class="op">++</span> <span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>        <span class="dt">vec2</span> rid <span class="op">=</span> id <span class="op">+</span> <span class="dt">vec2</span><span class="op">(</span><span class="dt">float</span><span class="op">(</span>i<span class="op">),</span><span class="dt">float</span><span class="op">(</span>j<span class="op">))*</span>o<span class="op">;</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        <span class="dt">vec4</span> blueNoise <span class="op">=</span> <span class="fu">blueNoiseAtID</span><span class="op">(</span>rid<span class="op">);</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        <span class="dt">vec2</span> rCenterPos <span class="op">=</span> gridSize<span class="op">*</span>rid <span class="op">-</span> <span class="dt">offset</span><span class="op">(</span>blueNoise<span class="op">.</span><span class="fu">xy</span><span class="op">);</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>        <span class="dt">vec2</span> r <span class="op">=</span> p <span class="op">-</span> rCenterPos<span class="op">;</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>        d <span class="op">=</span> <span class="bu">min</span><span class="op">(</span>d<span class="op">,</span> <span class="fu">sdf</span><span class="op">(</span><span class="dt">vec3</span><span class="op">(</span>r<span class="op">.</span><span class="fu">x</span><span class="op">,</span> p3<span class="op">.</span><span class="fu">y</span><span class="op">,</span> r<span class="op">.</span><span class="fu">y</span><span class="op">)));</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> d<span class="op">;</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>The repetition was also taken into account when shading the
+lantern.</p>
+<h3 id="lake-surface">Lake surface</h3>
+<p><img src="images/7-lake-surface.png" /></p>
+<p>To create a lake surface a plane SDF from <a
+href="https://iquilezles.org/articles/distfunctions/">this article</a>
+was used and displaced. The displacement is a sum of sine waves in
+different directions, with different amplitudes and frequencies.</p>
+<p>The image shows the water with an increased height for showcase
+purposes. It is shaded using the x and z direction of its normals.</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode glsl"><code class="sourceCode glsl"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> <span class="fu">waterHeightAt</span><span class="op">(</span><span class="dt">vec2</span> p<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">vec2</span><span class="op">[]</span> dirs <span class="op">=</span> <span class="op">{</span> <span class="co">// normalized</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>        <span class="dt">vec2</span><span class="op">(-</span><span class="fl">0.371391</span><span class="op">,</span> <span class="fl">0.928477</span><span class="op">),</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        <span class="dt">vec2</span><span class="op">(</span> <span class="fl">0.0</span><span class="op">,</span> <span class="op">-</span><span class="fl">1.0</span><span class="op">),</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>        <span class="dt">vec2</span><span class="op">(-</span><span class="fl">0.624695</span><span class="op">,</span> <span class="fl">0.780869</span><span class="op">),</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>        <span class="dt">vec2</span><span class="op">(-</span><span class="fl">0.768221</span><span class="op">,</span> <span class="op">-</span><span class="fl">0.640184</span><span class="op">),</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        <span class="dt">vec2</span><span class="op">(</span><span class="fl">0.371391</span><span class="op">,</span> <span class="fl">0.928477</span><span class="op">)</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">};</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> displacement <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> a <span class="op">=</span> <span class="fl">0.15</span><span class="op">;</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> w <span class="op">=</span> <span class="fl">0.4</span><span class="op">;</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">5</span><span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>        a <span class="op">*=</span> <span class="fl">0.6</span><span class="op">;</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>        w <span class="op">*=</span> <span class="fl">1.4</span><span class="op">;</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>        <span class="dt">vec2</span> dir <span class="op">=</span> dirs<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>        <span class="dt">float</span> dxz <span class="op">=</span> <span class="bu">dot</span><span class="op">(</span>dir<span class="op">,</span> p<span class="op">);</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>        displacement <span class="op">+=</span> a <span class="op">*</span> <span class="bu">sin</span><span class="op">(</span>dxz <span class="op">*</span> w<span class="op">);</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> displacement<span class="op">;</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> <span class="fu">sdfWater</span><span class="op">(</span><span class="dt">vec3</span> p<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> <span class="fu">sdPlane</span><span class="op">(</span>p<span class="op">,</span> <span class="dt">vec3</span><span class="op">(</span><span class="dv">0</span><span class="op">,</span><span class="dv">1</span><span class="op">,</span><span class="dv">0</span><span class="op">),</span> <span class="fl">1.0</span><span class="op">)</span> <span class="op">+</span> <span class="fu">waterHeightAt</span><span class="op">(</span>p<span class="op">.</span><span class="fu">xz</span><span class="op">);</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3 id="animated-lake">Animated lake</h3>
+<p><img src="images/8-lake-animated.gif" /></p>
+<p>To animate the lake over time, the <code>TIME</code> variable was
+included in the displacement calculation:</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode glsl"><code class="sourceCode glsl"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>displacement <span class="op">+=</span> a <span class="op">*</span> <span class="bu">sin</span><span class="op">(</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    dxz <span class="op">*</span> w <span class="op">+</span> TIME <span class="op">*</span> <span class="fl">2.5</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="op">);</span></span></code></pre></div>
+<h3 id="sky-reflections-in-the-lake">Sky reflections in the lake</h3>
+<p><img src="images/9-sky-reflections.png" /></p>
+<p><a href="https://polyhaven.com/a/kloppenheim_02">This HDRI map</a>
+(CC0) was used and slightly modified using the image manipulation
+software GIMP. Height based fog was added to the environment
+shading.</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode glsl"><code class="sourceCode glsl"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="dt">vec3</span> <span class="fu">sky</span><span class="op">(</span><span class="dt">vec3</span> dir<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    dir <span class="op">=</span> <span class="bu">normalize</span><span class="op">(</span>dir<span class="op">);</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> fog <span class="op">=</span> <span class="bu">clamp</span><span class="op">(</span><span class="bu">mix</span><span class="op">(</span><span class="dv">1</span><span class="op">,</span> <span class="op">-</span><span class="fl">1.5</span><span class="op">,</span> dir<span class="op">.</span><span class="fu">y</span><span class="op">),</span><span class="dv">0</span><span class="op">,</span><span class="dv">1</span><span class="op">);</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    fog <span class="op">=</span> <span class="bu">smoothstep</span><span class="op">(</span><span class="dv">0</span><span class="op">,</span><span class="dv">1</span><span class="op">,</span>fog<span class="op">);</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    fog <span class="op">=</span> <span class="bu">pow</span><span class="op">(</span>fog<span class="op">,</span> <span class="fl">15.0</span><span class="op">);</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> thetaa <span class="op">=</span> <span class="bu">acos</span><span class="op">(</span>dir<span class="op">.</span><span class="fu">y</span><span class="op">);</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> phii <span class="op">=</span> <span class="bu">atan</span><span class="op">(</span>dir<span class="op">.</span><span class="fu">z</span><span class="op">,</span> dir<span class="op">.</span><span class="fu">x</span><span class="op">);</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> <span class="bu">mix</span><span class="op">(</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>        <span class="bu">texture</span><span class="op">(</span>environment<span class="op">,</span> <span class="dt">vec2</span><span class="op">(</span>phii<span class="op">/</span>TAU<span class="op">,</span> thetaa<span class="op">/</span>PI<span class="op">)).</span><span class="fu">rgb</span><span class="op">,</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>        _colorD<span class="op">,</span> fog<span class="op">);</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>To create reflections in the lake the ray is reflected from the water
+surface and used for the environment shading.</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode glsl"><code class="sourceCode glsl"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>Ray reflectedRay <span class="op">=</span> <span class="fu">Ray</span><span class="op">(</span>p<span class="op">,</span> <span class="bu">reflect</span><span class="op">(</span>ray<span class="op">.</span><span class="fu">dir</span><span class="op">,</span> normal<span class="op">));</span> <span class="co">// reflect from water surface</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">return</span> <span class="fu">sky</span><span class="op">(</span>reflectedRay<span class="op">.</span><span class="fu">dir</span><span class="op">)</span> <span class="op">*</span> waterReflectionStrength <span class="op">+</span> waterColor<span class="op">;</span></span></code></pre></div>
+<h3 id="move-lanterns-with-lake">Move lanterns with lake</h3>
+<p><img src="images/10-lanterns-on-lake.png" /></p>
+<p>To adjust the height of the lanterns to match the height of the
+surface, the <code>waterHeightAt</code> function is used when
+determining the position of the lantern. Additionally, the lantern is
+rotated based on the normal of the water surface. However, the normal is
+not calculated accurately, but only the biggest sin wave that is used to
+create the wave displacement is taken into account. This results in a
+more natural motion and also improves performance as it is evaluated
+multiple times for every ray marching step.</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode glsl"><code class="sourceCode glsl"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> <span class="fu">waterHeightRoughAt</span><span class="op">(</span><span class="dt">vec2</span> p<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> a <span class="op">=</span> <span class="fl">0.15</span><span class="op">;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> w <span class="op">=</span> <span class="fl">0.4</span><span class="op">;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">vec2</span> dir <span class="op">=</span> <span class="dt">vec2</span><span class="op">(-</span><span class="fl">0.371391</span><span class="op">,</span> <span class="fl">0.928477</span><span class="op">);</span> <span class="co">// normalized</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> dxz <span class="op">=</span> <span class="bu">dot</span><span class="op">(</span>dir<span class="op">,</span> p<span class="op">);</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> a <span class="op">*</span> <span class="bu">sin</span><span class="op">(</span>dxz <span class="op">*</span> w <span class="op">+</span> <span class="op">(</span>TIME<span class="fl">-0.2</span><span class="op">)</span> <span class="op">*</span> <span class="fl">2.5</span><span class="op">);</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> <span class="fu">sdfWaterRough</span><span class="op">(</span><span class="dt">vec3</span> p<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> <span class="fu">sdPlane</span><span class="op">(</span>p<span class="op">,</span> <span class="dt">vec3</span><span class="op">(</span><span class="dv">0</span><span class="op">,</span><span class="dv">1</span><span class="op">,</span><span class="dv">0</span><span class="op">),</span> <span class="fl">1.0</span><span class="op">)</span> <span class="op">+</span> <span class="fu">waterHeightRoughAt</span><span class="op">(</span>p<span class="op">.</span><span class="fu">xz</span><span class="op">);</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="dt">vec3</span> <span class="fu">gradientWaterRough</span><span class="op">(</span><span class="dt">vec3</span> p<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    <span class="dt">const</span> <span class="dt">vec3</span> dx <span class="op">=</span> <span class="dt">vec3</span><span class="op">(</span>GRADIENT_DT<span class="op">,</span> <span class="fl">0.0</span><span class="op">,</span> <span class="fl">0.0</span><span class="op">);</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    <span class="dt">const</span> <span class="dt">vec3</span> dy <span class="op">=</span> <span class="dt">vec3</span><span class="op">(</span><span class="fl">0.0</span><span class="op">,</span> GRADIENT_DT<span class="op">,</span> <span class="fl">0.0</span><span class="op">);</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    <span class="dt">const</span> <span class="dt">vec3</span> dz <span class="op">=</span> <span class="dt">vec3</span><span class="op">(</span><span class="fl">0.0</span><span class="op">,</span> <span class="fl">0.0</span><span class="op">,</span> GRADIENT_DT<span class="op">);</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> <span class="dt">vec3</span><span class="op">(</span> <span class="op">(</span><span class="fu">sdfWaterRough</span><span class="op">(</span>p <span class="op">+</span> dx<span class="op">)</span> <span class="op">-</span> <span class="fu">sdfWaterRough</span><span class="op">(</span>p <span class="op">-</span> dx<span class="op">))</span> <span class="op">/</span> <span class="op">(</span><span class="fl">2.0</span> <span class="op">*</span> GRADIENT_DT<span class="op">),</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>                 <span class="op">(</span><span class="fu">sdfWaterRough</span><span class="op">(</span>p <span class="op">+</span> dy<span class="op">)</span> <span class="op">-</span> <span class="fu">sdfWaterRough</span><span class="op">(</span>p <span class="op">-</span> dy<span class="op">))</span> <span class="op">/</span> <span class="op">(</span><span class="fl">2.0</span> <span class="op">*</span> GRADIENT_DT<span class="op">),</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>                 <span class="op">(</span><span class="fu">sdfWaterRough</span><span class="op">(</span>p <span class="op">+</span> dz<span class="op">)</span> <span class="op">-</span> <span class="fu">sdfWaterRough</span><span class="op">(</span>p <span class="op">-</span> dz<span class="op">))</span> <span class="op">/</span> <span class="op">(</span><span class="fl">2.0</span> <span class="op">*</span> GRADIENT_DT<span class="op">)</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>    <span class="op">);</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3 id="lantern-reflections-in-the-lake">Lantern reflections in the
+lake</h3>
+<p><img src="images/11-lantern-reflections.png" /></p>
+<p>To reflect the lantern on the lake, the reflected ray that was
+mentioned in “Sky reflections in the lake” is used to start another ray
+marching process.</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode glsl"><code class="sourceCode glsl"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>Ray reflectedRay <span class="op">=</span> <span class="fu">Ray</span><span class="op">(</span>p<span class="op">,</span> <span class="bu">reflect</span><span class="op">(</span>ray<span class="op">.</span><span class="fu">dir</span><span class="op">,</span> normal<span class="op">));</span> <span class="co">// reflect from water surface</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="dt">vec3</span> rp <span class="op">=</span> p<span class="op">;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="kw">if</span> <span class="op">(!</span><span class="fu">march</span><span class="op">(</span>reflectedRay<span class="op">,</span> rp<span class="op">))</span> <span class="op">{</span> <span class="co">// no lantern hit - shade water</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> <span class="fu">sky</span><span class="op">(</span>reflectedRay<span class="op">.</span><span class="fu">dir</span><span class="op">)</span> <span class="op">*</span> waterReflectionStrength <span class="op">+</span> waterColor<span class="op">;</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="kw">else</span> <span class="op">{</span> <span class="co">// lantern hit</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> <span class="fu">shadeLanterns</span><span class="op">(...);</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
