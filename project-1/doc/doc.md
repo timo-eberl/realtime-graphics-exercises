@@ -41,6 +41,13 @@ Floating paper lanterns on a lake created using **ray marching** and **signed di
 	Can't load iframe
 </iframe>
 
+## Video recording
+
+<video alt="paper lantern recording" controls>
+<source src="videos/recording.mp4">
+
+</video>
+
 ## Step by step documentation
 
 ### Lantern geometry as SDF
