@@ -66,7 +66,7 @@ varying vec3 _groundAlbedoB;
 varying vec3  _sunDirection;
 varying float _cosSunRadius;
 // environment map
-uniform sampler2D environment : filter_linear, repeat_enable; 
+uniform sampler2D environment : filter_linear, repeat_enable;
 // noise textures
 uniform sampler2D noise_texture : filter_linear, repeat_enable;
 uniform sampler3D noise_3d_texture : filter_linear, repeat_enable;
@@ -281,9 +281,9 @@ float sdfSingleMetal(vec3 p) {
 	float torus1 = sdTorus(p + vec3(0,-0.08,0), vec2(0.75, 0.05));
 	float torus2 = sdTorus(p + vec3(0,-2.0,0), vec2(0.75, 0.05));
 	float tori = opUnion(torus1, torus2);
-	
+
 	float cylindri = sdCappedCylinderOffset(opSymXZ(p + vec3(0,-1,0)), 1.03, 0.05, vec2(0.75 * 0.707));
-	
+
 	return opSmoothUnion(cylindri, tori, 0.1);
 }
 
@@ -376,7 +376,7 @@ float repeated( vec3 p3, int sdfIndex ) {
 		vec4 blueNoise = blueNoiseAtID(rid);
 		vec2 rCenterPos = gridSize*rid - offset(blueNoise.xy);
 		vec2 r = p - rCenterPos;
-		vec3 finalP = vec3(r.x, p3.y + waterHeightRoughAt(rCenterPos), r.y);
+		vec3 finalP = vec3(r.x, p3.y + waterHeightAt(rCenterPos), r.y);
 		finalP = getPitchRotMatAtID(rid, blueNoise) * getRotMatAtID(rid, blueNoise) * finalP;
 		float newD;
 		switch (sdfIndex) {
@@ -432,9 +432,9 @@ vec3 shadeWood(Ray ray, vec3 l, vec3 normal, vec3 localP, vec4 blueNoise) {
 	float d2 = length(localP * vec3(2,1,1)) * 5.0;
 	d2 += noise * 1.0;
 	vec3 albedo = texture(woodGradient, vec2(d2, 0)).xyz;
-	
+
 	float lightStrength = 3.0;
-	
+
 	lightStrength *= 1.0 - noise * 0.4;
 	// make light flicker
 	float flickerValue =
@@ -443,7 +443,7 @@ vec3 shadeWood(Ray ray, vec3 l, vec3 normal, vec3 localP, vec4 blueNoise) {
 		+ (cos( (TIME + blueNoise.x * 30.0) * 2.5 * PI) + 1.0) * 0.1;
 	lightStrength *= mix(0.3, 0.8, flickerValue);
 	lightStrength *= mix(0.05, 2.0, pow(blueNoise.x, 1.8));
-	
+
 	float nDotL = dot(normal, l);
 	float d = distance(lightPos, localP);
 	float lighting = nDotL * lightStrength / (d*d);
@@ -459,11 +459,11 @@ vec3 shadePaper(
 		) {
 	float lightStrength = 3.0;
 	float lightTransparencyStrength = 1.8;
-	
+
 	normal = normalize(
 		normal + normalNoise * 0.35
 	);
-	
+
 	lightStrength *= 1.0 - noise * 0.4;
 	// make light flicker
 	float flickerValue =
@@ -472,7 +472,7 @@ vec3 shadePaper(
 		+ (cos( (TIME + blueNoise.x * 30.0) * 2.5 * PI) + 1.0) * 0.1;
 	lightStrength *= mix(0.3, 0.8, flickerValue);
 	lightStrength *= mix(0.05, 2.0, pow(blueNoise.x, 1.8));
-	
+
 	float nDotL = dot(normal, l);
 	float d = distance(lightPos, localP);
 	float lighting = nDotL * lightStrength / (d*d);
@@ -502,7 +502,7 @@ vec3 shadeLanterns(vec3 p, Ray ray, vec3 normal, float dPaper, float dMetal, flo
 	vec2 uv = calcCylindricalUVs(normalXZ, localP);
 
 	float noise = texture(noise_texture, uv * vec2(2,1)).x;
-	
+
 	// this is not how you would actually use a normal map
 	// (to do it properly we would need a tangent and binormal)
 	// but it looks fine like this
@@ -512,7 +512,7 @@ vec3 shadeLanterns(vec3 p, Ray ray, vec3 normal, float dPaper, float dMetal, flo
 	vec3 l = normalize(lightPos - localP);
 	bool isMetal = dMetal < dPaper && dMetal < dWood;
 	bool isPaper = dPaper < dMetal && dPaper < dWood;
-	
+
 	if (isMetal) { return shadeMetal(ray, l, normal, normalNoise, noise); }
 	else if (isPaper) { return shadePaper(ray, l, normal, normalNoise, noise, blueNoise, localP); }
 	else { return shadeWood(ray, l, normal, localP, blueNoise); }
@@ -544,7 +544,7 @@ vec3 sphereTraceRay(Ray ray) {
 		bool isWaterReflection = false;
 		vec3 waterColor = _colorC;
 		float waterReflectionStrength = 0.3;
-		
+
 		if (dWater < dPaper && dWater < dMetal && dWater < dWood) {
 			Ray reflectedRay = Ray(p, reflect(ray.dir, normal)); // reflect from water surface
 			vec3 rp = p;
