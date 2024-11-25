@@ -8,7 +8,7 @@ bg_color = Color(0, 0, 0, 0.752941)
 
 [node name="License Screen" type="CanvasLayer"]
 script = ExtResource("1_iiqvi")
-project_credits = "© 2023, 2024 Martin Fuchs"
+project_credits = "© 2024 Timo Eberl"
 scroller_suffix = "That's all, folks!"
 
 [node name="Panel" type="Panel" parent="."]
@@ -39,11 +39,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_fonts/mono_font = ExtResource("2_vfilu")
+theme_override_font_sizes/bold_italics_font_size = 24
+theme_override_font_sizes/italics_font_size = 24
+theme_override_font_sizes/mono_font_size = 24
 theme_override_font_sizes/normal_font_size = 24
 theme_override_font_sizes/bold_font_size = 24
-theme_override_font_sizes/italics_font_size = 24
-theme_override_font_sizes/bold_italics_font_size = 24
-theme_override_font_sizes/mono_font_size = 24
 bbcode_enabled = true
 fit_content = true
 

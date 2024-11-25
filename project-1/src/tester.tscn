@@ -426,3 +426,4 @@ metadata/_edit_group_ = true
 layout_mode = 1
 offset_left = -372.0
 offset_right = 372.0
+timeout_seconds = 2.0

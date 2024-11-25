@@ -41,4 +41,3 @@ func fade_out():
 						 "position", 
 						 self.position + Vector2(0.0, self.size.y), 2)
 	tween.tween_callback(queue_free)
-
