@@ -3,7 +3,7 @@
 [ext_resource type="Shader" path="res://tester.gdshader" id="1_241pq"]
 [ext_resource type="PackedScene" uid="uid://df52fqkkdq2te" path="res://licenser/license_screen_loader_button.tscn" id="2_ci1sb"]
 [ext_resource type="Texture2D" uid="uid://cx2nga2o40snm" path="res://free-blue-noise-textures/1024_1024/LDR_RGBA_0.png" id="2_x83pq"]
-[ext_resource type="Texture2D" uid="uid://dfdqo7h38bb6r" path="res://kloppenheim_02/kloppenheim_02_4k_modified.exr" id="3_n0e4h"]
+[ext_resource type="Texture2D" uid="uid://bjc6nsuf0seuw" path="res://kloppenheim_02/kloppenheim_02_4k_modified.exr" id="3_jywg4"]
 
 [sub_resource type="GDScript" id="GDScript_fjbdq"]
 script/source = "@tool
@@ -381,7 +381,7 @@ shader_parameter/groundAlbedoA = Color(0.3, 0.3, 0.3, 1)
 shader_parameter/groundAlbedoB = Color(0.7, 0.7, 0.7, 1)
 shader_parameter/L_white = 2.0
 shader_parameter/exposure = 0.0
-shader_parameter/environment = ExtResource("3_n0e4h")
+shader_parameter/environment = ExtResource("3_jywg4")
 shader_parameter/noise_texture = SubResource("NoiseTexture2D_65lvo")
 shader_parameter/noise_3d_texture = SubResource("NoiseTexture3D_kr8yd")
 shader_parameter/normal_noise_texture = SubResource("NoiseTexture2D_ro007")
