@@ -28,6 +28,12 @@ pre {
 	pre {
 		border: 1px solid white;
 	}
+	h1, h2, h3, h4, h5 {
+		border-color: rgba(255, 255, 255, 0.48) !important;
+	}
+	a {
+		color: #6eb2ee;
+	}
 }
 </style>
 
