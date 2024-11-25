@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://hvoagqtln2c4"]
+[gd_scene load_steps=15 format=3 uid="uid://hvoagqtln2c4"]
 
 [ext_resource type="Shader" path="res://tester.gdshader" id="1_241pq"]
 [ext_resource type="PackedScene" uid="uid://df52fqkkdq2te" path="res://licenser/license_screen_loader_button.tscn" id="2_ci1sb"]
@@ -344,6 +344,13 @@ seamless = true
 as_normal_map = true
 noise = SubResource("FastNoiseLite_ssfoc")
 
+[sub_resource type="Gradient" id="Gradient_bkfwo"]
+offsets = PackedFloat32Array(0, 0.725191, 1)
+colors = PackedColorArray(0.796078, 0.564706, 0.352941, 1, 0.717647, 0.443137, 0.266667, 1, 0.796078, 0.564706, 0.352941, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_quvkn"]
+gradient = SubResource("Gradient_bkfwo")
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vpmjg"]
 shader = ExtResource("1_241pq")
 shader_parameter/P = Vector3(0, 0, 0)
@@ -379,6 +386,7 @@ shader_parameter/noise_texture = SubResource("NoiseTexture2D_65lvo")
 shader_parameter/noise_3d_texture = SubResource("NoiseTexture3D_kr8yd")
 shader_parameter/normal_noise_texture = SubResource("NoiseTexture2D_ro007")
 shader_parameter/blue_noise_texture = ExtResource("2_x83pq")
+shader_parameter/woodGradient = SubResource("GradientTexture1D_quvkn")
 
 [node name="Tester" type="Control"]
 layout_mode = 3
