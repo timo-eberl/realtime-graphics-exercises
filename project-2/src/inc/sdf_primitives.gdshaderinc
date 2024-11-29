@@ -17,4 +17,11 @@
 //
 // eventual modifications are limited to make them work in this code environment and/or cosmetic
 
+float sdPlane( vec3 p, vec3 n, float h ) {
+	// n must be normalized
+	return dot(p,n) + h;
+}
 
+float opUnion( float d1, float d2 ) {
+	return min(d1,d2);
+}

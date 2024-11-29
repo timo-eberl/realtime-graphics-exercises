@@ -1,9 +1,9 @@
 shader_type canvas_item;
 // constants
 const float EPSILON = 0.001; // larger than 0, but so small every smaller value is negative
-const float GRADIENT_DT = 0.05; // half of the step size
-const int MAX_STEPS = 100; // ray march steps
-const float MAX_DISTANCE = 100.0; // from surface; if we are that far, we won't hit anything
+const float GRADIENT_DT = 5.0; // big to hide artefacts from texture
+const int MAX_STEPS = 250; // ray march steps
+const float MAX_DISTANCE = 1000.0; // from surface; if we are that far, we won't hit anything
 // generic shader parameters ... (set from script)
 uniform vec3 P; uniform vec3 Q; uniform vec3 R; uniform vec3 S; // ... vectors
 uniform float lambda; uniform float mu; uniform float nu; // ... scalars
@@ -21,6 +21,8 @@ uniform float cos_sun_radius = 0.999961923; // cos(0.5 degrees)
 // tone mapper (set from script)
 uniform float l_white : hint_range(0.0, 10.0) = 1.0;
 uniform float exposure : hint_range(-10.0, 10.0) = 0.0;
+// textures
+uniform sampler2D dune_heightmap : filter_linear, repeat_enable;
 // used to generate the ray
 varying vec3 _camera_positon; varying vec3 _look_vector;
 // linearized colors
@@ -100,7 +102,14 @@ vec3 background(Ray ray) {
 }
 
 float sdf(vec3 p) {
-	return length(p - vec3(0, 1.5, 0)) - 1.0; // sphere with radius 1m floating at 1.5m
+	float s = 2000.0;
+	float height = texture(dune_heightmap, p.xz / s).x;
+	height = smoothstep(0, 1, height) * 150.0;
+	float ground = sdPlane(p, vec3(0,1,0), height);
+
+	float sphere = length(p - vec3(0, 1.5, 0)) - 1.0;
+
+	return opUnion(ground, sphere);
 }
 
 vec3 gradient(vec3 p) {
