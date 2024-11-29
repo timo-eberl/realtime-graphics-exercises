@@ -15,7 +15,7 @@ config/description="Programming Template for Shader Programming
 
 for Realtime Graphics 2023
 "
-run/main_scene="res://tester.tscn"
+run/main_scene="res://scene.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="res://icon.svg"
 
