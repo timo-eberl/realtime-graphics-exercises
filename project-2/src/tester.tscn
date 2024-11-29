@@ -1,0 +1,376 @@
+[gd_scene load_steps=4 format=3 uid="uid://hvoagqtln2c4"]
+
+[ext_resource type="Shader" path="res://tester.gdshader" id="1_241pq"]
+
+[sub_resource type="GDScript" id="GDScript_fjbdq"]
+script/source = "@tool
+
+extends Control
+
+# generic shader parameters
+# the rationale is: building the user interface once for
+# a generic set of parameters permits much faster iteration
+
+@export_group(\"Generic Shader Parameters\")
+
+@export_subgroup(\"Points in space\")
+
+@export var P := Vector3(0.0, 0.0, 0.0)
+@export var Q := Vector3(0.0, 0.0, 0.0)
+
+@export_subgroup(\"Extents (radii etc.)\")
+
+@export var R := Vector3(1.0, 1.0, 1.0)
+@export var S := Vector3(1.0, 1.0, 1.0)
+
+@export_subgroup(\"Angles (degrees)\")
+
+@export_range(0.0, 360.0, 1.0, \"or_greater\", \"or_less\") var theta  = 0.0 
+@export_range(0.0, 360.0, 1.0, \"or_greater\", \"or_less\") var phi    = 0.0
+
+@export_subgroup(\"Scalars\")
+
+@export_range(0.0, 1.0, 0.01, \"or_greater\", \"or_less\") var lambda = 1.0
+@export_range(0.0, 1.0, 0.01, \"or_greater\", \"or_less\") var mu     = 0.0
+@export_range(0.0, 1.0, 0.01, \"or_greater\", \"or_less\") var nu     = 0.0
+
+@export_subgroup(\"Colors\")
+
+@export_color_no_alpha var color_a : Color = Color(1.0,1.0,1.0)
+@export_color_no_alpha var color_b : Color = Color(1.0,0.3,0.3)
+@export_color_no_alpha var color_c : Color = Color(1.0,1.0,0.3)
+@export_color_no_alpha var color_d : Color = Color(0.3,1.0,0.3)
+
+@export_group(\"Background\")
+
+# sky
+
+@export_subgroup(\"Sky\")
+
+@export_color_no_alpha var zenith_color : Color = Color(0.2,0.3,0.5)
+@export_color_no_alpha var horizon_color : Color = Color(0.2,0.45,0.75)
+
+@export_color_no_alpha var sun_color : Color = Color(1.0, 1.0, 1.0)
+@export var sun_direction := Vector3(0.7,0.7,-0.7) # normalized in shader
+@export_range(0.0, 10.0,0.01, \"or_greater\") var sun_radius_degrees : float = 0.5
+
+# ground
+
+@export_subgroup(\"Ground\")
+
+@export_range(-10.0,10.0,0.01, \"or_greater\", \"or_less\") var ground_level : float = -1.0
+@export_color_no_alpha var ground_albedo_a : Color = Color(0.3,0.3,0.3)
+@export_color_no_alpha var ground_albedo_b : Color = Color(0.7,0.7,0.7)
+
+@export_group(\"Camera\")
+
+## in degrees against north
+@export_range(0.0, 360.0) var azimuth = 0.0
+
+# camera view direction (not position)
+
+const MIN_ELEVATION :=   0.0
+const MAX_ELEVATION :=  90.0
+
+## in degrees against the horizon
+@export_range(MIN_ELEVATION, MAX_ELEVATION) var elevation = 0.0
+
+
+## in meters; in this environment, the camera always looks at the origin
+@export_range(0.0,20.0) var camera_distance := 5.0
+
+const MIN_CAMERA_DISTANCE := 0.1;
+const MAX_CAMERA_DISTANCE := 100.0;
+
+@export_subgroup(\"Interactive Control\")
+
+## in degrees/s
+@export var turn_speed = 60.0
+
+## in m/s
+@export var movement_speed := 5.0
+
+## in degrees / pixel
+@export var mouse_look_speed := 0.2
+
+@export var mouse_wheel_step_factor := 1.5
+
+## vertical field of view, in degrees
+@export var vertical_fov_degrees := 45.0
+
+## how fast the camera moves between preset points
+@export var CAMERA_ANIMATION_TIME := 1.0
+
+@export_group(\"Tone mapper\")
+
+## in f-stops
+@export_range(-10.0, 10.0) var exposure : float = 0.0
+@export_range(0.0, 10.0, 0.01, \"or_greater\") var l_white = 2.0
+
+@export_group(\"Ray marcher\")
+@export_range(0.001,2.0) var step_size := 0.1
+@export var bounding_box_radii := Vector3(1.0, 1.0, 1.0);
+
+
+func _ready():
+	# only if not in tool mode:
+	
+	if not Engine.is_editor_hint():
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+# trig helpers
+
+func radians(degrees: float) -> float:
+	return degrees / 360.0 * TAU
+
+func dsin(degrees: float) -> float:
+	return sin(radians(degrees));
+
+func dcos(degrees: float) -> float:
+	return cos(radians(degrees));
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	if not Engine.is_editor_hint(): # process input only when running stand-alone
+	
+		if Input.is_action_just_pressed(\"ui_cancel\"):
+			get_tree().quit()
+		
+		# compute movement updates
+
+		# update look
+		
+		azimuth   = fmod(azimuth + turn_speed * delta * Input.get_axis(\"turn_left\",\"turn_right\"), 360.0)
+		elevation = elevation + turn_speed * delta * Input.get_axis(\"look_down\",\"look_up\")
+		elevation = clamp(elevation, MIN_ELEVATION, MAX_ELEVATION)
+
+		# update movement
+
+		# ... using projections on the ground plane
+		
+		camera_distance += Input.get_axis(\"move_forward\",\"move_backward\") * movement_speed * delta;
+		camera_distance = clamp(camera_distance, MIN_CAMERA_DISTANCE, MAX_CAMERA_DISTANCE);
+		
+	set_shader_parameters();
+	
+func set_shader_parameters():
+
+	# set shader parameter: aspect ration
+	
+	$Panel.material.set_shader_parameter(\"ASPECT_RATIO\", $Panel.size.x / $Panel.size.y);
+	
+	# set shader parameters: sky
+	
+	$Panel.material.set_shader_parameter(\"zenithColor\", zenith_color)
+	$Panel.material.set_shader_parameter(\"horizonColor\", horizon_color)
+	$Panel.material.set_shader_parameter(\"sunDirection\", sun_direction)
+	$Panel.material.set_shader_parameter(\"sunColor\", sun_color)
+	$Panel.material.set_shader_parameter(\"sunRadiusDegrees\", sun_radius_degrees)
+	
+	# set shader uniforms - camera
+	
+	$Panel.material.set_shader_parameter(\"vFoV_degrees\", vertical_fov_degrees)
+	$Panel.material.set_shader_parameter(\"cameraDistance\", camera_distance)
+	$Panel.material.set_shader_parameter(\"azimuth\", azimuth)
+	$Panel.material.set_shader_parameter(\"elevation\", elevation)
+	
+	# set shader uniforms - ground
+	$Panel.material.set_shader_parameter(\"groundLevel\", ground_level)
+	$Panel.material.set_shader_parameter(\"groundAlbedoA\", ground_albedo_a)
+	$Panel.material.set_shader_parameter(\"groundAlbedoB\", ground_albedo_b)
+
+	# set shader uniforms - tone mapper
+	$Panel.material.set_shader_parameter(\"exposure\", exposure)
+	$Panel.material.set_shader_parameter(\"L_white\", l_white)
+
+	# set shader uniforms – generic parameters
+	
+	$Panel.material.set_shader_parameter(\"P\", P)
+	$Panel.material.set_shader_parameter(\"Q\", Q)
+	$Panel.material.set_shader_parameter(\"R\", R)
+	$Panel.material.set_shader_parameter(\"S\", S)
+	
+	$Panel.material.set_shader_parameter(\"lambda\", lambda)
+	$Panel.material.set_shader_parameter(\"mu\", mu)
+	$Panel.material.set_shader_parameter(\"nu\", nu)
+	$Panel.material.set_shader_parameter(\"theta\", theta)
+	$Panel.material.set_shader_parameter(\"phi\", phi)
+	
+	$Panel.material.set_shader_parameter(\"colorA\", color_a)
+	$Panel.material.set_shader_parameter(\"colorB\", color_b)
+	$Panel.material.set_shader_parameter(\"colorC\", color_c)
+	$Panel.material.set_shader_parameter(\"colorD\", color_d)
+	
+	# ray marcher
+	
+	$Panel.material.set_shader_parameter(\"stepSize\",step_size)
+	$Panel.material.set_shader_parameter(\"boundingBoxRadii\", bounding_box_radii)
+
+func set_condition(k: Key):
+	
+	var tween := create_tween()
+	
+	tween.set_trans(Tween.TRANS_CUBIC)
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_parallel(true)
+	
+	match k:
+		KEY_R: # reset camera to salient points
+			
+			if elevation < 5.0 and azimuth < 5.0:
+				tween.tween_property(self, \"elevation\", 25.0, CAMERA_ANIMATION_TIME)
+				tween.tween_property(self, \"azimuth\", 45.0, CAMERA_ANIMATION_TIME)
+			elif 20.0 < elevation and elevation < 30.0 and 40.0 < azimuth and azimuth < 50.0:
+				tween.tween_property(self, \"elevation\", 90.0, CAMERA_ANIMATION_TIME)
+				tween.tween_property(self, \"azimuth\", 0.0, CAMERA_ANIMATION_TIME)
+			elif elevation > 85.0 and azimuth < 5.0:
+				tween.tween_property(self, \"elevation\", 0.0, CAMERA_ANIMATION_TIME)
+				tween.tween_property(self, \"azimuth\", 90.0, CAMERA_ANIMATION_TIME)
+			elif elevation < 5.0 and 85.0 < azimuth and azimuth < 95.0:
+				tween.tween_property(self, \"elevation\", 0.0, CAMERA_ANIMATION_TIME)
+				tween.tween_property(self, \"azimuth\", 180.0, CAMERA_ANIMATION_TIME)
+			elif elevation < 5.0 and 175.0 < azimuth and azimuth  < 185.0:
+				tween.tween_property(self, \"elevation\", 0.0, CAMERA_ANIMATION_TIME)
+				tween.tween_property(self, \"azimuth\", 270.0, CAMERA_ANIMATION_TIME)
+			elif elevation < 5.0 and 265.0 < azimuth and azimuth < 275.0:
+				tween.tween_property(self, \"elevation\", 0.0, CAMERA_ANIMATION_TIME)
+				tween.tween_property(self, \"azimuth\", 360.0, CAMERA_ANIMATION_TIME)
+			else:
+				tween.tween_property(self, \"elevation\", 0.0, CAMERA_ANIMATION_TIME)
+				tween.tween_property(self, \"azimuth\", 0.0, CAMERA_ANIMATION_TIME)
+			
+		KEY_M: # mu
+			if mu >= 1.0:
+				tween.tween_property(self, \"mu\", 0.0, 1.0)
+			else:			
+				tween.tween_property(self, \"mu\", clamp(mu + 0.25, 0.0, 1.0), 0.5)
+
+		KEY_N: # nu
+			if nu >= 1.0:
+				tween.tween_property(self, \"nu\", 0.0, 1.0)
+			else:			
+				tween.tween_property(self, \"nu\", clamp(nu + 0.25, 0.0, 1.0), 0.5)
+
+		KEY_L: # lambda
+			if lambda >= 1.0:
+				tween.tween_property(self, \"lambda\", 0.0, 1.0)
+			else:			
+				tween.tween_property(self, \"lambda\", clamp(lambda + 0.25, 0.0, 1.0), 0.5)
+
+				
+		KEY_1: # daylight
+			tween.tween_property(self, \"zenith_color\", Color(0.2,0.3,0.5), 5.0)
+			tween.tween_property(self, \"horizon_color\", Color(0.2,0.45,0.75), 5.0)
+			tween.tween_property(self, \"sun_color\", Color(1.0,1.0,1.0), 5.0)
+			tween.tween_property(self, \"sun_direction\", Vector3(0.7,0.7,-0.7), 5.0)
+			
+		KEY_2: # sunset
+			tween.tween_property(self, \"zenith_color\", Color(0.2,0.05,0.05), 5.0)
+			tween.tween_property(self, \"horizon_color\", Color(0.5,0.2,0.05), 5.0)
+			tween.tween_property(self, \"sun_color\", Color(1.0,0.9,0.8), 5.0)
+			tween.tween_property(self, \"sun_direction\", Vector3(0.1,0.1,-0.7), 5.0)
+			
+		KEY_P:
+			var image = get_viewport().get_texture().get_image()
+			var time = Time.get_datetime_string_from_system().replace(\":\",\"_\")
+			var filename = \"godot-screenshot_%s.png\" % time
+			
+			image.save_png(filename)
+			print(\"Saved screen in %s\" % filename)
+			# do whatever to make sure the tween does not cause an error
+			tween.tween_property(self, \"lambda\", lambda, 0.0)
+			
+		_:
+			# do whatever to make sure the tween does not cause an error
+			tween.tween_property(self, \"lambda\", lambda, 0.0)
+			
+	
+# for mouse look;
+# see: https://ask.godotengine.org/24094/inputeventmousemotion
+# see: https://docs.godotengine.org/en/stable/classes/class_inputeventmousemotion.html
+
+func _input(event):
+	if ( event is InputEventMouseButton 
+		and (   event.button_index == MOUSE_BUTTON_WHEEL_DOWN
+			 or event.button_index == MOUSE_BUTTON_WHEEL_UP    )):
+		
+		var tween := create_tween()
+		tween.set_trans(Tween.TRANS_CUBIC)
+		tween.set_ease(Tween.EASE_OUT)
+		tween.set_parallel(true)
+	
+		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			tween.tween_property(self, \"camera_distance\",
+									 clamp(camera_distance * mouse_wheel_step_factor,
+									 MIN_CAMERA_DISTANCE, MAX_CAMERA_DISTANCE),
+									0.25);
+		elif event.button_index == MOUSE_BUTTON_WHEEL_UP:
+			tween.tween_property(self, \"camera_distance\",
+									 clamp(camera_distance / mouse_wheel_step_factor,
+									 MIN_CAMERA_DISTANCE, MAX_CAMERA_DISTANCE),
+									0.25);
+			
+	if event is InputEventMouseMotion:
+		azimuth = fmod(azimuth + mouse_look_speed * event.relative.x ,360.0);
+		elevation = elevation - mouse_look_speed * event.relative.y;
+		elevation = clamp(elevation, MIN_ELEVATION, MAX_ELEVATION);
+		
+	if event is InputEventKey and event.is_pressed():
+		set_condition(event.get_keycode())
+		
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vpmjg"]
+shader = ExtResource("1_241pq")
+shader_parameter/P = Vector3(0, 0, 0)
+shader_parameter/Q = Vector3(0, 0, 0)
+shader_parameter/R = Vector3(1, 1, 1)
+shader_parameter/S = Vector3(1, 1, 1)
+shader_parameter/lambda = 1.0
+shader_parameter/mu = 0.0
+shader_parameter/nu = 0.0
+shader_parameter/theta = 0.0
+shader_parameter/phi = 0.0
+shader_parameter/colorA = null
+shader_parameter/colorB = null
+shader_parameter/colorC = null
+shader_parameter/colorD = null
+shader_parameter/ASPECT_RATIO = 1.0
+shader_parameter/cameraDistance = 5.0
+shader_parameter/azimuth = 0.0
+shader_parameter/elevation = 0.0
+shader_parameter/vFoV_degrees = 45.0
+shader_parameter/zenithColor = Color(0.2, 0.3, 0.5, 1)
+shader_parameter/horizonColor = Color(0.443137, 0.568627, 0.956863, 1)
+shader_parameter/sunColor = Color(1, 1, 1, 1)
+shader_parameter/sunDirection = Vector3(0.7, 0.7, -0.7)
+shader_parameter/sunRadiusDegrees = 0.5
+shader_parameter/groundLevel = -1.5
+shader_parameter/groundAlbedoA = Color(0.3, 0.3, 0.3, 1)
+shader_parameter/groundAlbedoB = Color(0.7, 0.7, 0.7, 1)
+shader_parameter/L_white = 2.0
+shader_parameter/exposure = 0.0
+
+[node name="Tester" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_fjbdq")
+horizon_color = Color(0.443137, 0.568627, 0.956863, 1)
+ground_level = -1.5
+step_size = 0.003
+bounding_box_radii = Vector3(1.5, 1.5, 1.5)
+
+[node name="Panel" type="Panel" parent="."]
+material = SubResource("ShaderMaterial_vpmjg")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
