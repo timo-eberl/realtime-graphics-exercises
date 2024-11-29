@@ -11,7 +11,6 @@ fractal_octaves = 1
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_3iy6r"]
 width = 4096
 height = 4096
-invert = true
 seamless = true
 seamless_blend_skirt = 0.25
 noise = SubResource("FastNoiseLite_7im28")
@@ -32,8 +31,7 @@ shader_parameter/color_b = null
 shader_parameter/color_c = null
 shader_parameter/color_d = null
 shader_parameter/aspect_ratio = 1.77734
-shader_parameter/camera_distance = 5.0
-shader_parameter/camera_focus_point = Vector3(0, 1.5, 0)
+shader_parameter/camera_position = Vector3(0, 1.8, 0)
 shader_parameter/azimuth = 0.0
 shader_parameter/elevation = 0.0
 shader_parameter/vertical_fov_radians = 0.785398
@@ -58,6 +56,7 @@ zenith_color = Color(0.1144, 0.2496, 0.52, 1)
 horizon_color = Color(0.513087, 0.7043, 0.946755, 1)
 sun_direction = Vector3(0.5, 0.3, 0.7)
 sun_radius_degrees = 1.15
+movement_speed = 50.0
 
 [node name="Panel" type="Panel" parent="."]
 material = SubResource("ShaderMaterial_vpmjg")

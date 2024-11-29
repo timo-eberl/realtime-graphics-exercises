@@ -1,8 +1,8 @@
 shader_type canvas_item;
 // constants
-const float EPSILON = 0.001; // larger than 0, but so small every smaller value is negative
+const float EPSILON = 0.01; // larger than 0, but so small every smaller value is negative
 const float GRADIENT_DT = 5.0; // big to hide artefacts from texture
-const int MAX_STEPS = 250; // ray march steps
+const int MAX_STEPS = 200; // ray march steps
 const float MAX_DISTANCE = 1000.0; // from surface; if we are that far, we won't hit anything
 // generic shader parameters ... (set from script)
 uniform vec3 P; uniform vec3 Q; uniform vec3 R; uniform vec3 S; // ... vectors
@@ -10,8 +10,7 @@ uniform float lambda; uniform float mu; uniform float nu; // ... scalars
 uniform float theta; uniform float phi; // ... angles, in radians
 uniform vec3 color_a; uniform vec3 color_b; uniform vec3 color_c; uniform vec3 color_d; // in sRGB
 // camera (set from script)
-uniform float aspect_ratio = 1.0; uniform float camera_distance = 1.0;
-uniform vec3 camera_focus_point = vec3(0,1,0);
+uniform float aspect_ratio = 1.0; uniform vec3 camera_position = vec3(0,1.5,0);
 uniform float azimuth = 0.0; uniform float elevation = 0.0;
 uniform float vertical_fov_radians = 0.7854; // 45 degrees
 // sky (set from script)
@@ -35,32 +34,6 @@ struct Ray { vec3 p; vec3 dir; };
 #include "res://inc/tone_mapping.gdshaderinc"
 #include "res://inc/sdf_primitives.gdshaderinc"
 #include "res://inc/matrices.gdshaderinc"
-
-void vertex() {
-	// right-handed, y up
-	vec3 forward = vec3(0, 0,-1);
-	vec3 right   = vec3(1, 0, 0);
-	vec3 up      = vec3(0, 1, 0);
-	// rotate - first x, then y
-	mat3 rotation = mat3_rotate_y(azimuth) * mat3_rotate_x(elevation);
-	forward = rotation * forward; right = rotation * right; up = rotation * up;
-	// move camera back
-	_camera_positon = -forward * camera_distance + camera_focus_point;
-	// scale camera for FoV and focal length
-	// our y coordinate system is 2 high, from -1.0 to 1,0
-	float focal_length = 2.0 / (2.0 * tan(vertical_fov_radians * 0.5));
-	// scale vectors; by construction, they are already normalized
-	right = right * aspect_ratio;
-	forward = forward * focal_length;
-	// center on (0.0) ; make the y range from -1 to 1 and point upwards
-	vec2 xy = (UV - vec2(0.5)) * vec2(2, -2);
-	_look_vector = forward + xy.x * right + xy.y * up;
-	// color space conversions
-	_zenith_color = sRGB_to_linear(zenith_color); _horizon_color = sRGB_to_linear(horizon_color);
-	_sun_color = sRGB_to_linear(sun_color);
-	_color_a = sRGB_to_linear(color_a); _color_b = sRGB_to_linear(color_b);
-	_color_c = sRGB_to_linear(color_c); _color_d = sRGB_to_linear(color_d);
-}
 
 vec3 sky(vec3 dir) {
 	dir = normalize(dir);
@@ -101,15 +74,15 @@ vec3 background(Ray ray) {
 	return sky(ray.dir);
 }
 
-float sdf(vec3 p) {
-	float s = 2000.0;
+float height_at(vec3 p) {
+	float s = 1000.0;
 	float height = texture(dune_heightmap, p.xz / s).x;
-	height = smoothstep(0, 1, height) * 150.0;
-	float ground = sdPlane(p, vec3(0,1,0), height);
+	return smoothstep(0, 1, height) * 75.0;
+}
 
-	float sphere = length(p - vec3(0, 1.5, 0)) - 1.0;
-
-	return opUnion(ground, sphere);
+float sdf(vec3 p) {
+	float ground = sdPlane(p, vec3(0,1,0), 1.0-height_at(p));
+	return ground;
 }
 
 vec3 gradient(vec3 p) {
@@ -140,6 +113,32 @@ vec3 sphere_trace_ray(Ray ray) {
 	} else {
 		return background(ray);
 	}
+}
+
+void vertex() {
+	// right-handed, y up
+	vec3 forward = vec3(0, 0,-1);
+	vec3 right   = vec3(1, 0, 0);
+	vec3 up      = vec3(0, 1, 0);
+	// rotate - first x, then y
+	mat3 rotation = mat3_rotate_y(azimuth) * mat3_rotate_x(elevation);
+	forward = rotation * forward; right = rotation * right; up = rotation * up;
+	_camera_positon = camera_position;
+	_camera_positon.y += height_at(camera_position);
+	// scale camera for FoV and focal length
+	// our y coordinate system is 2 high, from -1.0 to 1,0
+	float focal_length = 2.0 / (2.0 * tan(vertical_fov_radians * 0.5));
+	// scale vectors; by construction, they are already normalized
+	right = right * aspect_ratio;
+	forward = forward * focal_length;
+	// center on (0.0) ; make the y range from -1 to 1 and point upwards
+	vec2 xy = (UV - vec2(0.5)) * vec2(2, -2);
+	_look_vector = forward + xy.x * right + xy.y * up;
+	// color space conversions
+	_zenith_color = sRGB_to_linear(zenith_color); _horizon_color = sRGB_to_linear(horizon_color);
+	_sun_color = sRGB_to_linear(sun_color);
+	_color_a = sRGB_to_linear(color_a); _color_b = sRGB_to_linear(color_b);
+	_color_c = sRGB_to_linear(color_c); _color_d = sRGB_to_linear(color_d);
 }
 
 void fragment() {

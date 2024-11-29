@@ -20,7 +20,7 @@ extends Control
 
 @export_subgroup("Angles (degrees)")
 
-@export_range(0.0, 360.0, 1.0, "or_greater", "or_less") var theta  = 0.0 
+@export_range(0.0, 360.0, 1.0, "or_greater", "or_less") var theta  = 0.0
 @export_range(0.0, 360.0, 1.0, "or_greater", "or_less") var phi    = 0.0
 
 @export_subgroup("Scalars")
@@ -56,21 +56,17 @@ extends Control
 
 # camera view direction (not position)
 
-const MIN_ELEVATION :=   0.0
+const MIN_ELEVATION := -90.0
 const MAX_ELEVATION :=  90.0
 
 ## in degrees against the horizon
 @export_range(MIN_ELEVATION, MAX_ELEVATION) var elevation = 0.0
 
+const MIN_CAM_POS_Y := 1.8
+const MAX_CAM_POS_Y := 250.0
 
-## in meters; in this environment, the camera camera_focus_point
-@export_range(0.0,20.0) var camera_distance := 5.0
-
-## in meters; the point the camera is looking at and rotating around
-@export var camera_focus_point := Vector3(0.0,1.5,0.0);
-
-const MIN_CAMERA_DISTANCE := 0.1;
-const MAX_CAMERA_DISTANCE := 100.0;
+## in meters
+@export var camera_position := Vector3(0.0, 1.8, 0.0)
 
 @export_subgroup("Interactive Control")
 
@@ -79,6 +75,9 @@ const MAX_CAMERA_DISTANCE := 100.0;
 
 ## in m/s
 @export var movement_speed := 5.0
+
+## in m
+@export var height_offset := 1.8
 
 ## in degrees / pixel
 @export var mouse_look_speed := 0.2
@@ -120,24 +119,21 @@ func dcos(degrees: float) -> float:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if not Engine.is_editor_hint(): # process input only when running stand-alone
-	
 		if Input.is_action_just_pressed("ui_cancel"):
 			get_tree().quit()
-		
 		# compute movement updates
-
-		# update look
-		
-		azimuth   = fmod(azimuth + turn_speed * delta * Input.get_axis("turn_left","turn_right"), 360.0)
-		elevation = elevation + turn_speed * delta * Input.get_axis("look_down","look_up")
-		elevation = clamp(elevation, MIN_ELEVATION, MAX_ELEVATION)
-
+		# elevation and azimuth are updated in _input
 		# update movement
-
-		# ... using projections on the ground plane
-		
-		camera_distance += Input.get_axis("move_forward","move_backward") * movement_speed * delta;
-		camera_distance = clamp(camera_distance, MIN_CAMERA_DISTANCE, MAX_CAMERA_DISTANCE);
+		var forward := Vector3(dsin(azimuth), 0.0, -dcos(azimuth))
+		var right   := Vector3(dcos(azimuth), 0.0, dsin(azimuth))
+		var movement_update : Vector2 = movement_speed * delta * \
+			Input.get_vector("move_left","move_right","move_backward","move_forward")
+		var movement_update_y : float = movement_speed * delta * \
+			Input.get_axis("move_down", "move_up")
+		camera_position += movement_update.y * forward
+		camera_position += movement_update.x * right
+		camera_position.y += movement_update_y
+		camera_position.y = clamp(camera_position.y, MIN_CAM_POS_Y, MAX_CAM_POS_Y)
 		
 	set_shader_parameters();
 	
@@ -158,8 +154,7 @@ func set_shader_parameters():
 	# set shader uniforms - camera
 	
 	panel.material.set_shader_parameter("vertical_fov_radians", radians(vertical_fov_degrees))
-	panel.material.set_shader_parameter("camera_distance", camera_distance)
-	panel.material.set_shader_parameter("camera_focus_point", camera_focus_point)
+	panel.material.set_shader_parameter("camera_position", camera_position)
 	panel.material.set_shader_parameter("azimuth", radians(azimuth))
 	panel.material.set_shader_parameter("elevation", radians(elevation))
 
@@ -277,20 +272,9 @@ func _input(event):
 		tween.set_trans(Tween.TRANS_CUBIC)
 		tween.set_ease(Tween.EASE_OUT)
 		tween.set_parallel(true)
-	
-		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-			tween.tween_property(self, "camera_distance",
-									 clamp(camera_distance * mouse_wheel_step_factor,
-									 MIN_CAMERA_DISTANCE, MAX_CAMERA_DISTANCE),
-									0.25);
-		elif event.button_index == MOUSE_BUTTON_WHEEL_UP:
-			tween.tween_property(self, "camera_distance",
-									 clamp(camera_distance / mouse_wheel_step_factor,
-									 MIN_CAMERA_DISTANCE, MAX_CAMERA_DISTANCE),
-									0.25);
-			
+		
 	if event is InputEventMouseMotion:
-		azimuth = fmod(azimuth - mouse_look_speed * event.relative.x ,360.0);
+		azimuth = fmod(azimuth + mouse_look_speed * event.relative.x ,360.0);
 		elevation = elevation + mouse_look_speed * event.relative.y;
 		elevation = clamp(elevation, MIN_ELEVATION, MAX_ELEVATION);
 		
