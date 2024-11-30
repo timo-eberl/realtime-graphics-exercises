@@ -124,8 +124,8 @@ func _process(delta):
 		# compute movement updates
 		# elevation and azimuth are updated in _input
 		# update movement
-		var forward := Vector3(dsin(azimuth), 0.0, -dcos(azimuth))
-		var right   := Vector3(dcos(azimuth), 0.0, dsin(azimuth))
+		var forward := Vector3(dsin(-azimuth), 0.0, -dcos(-azimuth))
+		var right   := Vector3(dcos(-azimuth), 0.0, dsin(-azimuth))
 		var movement_update : Vector2 = movement_speed * delta * \
 			Input.get_vector("move_left","move_right","move_backward","move_forward")
 		var movement_update_y : float = movement_speed * delta * \
@@ -274,8 +274,8 @@ func _input(event):
 		tween.set_parallel(true)
 		
 	if event is InputEventMouseMotion:
-		azimuth = fmod(azimuth + mouse_look_speed * event.relative.x ,360.0);
-		elevation = elevation + mouse_look_speed * event.relative.y;
+		azimuth = fmod(azimuth - mouse_look_speed * event.relative.x ,360.0);
+		elevation = elevation - mouse_look_speed * event.relative.y;
 		elevation = clamp(elevation, MIN_ELEVATION, MAX_ELEVATION);
 		
 	if event is InputEventKey and event.is_pressed():
