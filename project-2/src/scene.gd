@@ -62,7 +62,7 @@ const MAX_ELEVATION :=  90.0
 ## in degrees against the horizon
 @export_range(MIN_ELEVATION, MAX_ELEVATION) var elevation = 0.0
 
-const MIN_CAM_POS_Y := 1.8
+const MIN_CAM_POS_Y := 2.0
 const MAX_CAM_POS_Y := 250.0
 
 ## in meters
@@ -133,8 +133,8 @@ func _process(delta):
 		camera_position += movement_update.y * forward
 		camera_position += movement_update.x * right
 		camera_position.y += movement_update_y
-		camera_position.y = clamp(camera_position.y, MIN_CAM_POS_Y, MAX_CAM_POS_Y)
 		
+	camera_position.y = clamp(camera_position.y, MIN_CAM_POS_Y, MAX_CAM_POS_Y)
 	set_shader_parameters();
 	
 func set_shader_parameters():

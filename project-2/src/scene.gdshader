@@ -1,8 +1,8 @@
 shader_type canvas_item;
 // constants
-const float EPSILON = 0.01; // larger than 0, but so small every smaller value is negative
-const float GRADIENT_DT = 5.0; // big to hide artefacts from texture
-const int MAX_STEPS = 200; // ray march steps
+const float EPSILON = 0.1; // larger than 0, but so small every smaller value is negative
+const float GRADIENT_DT = 0.05; // big to hide artefacts from texture
+const int MAX_STEPS = 150; // ray march steps
 const float MAX_DISTANCE = 1000.0; // from surface; if we are that far, we won't hit anything
 // generic shader parameters ... (set from script)
 uniform vec3 P; uniform vec3 Q; uniform vec3 R; uniform vec3 S; // ... vectors
@@ -20,8 +20,6 @@ uniform float cos_sun_radius = 0.999961923; // cos(0.5 degrees)
 // tone mapper (set from script)
 uniform float l_white : hint_range(0.0, 10.0) = 1.0;
 uniform float exposure : hint_range(-10.0, 10.0) = 0.0;
-// textures
-uniform sampler2D dune_heightmap : filter_linear, repeat_enable;
 // used to generate the ray
 varying vec3 _camera_positon; varying vec3 _look_vector;
 // linearized colors
@@ -34,6 +32,7 @@ struct Ray { vec3 p; vec3 dir; };
 #include "res://inc/tone_mapping.gdshaderinc"
 #include "res://inc/sdf_primitives.gdshaderinc"
 #include "res://inc/matrices.gdshaderinc"
+#include "res://webgl-noise/src/cellular2x2.gdshaderinc"
 
 vec3 sky(vec3 dir) {
 	dir = normalize(dir);
@@ -75,9 +74,9 @@ vec3 background(Ray ray) {
 }
 
 float height_at(vec3 p) {
-	float s = 1000.0;
-	float height = texture(dune_heightmap, p.xz / s).x;
-	return smoothstep(0, 1, height) * 75.0;
+	float s = 250.0;
+	float height = cellular2x2(p.xz / s).x;
+	return smoothstep(0, 1, height) * 60.0;
 }
 
 float sdf(vec3 p) {
