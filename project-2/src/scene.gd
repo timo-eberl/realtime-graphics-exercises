@@ -134,7 +134,7 @@ func _process(delta):
 		camera_position += movement_update.x * right
 		camera_position.y += movement_update_y
 		
-	camera_position.y = clamp(camera_position.y, MIN_CAM_POS_Y, MAX_CAM_POS_Y)
+		camera_position.y = clamp(camera_position.y, MIN_CAM_POS_Y, MAX_CAM_POS_Y)
 	set_shader_parameters();
 	
 func set_shader_parameters():

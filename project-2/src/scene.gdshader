@@ -1,7 +1,7 @@
 shader_type canvas_item;
 // constants
-const float EPSILON = 0.1; // larger than 0, but so small every smaller value is negative
-const float GRADIENT_DT = 0.05; // big to hide artefacts from texture
+const float EPSILON = 0.5; // larger than 0, but so small every smaller value is negative
+const float GRADIENT_DT = 0.5;
 const int MAX_STEPS = 150; // ray march steps
 const float MAX_DISTANCE = 1000.0; // from surface; if we are that far, we won't hit anything
 // generic shader parameters ... (set from script)
@@ -20,6 +20,8 @@ uniform float cos_sun_radius = 0.999961923; // cos(0.5 degrees)
 // tone mapper (set from script)
 uniform float l_white : hint_range(0.0, 10.0) = 1.0;
 uniform float exposure : hint_range(-10.0, 10.0) = 0.0;
+// textures
+uniform sampler2D noise_texture : filter_linear, repeat_enable;
 // used to generate the ray
 varying vec3 _camera_positon; varying vec3 _look_vector;
 // linearized colors
@@ -33,6 +35,7 @@ struct Ray { vec3 p; vec3 dir; };
 #include "res://inc/sdf_primitives.gdshaderinc"
 #include "res://inc/matrices.gdshaderinc"
 #include "res://webgl-noise/src/cellular2x2.gdshaderinc"
+#include "res://webgl-noise/src/noise2D.gdshaderinc"
 
 vec3 sky(vec3 dir) {
 	dir = normalize(dir);
@@ -73,14 +76,21 @@ vec3 background(Ray ray) {
 	return sky(ray.dir);
 }
 
-float height_at(vec3 p) {
+float height_at(vec3 p, out float debug) {
 	float s = 250.0;
-	float height = cellular2x2(p.xz / s).x;
-	return smoothstep(0, 1, height) * 60.0;
+	vec2 uv = p.xz / s;
+	// float noise = texture(noise_texture, uv * 2.0).x;
+	float noise = snoise(uv * 2.5) * 0.7;
+	uv += noise * 0.1;
+	debug = noise;
+	float height = cellular2x2(uv).x;
+	height = smoothstep(0, 1, height);
+	return height * 60.0;
 }
 
 float sdf(vec3 p) {
-	float ground = sdPlane(p, vec3(0,1,0), 1.0-height_at(p));
+	float debug;
+	float ground = sdPlane(p, vec3(0,1,0), 1.0-height_at(p, debug));
 	return ground;
 }
 
@@ -108,6 +118,8 @@ vec3 sphere_trace_ray(Ray ray) {
 
 	if (d < EPSILON) { // shade surface
 		vec3 normal = normalize(gradient(p));
+		float debug;
+		height_at(p, debug);
 		return shade(_color_b, p, normal);
 	} else {
 		return background(ray);
@@ -123,7 +135,8 @@ void vertex() {
 	mat3 rotation = mat3_rotate_y(azimuth) * mat3_rotate_x(elevation);
 	forward = rotation * forward; right = rotation * right; up = rotation * up;
 	_camera_positon = camera_position;
-	_camera_positon.y += height_at(camera_position);
+	float debug;
+	_camera_positon.y += height_at(camera_position, debug);
 	// scale camera for FoV and focal length
 	// our y coordinate system is 2 high, from -1.0 to 1,0
 	float focal_length = 2.0 / (2.0 * tan(vertical_fov_radians * 0.5));
