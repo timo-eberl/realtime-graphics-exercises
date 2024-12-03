@@ -4,7 +4,9 @@ const float EPSILON = 0.5; // larger than 0, but so small every smaller value is
 const float GRADIENT_DT = 0.5;
 const int MAX_STEPS = 150; // ray march steps
 const float MAX_DISTANCE = 1000.0; // from surface; if we are that far, we won't hit anything
-const bool ORTHO_VIEW = true;
+const bool ORTHO_VIEW = false;
+const bool SHOW_HEIGHT_CONTOUR_LINES = false;
+const float HEIGHT_CONTOUR_LINES_DISTANCE = 5.0;
 const float ORTHO_CAM_SIZE_Y = 200.0;
 // generic shader parameters ... (set from script)
 uniform vec3 P; uniform vec3 Q; uniform vec3 R; uniform vec3 S; // ... vectors
@@ -106,6 +108,10 @@ vec3 gradient(vec3 p) {
 	);
 }
 
+float inv_lerp(float a, float b, float v) {
+	return (v-a) / (b-a);
+}
+
 vec3 sphere_trace_ray(Ray ray) {
 	// step front-to-back over the ray
 	vec3 p = ray.p;
@@ -122,6 +128,10 @@ vec3 sphere_trace_ray(Ray ray) {
 		vec3 normal = normalize(gradient(p));
 		float debug;
 		height_at(p, debug);
+		if (SHOW_HEIGHT_CONTOUR_LINES) {
+			float t = distance( fract( p.y/HEIGHT_CONTOUR_LINES_DISTANCE + 0.5 ), 0.5 );
+			if (t < 0.03) { return vec3(0); }
+		}
 		return shade(_color_b, p, normal);
 	} else {
 		return background(ray);
