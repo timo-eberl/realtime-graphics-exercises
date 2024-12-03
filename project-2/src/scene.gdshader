@@ -4,6 +4,8 @@ const float EPSILON = 0.5; // larger than 0, but so small every smaller value is
 const float GRADIENT_DT = 0.5;
 const int MAX_STEPS = 150; // ray march steps
 const float MAX_DISTANCE = 1000.0; // from surface; if we are that far, we won't hit anything
+const bool ORTHO_VIEW = true;
+const float ORTHO_CAM_SIZE_Y = 200.0;
 // generic shader parameters ... (set from script)
 uniform vec3 P; uniform vec3 Q; uniform vec3 R; uniform vec3 S; // ... vectors
 uniform float lambda; uniform float mu; uniform float nu; // ... scalars
@@ -23,17 +25,17 @@ uniform float exposure : hint_range(-10.0, 10.0) = 0.0;
 // textures
 uniform sampler2D noise_texture : filter_linear, repeat_enable;
 // used to generate the ray
-varying vec3 _camera_positon; varying vec3 _look_vector;
+varying vec3 _ray_p; varying vec3 _ray_dir;
+
 // linearized colors
 varying vec3 _color_a; varying vec3 _color_b; varying vec3 _color_c; varying vec3 _color_d;
 varying vec3 _zenith_color; varying vec3 _horizon_color; varying vec3 _sun_color;
 varying vec3 _ground_albedo_a; varying vec3 _ground_albedo_b;
 
-struct Ray { vec3 p; vec3 dir; };
-
 #include "res://inc/tone_mapping.gdshaderinc"
 #include "res://inc/sdf_primitives.gdshaderinc"
 #include "res://inc/matrices.gdshaderinc"
+#include "res://inc/ray_generation.gdshaderinc"
 #include "res://webgl-noise/src/cellular2x2.gdshaderinc"
 #include "res://webgl-noise/src/noise2D.gdshaderinc"
 
@@ -127,25 +129,16 @@ vec3 sphere_trace_ray(Ray ray) {
 }
 
 void vertex() {
-	// right-handed, y up
-	vec3 forward = vec3(0, 0,-1);
-	vec3 right   = vec3(1, 0, 0);
-	vec3 up      = vec3(0, 1, 0);
-	// rotate - first x, then y
-	mat3 rotation = mat3_rotate_y(azimuth) * mat3_rotate_x(elevation);
-	forward = rotation * forward; right = rotation * right; up = rotation * up;
-	_camera_positon = camera_position;
-	float debug;
-	_camera_positon.y += height_at(camera_position, debug);
-	// scale camera for FoV and focal length
-	// our y coordinate system is 2 high, from -1.0 to 1,0
-	float focal_length = 2.0 / (2.0 * tan(vertical_fov_radians * 0.5));
-	// scale vectors; by construction, they are already normalized
-	right = right * aspect_ratio;
-	forward = forward * focal_length;
-	// center on (0.0) ; make the y range from -1 to 1 and point upwards
-	vec2 xy = (UV - vec2(0.5)) * vec2(2, -2);
-	_look_vector = forward + xy.x * right + xy.y * up;
+	Ray ray;
+	if (ORTHO_VIEW) {
+		ray = orthographic_ray(ORTHO_CAM_SIZE_Y, aspect_ratio, UV);
+	}
+	else {
+		float debug;
+		vec3 cam_pos = camera_position + vec3(0, height_at(camera_position, debug), 0);
+		ray = perspective_ray(azimuth, elevation, cam_pos, aspect_ratio, vertical_fov_radians, UV);
+	}
+	_ray_p = ray.p; _ray_dir = ray.dir;
 	// color space conversions
 	_zenith_color = sRGB_to_linear(zenith_color); _horizon_color = sRGB_to_linear(horizon_color);
 	_sun_color = sRGB_to_linear(sun_color);
@@ -154,7 +147,15 @@ void vertex() {
 }
 
 void fragment() {
-	Ray ray = Ray(_camera_positon, normalize(_look_vector));
+	Ray ray = Ray(_ray_p, normalize(_ray_dir));
+
+	//if (ORTHO_VIEW) {
+		//ray.dir = vec3(0,-1,0);
+		//ray.p.y = 100.0;
+		//ray.p.x = mix(-ORTHO_CAM_SIZE_Y * aspect_ratio, ORTHO_CAM_SIZE_Y * aspect_ratio, UV.x);
+		//ray.p.z = mix(-ORTHO_CAM_SIZE_Y, ORTHO_CAM_SIZE_Y, UV.y);
+	//}
+
 	COLOR = vec4(linear_to_sRGB(tonemap_reinhard(
 		sphere_trace_ray(ray) * pow(2.0, exposure),
 	l_white)), 1.0);
