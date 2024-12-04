@@ -6,6 +6,7 @@ const int MAX_STEPS = 150; // ray march steps
 const float MAX_DISTANCE = 1000.0; // from surface; if we are that far, we won't hit anything
 const bool ORTHO_VIEW = false;
 const bool SHOW_HEIGHT_CONTOUR_LINES = false;
+const bool VISUALIZE_NORMALS = false;
 const float HEIGHT_CONTOUR_LINES_DISTANCE = 5.0;
 const float ORTHO_CAM_SIZE_Y = 200.0;
 // generic shader parameters ... (set from script)
@@ -112,6 +113,17 @@ float inv_lerp(float a, float b, float v) {
 	return (v-a) / (b-a);
 }
 
+vec3 visualize_normal(vec3 n) {
+	vec3 color = vec3(0);
+	// the same as dot(N,L) lighting, but cheaper
+	if (n.x > 0.0) { color += n.x * vec3(1.0, 0.0, 0.0); }
+	else { color += -n.x * vec3(0.8, 0.0, 0.5); }
+	if (n.z > 0.0) { color += n.z * vec3(0.0, 0.0, 1.0); }
+	else { color += -n.z * vec3(0.0, 0.5, 1.0); }
+	if (n.y > 0.0) { color += n.y * vec3(0, 0.1, 0); }
+	return color;
+}
+
 vec3 sphere_trace_ray(Ray ray) {
 	// step front-to-back over the ray
 	vec3 p = ray.p;
@@ -132,6 +144,7 @@ vec3 sphere_trace_ray(Ray ray) {
 			float t = distance( fract( p.y/HEIGHT_CONTOUR_LINES_DISTANCE + 0.5 ), 0.5 );
 			if (t < 0.03) { return vec3(0); }
 		}
+		if (VISUALIZE_NORMALS) { return visualize_normal(normal); }
 		return shade(_color_b, p, normal);
 	} else {
 		return background(ray);
