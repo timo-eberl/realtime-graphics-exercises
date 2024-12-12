@@ -1,7 +1,7 @@
 shader_type canvas_item;
 // constants
 const float EPSILON = 0.5; // larger than 0, but so small every smaller value is negative
-const float GRADIENT_DT = 0.5;
+const float GRADIENT_DT = 0.25;
 const int MAX_STEPS = 150; // ray march steps
 const float MAX_DISTANCE = 1000.0; // from surface; if we are that far, we won't hit anything
 const bool ORTHO_VIEW = false;
@@ -25,8 +25,11 @@ uniform float cos_sun_radius = 0.999961923; // cos(0.5 degrees)
 // tone mapper (set from script)
 uniform float l_white : hint_range(0.0, 10.0) = 1.0;
 uniform float exposure : hint_range(-10.0, 10.0) = 0.0;
+// rock
+uniform float rock_height_offset = 0.0;
+uniform float rock_height = 200.0;
 // textures
-uniform sampler2D noise_texture : filter_linear, repeat_enable;
+// uniform sampler2D noise_texture : filter_linear, repeat_enable;
 // used to generate the ray
 varying vec3 _ray_p; varying vec3 _ray_dir;
 
@@ -81,23 +84,76 @@ vec3 background(Ray ray) {
 	return sky(ray.dir);
 }
 
-float height_at(vec3 p, out float debug) {
-	float s = 250.0;
-	vec2 uv = p.xz / s;
-	// float noise = texture(noise_texture, uv * 2.0).x;
+float fractal_snoise( vec2 x, int from, int to, int last ) {
+	float persistence = 0.27;
+	float lacunarity = 3.8;
+	float n = 0.0;
+	float frequency = 1.0;
+	float amplitude = 1.0;
+	float max_n = 0.0;
+	
+	for (int i = 0; i < from; i++) {
+		max_n += amplitude;
+		frequency *= lacunarity;
+		amplitude *= persistence;
+	}
+	for (int i = from; i < to; i++) {
+		n += snoise(x * frequency) * amplitude;
+		max_n += amplitude;
+		frequency *= lacunarity;
+		amplitude *= persistence;
+	}
+	for (int i = to; i < last; i++) {
+		max_n += amplitude;
+		frequency *= lacunarity;
+		amplitude *= persistence;
+	}
+
+	return n / max_n; // normalize the result
+}
+
+float rock_height_at(vec3 p, float threshold) {
+	vec2 uv = p.xz / 1000.0;
+	float h0 = rock_height_offset / rock_height;
+	float fn02 = fractal_snoise(uv, 0, 2, 5); // first 2 of 5 octaves
+	float noise = fn02 * rock_height + rock_height_offset;
+	// only if the rock is above the sand, we calculate the other octaves
+	if (noise > threshold - rock_height * 0.1) {
+		float fn25 = fractal_snoise(uv, 2, 5, 5);
+		noise = (fn02+fn25) * rock_height + rock_height_offset;
+	}
+	return noise;// * rock_height + rock_height_offset;
+}
+
+float sand_height_at(vec3 p) {
+	vec2 uv = p.xz / 250.0;
 	float noise = snoise(uv * 2.5) * 0.7;
 	uv += noise * 0.1;
-	debug = noise;
 	float height = cellular2x2(uv).x;
 	height = smoothstep(0, 1, height);
 	return height * 60.0;
 }
 
-float sdf(vec3 p) {
-	float debug;
-	float ground = sdPlane(p, vec3(0,1,0), 1.0-height_at(p, debug));
-	return ground;
+float smooth_height_at(vec3 p) {
+	float sh = sand_height_at(p);
+	// pass high threshold height so the rock height is calculated with less detail
+	float rh = rock_height_at(p, sh) + 0.0;
+	return max(sh, rh);
 }
+
+float sdf_detail(vec3 p, out bool is_close_to_rock) {
+	float sh = sand_height_at(p);
+	// pass the sand height so the rock height can be calculated with less detail
+	// where the sand is covering the rocks
+	float rh = rock_height_at(p, sh);
+	float sdSand = sdPlane(p, vec3(0,1,0), -sh);
+	float sdRock = sdPlane(p, vec3(0,1,0), -rh);
+	is_close_to_rock = sdRock - sdSand < 10.0 && sdRock < 50.0;
+	return opSmoothUnion(sdSand, sdRock, 5.0);
+	// return opUnion(sdSand, sdRock);
+}
+
+float sdf(vec3 p) { bool b; return sdf_detail(p, b); }
 
 vec3 gradient(vec3 p) {
 	const vec3 dx = vec3(GRADIENT_DT, 0.0, 0.0);
@@ -111,6 +167,10 @@ vec3 gradient(vec3 p) {
 
 float inv_lerp(float a, float b, float v) {
 	return (v-a) / (b-a);
+}
+
+float remap(float i_a, float i_b, float o_a, float o_b, float v) {
+	return mix(o_a, o_b, inv_lerp(i_a, i_b, v));
 }
 
 vec3 visualize_normal(vec3 n) {
@@ -129,17 +189,23 @@ vec3 sphere_trace_ray(Ray ray) {
 	vec3 p = ray.p;
 	float d;
 	for (int i = 0; i < MAX_STEPS; ++i) {
-		d = sdf(p);
+		bool is_close_to_rock;
+		d = sdf_detail(p, is_close_to_rock);
 		if (d < EPSILON || d > MAX_DISTANCE) {
 			break;
+		}
+		if (is_close_to_rock) {
+			// decrease stepsize the closer we are to a rock to avoid rendering artifacts
+			// caused by the fact that the rock sdf has a lipschitz constant > 1
+			float t = remap(50.0, 0.0, 1.0, 0.5, d);
+			t = min(1.0, t);
+			d *= t;
 		}
 		p = p + ray.dir * d;
 	}
 
 	if (d < EPSILON) { // shade surface
 		vec3 normal = normalize(gradient(p));
-		float debug;
-		height_at(p, debug);
 		if (SHOW_HEIGHT_CONTOUR_LINES) {
 			float t = distance( fract( p.y/HEIGHT_CONTOUR_LINES_DISTANCE + 0.5 ), 0.5 );
 			if (t < 0.03) { return vec3(0); }
@@ -157,8 +223,7 @@ void vertex() {
 		ray = orthographic_ray(ORTHO_CAM_SIZE_Y, aspect_ratio, UV);
 	}
 	else {
-		float debug;
-		vec3 cam_pos = camera_position + vec3(0, height_at(camera_position, debug), 0);
+		vec3 cam_pos = camera_position + vec3(0, smooth_height_at(camera_position), 0);
 		ray = perspective_ray(azimuth, elevation, cam_pos, aspect_ratio, vertical_fov_radians, UV);
 	}
 	_ray_p = ray.p; _ray_dir = ray.dir;
@@ -172,14 +237,7 @@ void vertex() {
 void fragment() {
 	Ray ray = Ray(_ray_p, normalize(_ray_dir));
 
-	//if (ORTHO_VIEW) {
-		//ray.dir = vec3(0,-1,0);
-		//ray.p.y = 100.0;
-		//ray.p.x = mix(-ORTHO_CAM_SIZE_Y * aspect_ratio, ORTHO_CAM_SIZE_Y * aspect_ratio, UV.x);
-		//ray.p.z = mix(-ORTHO_CAM_SIZE_Y, ORTHO_CAM_SIZE_Y, UV.y);
-	//}
-
 	COLOR = vec4(linear_to_sRGB(tonemap_reinhard(
-		sphere_trace_ray(ray) * pow(2.0, exposure),
-	l_white)), 1.0);
+		sphere_trace_ray(ray) * pow(2.0, exposure), l_white
+	)), 1.0);
 }
