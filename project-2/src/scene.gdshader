@@ -28,8 +28,12 @@ uniform float exposure : hint_range(-10.0, 10.0) = 0.0;
 // rock
 uniform float rock_height_offset = 0.0;
 uniform float rock_height = 200.0;
+uniform float sand_on_rock_amount = 0.5;
 // textures
-// uniform sampler2D noise_texture : filter_linear, repeat_enable;
+uniform sampler2D sand_albedo_texture : filter_linear, repeat_enable;
+// uniform sampler2D sand_normal_texture : filter_linear, repeat_enable, hint_normal;
+uniform sampler2D rock_albedo_texture : filter_linear, repeat_enable;
+// uniform sampler2D rock_normal_texture : filter_linear, repeat_enable, hint_normal;
 // used to generate the ray
 varying vec3 _ray_p; varying vec3 _ray_dir;
 
@@ -155,6 +159,8 @@ float sdf_detail(vec3 p, out bool is_close_to_rock) {
 
 float sdf(vec3 p) { bool b; return sdf_detail(p, b); }
 
+float sdfSand(vec3 p) { return sdPlane(p, vec3(0,1,0), -sand_height_at(p)); }
+
 vec3 gradient(vec3 p) {
 	const vec3 dx = vec3(GRADIENT_DT, 0.0, 0.0);
 	const vec3 dy = vec3(0.0, GRADIENT_DT, 0.0);
@@ -211,8 +217,25 @@ vec3 sphere_trace_ray(Ray ray) {
 			if (t < 0.03) { return vec3(0); }
 		}
 		if (VISUALIZE_NORMALS) { return visualize_normal(normal); }
-		return shade(_color_b, p, normal);
-	} else {
+		vec2 sand_uv = vec2(p.x, -p.z) * 0.2;
+		vec2 rock_uv = vec2(p.x, -p.z) * 0.05;
+		vec3 sand_albedo = texture(sand_albedo_texture, sand_uv).xyz;
+		vec3 rock_albedo = texture(rock_albedo_texture, rock_uv).xyz;
+		sand_albedo = sRGB_to_linear(sand_albedo) * vec3(1.0, 0.7, 0.7);
+		rock_albedo = sRGB_to_linear(rock_albedo) * vec3(1.0, 0.9, 0.8);
+
+		// add some sand on top of the rocks based on the normal y direction
+		float t = remap(0.5, 0.9, 0.0, sand_on_rock_amount, normal.y);
+		t = clamp(t, 0, sand_on_rock_amount);
+		vec3 rock_with_sand_albedo = mix(rock_albedo, sand_albedo, t);
+
+		// mix colors based on sdf
+		float distance_to_sand = sdfSand(p) - EPSILON;
+		vec3 albedo = mix(sand_albedo, rock_with_sand_albedo, clamp(distance_to_sand,0,1));
+
+		return shade(albedo, p, normal);
+	}
+	else {
 		return background(ray);
 	}
 }
