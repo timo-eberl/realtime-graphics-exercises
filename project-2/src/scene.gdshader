@@ -37,6 +37,7 @@ uniform sampler2D bloom_strength_gradient : filter_linear, repeat_enable;
 // textures
 uniform sampler2D sand_albedo_texture : filter_linear, repeat_enable;
 uniform sampler2D rock_albedo_texture : filter_linear, repeat_enable;
+uniform sampler2D cloud_texture : filter_linear, repeat_enable;
 // controls after what distance the rocks will start to disappear
 uniform float cam_rock_fade_distance_start = 2000.0;
 uniform float cam_rock_fade_distance_end = 3000.0;
@@ -220,7 +221,7 @@ vec3 shade(vec3 albedo, vec3 point, vec3 normal) {
 	// sun : Lambertian
 	// the integral over the upper hemisphere times cos(theta) equals to pi
 	// this cancels out with albedo/pi from lambertian BRDF
-	vec3 res = albedo * max(0.0, dot(normal, sun_direction()));
+	vec3 res = albedo * max(0.0, dot(normal, sun_direction() * _sun_color));
 	res += albedo * max(0.0, normal.y) * _zenith_color;
 	res += albedo * vec3(0.1); // ambient
 	return res;
@@ -271,17 +272,33 @@ vec3 shade_surface(vec3 p, vec3 normal) {
 }
 
 vec3 background(Ray ray) {
-	// draw ground plane shaded as sound ("beneath" sdf) to hide that sometimes the sdf becomes invisible
+	// draw ground plane shaded as sand ("beneath" sdf) to hide that sometimes the sdf becomes invisible
 	// intersect against ground plane
 	float t = (-ray.p.y) / (ray.dir.y);
 	// intersection in front? draw ground
 	if (t > 0.0) {
 		vec3 hitpoint = ray.p + t * ray.dir;
-		vec3 a = abs(hitpoint);
 		float cam_distance = distance(ray.p.xz, hitpoint.xz);
 		return shade_surface(hitpoint, vec3(0,1,0));
 	}
-	return sky(ray.dir);
+
+	// draw clouds on a plane in the sky
+	float cloud_height = 500.0;
+	float t2 = (-ray.p.y + 500.0) / (ray.dir.y);
+	float clouds = 0.0;
+	vec3 cloud_color = vec3(0.7);
+	if (t2 > 0.0) {
+		vec3 hitpoint = ray.p + t2 * ray.dir;
+		clouds = texture(cloud_texture, hitpoint.xz * 0.00003).x;
+		float cam_distance = distance(ray.p.xz, hitpoint.xz);
+		clouds *= clamp( inv_lerp(50000.0, 10000.0, cam_distance) ,0,1); // fade out in distance
+		clouds = clamp( mix(-0.5, 0.5, clouds) ,0,1);
+		// transmittance + reflection
+		cloud_color = shade(cloud_color, hitpoint, ray.dir) + shade(cloud_color, hitpoint, vec3(0,1,0));
+		cloud_color *= 0.5;
+	}
+
+	return sky(ray.dir) + cloud_color * clouds;
 }
 
 vec3 sphere_trace_ray(Ray ray) {

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://hvoagqtln2c4"]
+[gd_scene load_steps=18 format=3 uid="uid://hvoagqtln2c4"]
 
 [ext_resource type="Script" path="res://scene.gd" id="1_pttkg"]
 [ext_resource type="Shader" path="res://scene.gdshader" id="1_vrx5x"]
@@ -19,6 +19,15 @@ colors = PackedColorArray(0, 0, 0, 1, 0.0666667, 0.0666667, 0.0666667, 1, 0.0784
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_hhp7a"]
 gradient = SubResource("Gradient_dv2eu")
 
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_0h7bi"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_na76e"]
+width = 2048
+height = 2048
+seamless = true
+seamless_blend_skirt = 0.3
+noise = SubResource("FastNoiseLite_0h7bi")
+
 [sub_resource type="Gradient" id="Gradient_xxh83"]
 offsets = PackedFloat32Array(0, 0.201342, 0.25, 0.308725, 0.5, 0.687919, 0.75, 0.815436, 1)
 colors = PackedColorArray(0.141176, 0.227451, 0.317647, 1, 0.265088, 0.220503, 0.270746, 1, 0.980392, 0.180392, 0, 1, 0.654665, 0.772339, 0.789262, 1, 0.572549, 0.921569, 0.988235, 1, 0.647138, 0.825082, 0.815792, 1, 1, 0.368627, 0, 1, 0.325622, 0.257771, 0.249428, 1, 0.141176, 0.227451, 0.317647, 1)
@@ -27,8 +36,8 @@ colors = PackedColorArray(0.141176, 0.227451, 0.317647, 1, 0.265088, 0.220503, 0
 gradient = SubResource("Gradient_xxh83")
 
 [sub_resource type="Gradient" id="Gradient_dhi22"]
-offsets = PackedFloat32Array(0, 0.174497, 0.25, 0.328859, 0.5, 0.607383, 0.674497, 0.75, 0.818792, 1)
-colors = PackedColorArray(0, 0, 0, 1, 0.187919, 0.07222, 0.0228451, 1, 1, 0.384314, 0.121569, 1, 0.976207, 0.79771, 0.63311, 1, 0.968627, 0.929412, 0.796078, 1, 0.940567, 0.861365, 0.7133, 1, 0.835978, 0.607738, 0.404764, 1, 0.811765, 0.54902, 0.333333, 1, 0.174339, 0.11791, 0.0715884, 1, 0, 0, 0, 1)
+offsets = PackedFloat32Array(0, 0.137584, 0.174497, 0.25, 0.328859, 0.5, 0.607383, 0.674497, 0.75, 0.818792, 0.85906, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1, 0.187919, 0.07222, 0.0228451, 1, 1, 0.384314, 0.121569, 1, 0.976207, 0.79771, 0.63311, 1, 0.968627, 0.929412, 0.796078, 1, 0.940567, 0.861365, 0.7133, 1, 0.835978, 0.607738, 0.404764, 1, 0.811765, 0.54902, 0.333333, 1, 0.174339, 0.11791, 0.0715884, 1, 0, 0, 0, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_wq4ul"]
 gradient = SubResource("Gradient_dhi22")
@@ -60,7 +69,7 @@ shader_parameter/camera_position = Vector3(416.375, 18.865, -414.67)
 shader_parameter/azimuth = 3.14159
 shader_parameter/elevation = 0.354389
 shader_parameter/vertical_fov_radians = 0.785398
-shader_parameter/time_of_day = 0.0306268
+shader_parameter/time_of_day = 12.0
 shader_parameter/cos_sun_radius = 0.999762
 shader_parameter/l_white = 2.0
 shader_parameter/exposure = 0.0
@@ -76,6 +85,7 @@ shader_parameter/bloom_radius_gradient = SubResource("GradientTexture1D_mcwyy")
 shader_parameter/bloom_strength_gradient = SubResource("GradientTexture1D_hhp7a")
 shader_parameter/sand_albedo_texture = ExtResource("3_1qq44")
 shader_parameter/rock_albedo_texture = ExtResource("3_wrpgw")
+shader_parameter/cloud_texture = SubResource("NoiseTexture2D_na76e")
 
 [node name="Scene" type="Control"]
 layout_mode = 3
@@ -85,7 +95,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_pttkg")
-time_of_day = 0.0306268
 time_speed = 5.0
 sun_radius_degrees = 1.25
 azimuth = 180.0
