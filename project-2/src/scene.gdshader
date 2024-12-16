@@ -92,11 +92,11 @@ float rock_height_at(vec3 p, vec3 cam_pos, float threshold) {
 
 	vec2 uv = p.xz / 1000.0;
 	float h0 = rock_height_offset / rock_height;
-	float fn02 = fractal_snoise(uv, 0, 2, 5); // first 2 of 5 octaves
+	float fn02 = fractal_snoise(uv, 0, 2, 6); // first 2 of 5 octaves
 	float noise = fn02 * rock_height + rock_height_offset;
 	// only if the rock is above the sand, we calculate the other octaves
 	if (noise > threshold - rock_height * 0.1) {
-		float fn25 = fractal_snoise(uv, 2, 5, 5);
+		float fn25 = fractal_snoise(uv, 2, 6, 6);
 		noise = (fn02+fn25) * rock_height + rock_height_offset;
 	}
 
@@ -244,7 +244,8 @@ vec3 sphere_trace_ray(Ray ray) {
 		if (is_close_to_rock) {
 			// decrease stepsize the closer we are to a rock to avoid rendering artifacts
 			// caused by the fact that the rock sdf has a lipschitz constant > 1
-			float t = remap(50.0, 0.0, 1.0, 0.5, d);
+			float step_shrink = 0.25; // compromise between artifacts and performance. lower = less artifacts
+			float t = remap(40.0, 0.0, 1.0, step_shrink, d);
 			t = min(1.0, t);
 			d *= t;
 		}
