@@ -35,6 +35,8 @@ shader_parameter/exposure = 0.0
 shader_parameter/rock_height_offset = -68.925
 shader_parameter/rock_height = 183.44
 shader_parameter/sand_on_rock_amount = 0.595
+shader_parameter/cam_rock_fade_distance_start = 2000.0
+shader_parameter/cam_rock_fade_distance_end = 3000.0
 shader_parameter/sand_albedo_texture = ExtResource("3_1qq44")
 shader_parameter/rock_albedo_texture = ExtResource("3_wrpgw")
 

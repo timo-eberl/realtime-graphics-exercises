@@ -31,9 +31,10 @@ uniform float rock_height = 200.0;
 uniform float sand_on_rock_amount = 0.5;
 // textures
 uniform sampler2D sand_albedo_texture : filter_linear, repeat_enable;
-// uniform sampler2D sand_normal_texture : filter_linear, repeat_enable, hint_normal;
 uniform sampler2D rock_albedo_texture : filter_linear, repeat_enable;
-// uniform sampler2D rock_normal_texture : filter_linear, repeat_enable, hint_normal;
+// controls after what distance the rocks will start to disappear
+uniform float cam_rock_fade_distance_start = 2000.0;
+uniform float cam_rock_fade_distance_end = 3000.0;
 // used to generate the ray
 varying vec3 _ray_p; varying vec3 _ray_dir;
 
@@ -49,43 +50,10 @@ varying vec3 _ground_albedo_a; varying vec3 _ground_albedo_b;
 #include "res://webgl-noise/src/cellular2x2.gdshaderinc"
 #include "res://webgl-noise/src/noise2D.gdshaderinc"
 
-vec3 sky(vec3 dir) {
-	dir = normalize(dir);
-	vec3 sky_color = mix(_horizon_color, _zenith_color, clamp(pow(dir.y, 0.5), 0, 1));
-	float t = smoothstep(cos_sun_radius*0.99995, cos_sun_radius, dot(dir, sun_direction));
-	return mix(sky_color, _sun_color, t);
-}
+float inv_lerp(float a, float b, float v) { return (v-a) / (b-a); }
 
-vec3 shade(vec3 albedo, vec3 point, vec3 normal) {
-	// sun : Lambertian
-	// the integral over the upper hemisphere times cos(theta) equals to pi
-	// this cancels out with albedo/pi from lambertian BRDF
-	vec3 res = albedo * max(0.0, dot(normal, sun_direction));
-	res += albedo * max(0.0, normal.y) * _zenith_color;
-	res += albedo * vec3(0.1); // ambient
-	return res;
-}
-
-vec3 ground_color(vec3 p) {
-	vec3 albedo = vec3(p.x >= 0.0 ? 1.0 : 0.2, 0.2, p.z >= 0.0 ? 1.0 : 0.2);
-	vec3 pf = fract(p * 0.5); // make grid cell 1m large
-	bool checkerboard = (pf.x > 0.5) == (pf.z > 0.5);
-	albedo *= (checkerboard ? 0.15 : 0.5);
-	return shade(albedo, p, vec3(0.0,1.0,0.0));
-}
-
-vec3 background(Ray ray) {
-	// intersect against ground plane
-	float t = (-ray.p.y) / (ray.dir.y);
-	// intersection in front? draw ground
-	if (t > 0.0) {
-		vec3 hitpoint = ray.p + t * ray.dir;
-		vec3 a = abs(hitpoint);
-		if (max(a.x, max(a.y, a.z)) <= 2.0) { // no checkerboard in the distance
-			return ground_color(hitpoint);
-		}
-	}
-	return sky(ray.dir);
+float remap(float i_a, float i_b, float o_a, float o_b, float v) {
+	return mix(o_a, o_b, inv_lerp(i_a, i_b, v));
 }
 
 float fractal_snoise( vec2 x, int from, int to, int last ) {
@@ -116,7 +84,12 @@ float fractal_snoise( vec2 x, int from, int to, int last ) {
 	return n / max_n; // normalize the result
 }
 
-float rock_height_at(vec3 p, float threshold) {
+float rock_height_at(vec3 p, vec3 cam_pos, float threshold) {
+	float cam_distance = distance(cam_pos.xz, p.xz);
+	if (cam_distance > cam_rock_fade_distance_end) {
+		return 0.0;
+	}
+
 	vec2 uv = p.xz / 1000.0;
 	float h0 = rock_height_offset / rock_height;
 	float fn02 = fractal_snoise(uv, 0, 2, 5); // first 2 of 5 octaves
@@ -126,30 +99,40 @@ float rock_height_at(vec3 p, float threshold) {
 		float fn25 = fractal_snoise(uv, 2, 5, 5);
 		noise = (fn02+fn25) * rock_height + rock_height_offset;
 	}
+
+	if (cam_distance > cam_rock_fade_distance_start) {
+		// cam_distance is between cam_rock_fade_distance_start and cam_rock_fade_distance_end
+		return remap(cam_rock_fade_distance_start, cam_rock_fade_distance_end, noise, 0.0, cam_distance);
+	}
+
 	return noise;// * rock_height + rock_height_offset;
 }
 
-float sand_height_at(vec3 p) {
+float sand_height_at(vec3 p, vec3 cam_pos) {
+	float cam_distance = distance(cam_pos.xz, p.xz);
+
 	vec2 uv = p.xz / 250.0;
 	float noise = snoise(uv * 2.5) * 0.7;
 	uv += noise * 0.1;
 	float height = cellular2x2(uv).x;
 	height = smoothstep(0, 1, height);
-	return height * 60.0;
+	height *= 60.0;
+
+	return height;
 }
 
-float smooth_height_at(vec3 p) {
-	float sh = sand_height_at(p);
+float smooth_height_at(vec3 p, vec3 cam_pos) {
+	float sh = sand_height_at(p, cam_pos);
 	// pass high threshold height so the rock height is calculated with less detail
-	float rh = rock_height_at(p, sh) + 0.0;
+	float rh = rock_height_at(p, cam_pos, sh) + 0.0;
 	return max(sh, rh);
 }
 
 float sdf_detail(vec3 p, out bool is_close_to_rock) {
-	float sh = sand_height_at(p);
+	float sh = sand_height_at(p, _ray_p);
 	// pass the sand height so the rock height can be calculated with less detail
 	// where the sand is covering the rocks
-	float rh = rock_height_at(p, sh);
+	float rh = rock_height_at(p, _ray_p, sh);
 	float sdSand = sdPlane(p, vec3(0,1,0), -sh);
 	float sdRock = sdPlane(p, vec3(0,1,0), -rh);
 	is_close_to_rock = sdRock - sdSand < 10.0 && sdRock < 50.0;
@@ -157,9 +140,9 @@ float sdf_detail(vec3 p, out bool is_close_to_rock) {
 	// return opUnion(sdSand, sdRock);
 }
 
-float sdf(vec3 p) { bool b; return sdf_detail(p, b); }
+float sdfSand(vec3 p) { return sdPlane(p, vec3(0,1,0), -sand_height_at(p, _ray_p)); }
 
-float sdfSand(vec3 p) { return sdPlane(p, vec3(0,1,0), -sand_height_at(p)); }
+float sdf(vec3 p) { bool b; return sdf_detail(p, b); }
 
 vec3 gradient(vec3 p) {
 	const vec3 dx = vec3(GRADIENT_DT, 0.0, 0.0);
@@ -171,12 +154,31 @@ vec3 gradient(vec3 p) {
 	);
 }
 
-float inv_lerp(float a, float b, float v) {
-	return (v-a) / (b-a);
+vec3 sky(vec3 dir) {
+	dir = normalize(dir);
+	vec3 sky_color = mix(_horizon_color, _zenith_color, clamp(pow(dir.y, 0.5), 0, 1));
+	float t = smoothstep(cos_sun_radius*0.999995, cos_sun_radius, dot(dir, sun_direction));
+	float t_bloom = smoothstep(cos_sun_radius*0.998, cos_sun_radius, dot(dir, sun_direction))
+		+ smoothstep(cos_sun_radius*0.99, cos_sun_radius, dot(dir, sun_direction)) * 0.4;
+	return mix(sky_color, _sun_color, t) + mix(sky_color, sun_color, t_bloom);
 }
 
-float remap(float i_a, float i_b, float o_a, float o_b, float v) {
-	return mix(o_a, o_b, inv_lerp(i_a, i_b, v));
+vec3 shade(vec3 albedo, vec3 point, vec3 normal) {
+	// sun : Lambertian
+	// the integral over the upper hemisphere times cos(theta) equals to pi
+	// this cancels out with albedo/pi from lambertian BRDF
+	vec3 res = albedo * max(0.0, dot(normal, sun_direction));
+	res += albedo * max(0.0, normal.y) * _zenith_color;
+	res += albedo * vec3(0.1); // ambient
+	return res;
+}
+
+vec3 ground_color(vec3 p) {
+	vec3 albedo = vec3(p.x >= 0.0 ? 1.0 : 0.2, 0.2, p.z >= 0.0 ? 1.0 : 0.2);
+	vec3 pf = fract(p * 0.5); // make grid cell 1m large
+	bool checkerboard = (pf.x > 0.5) == (pf.z > 0.5);
+	albedo *= (checkerboard ? 0.15 : 0.5);
+	return shade(albedo, p, vec3(0.0,1.0,0.0));
 }
 
 vec3 visualize_normal(vec3 n) {
@@ -188,6 +190,45 @@ vec3 visualize_normal(vec3 n) {
 	else { color += -n.z * vec3(0.0, 0.5, 1.0); }
 	if (n.y > 0.0) { color += n.y * vec3(0, 0.1, 0); }
 	return color;
+}
+
+vec3 shade_surface(vec3 p, vec3 normal) {
+	if (SHOW_HEIGHT_CONTOUR_LINES) {
+		float t = distance( fract( p.y/HEIGHT_CONTOUR_LINES_DISTANCE + 0.5 ), 0.5 );
+		if (t < 0.03) { return vec3(0); }
+	}
+	if (VISUALIZE_NORMALS) { return visualize_normal(normal); }
+	vec2 sand_uv = vec2(p.x, -p.z) * 0.2;
+	vec2 rock_uv = vec2(p.x, -p.z) * 0.05;
+	vec3 sand_albedo = texture(sand_albedo_texture, sand_uv).xyz;
+	vec3 rock_albedo = texture(rock_albedo_texture, rock_uv).xyz;
+	sand_albedo = sRGB_to_linear(sand_albedo) * vec3(1.0, 0.7, 0.7);
+	rock_albedo = sRGB_to_linear(rock_albedo) * vec3(1.0, 0.9, 0.8);
+
+	// add some sand on top of the rocks based on the normal y direction
+	float t = remap(0.5, 0.9, 0.0, sand_on_rock_amount, normal.y);
+	t = clamp(t, 0, sand_on_rock_amount);
+	vec3 rock_with_sand_albedo = mix(rock_albedo, sand_albedo, t);
+
+	// mix colors based on sdf
+	float distance_to_sand = sdfSand(p) - EPSILON;
+	vec3 albedo = mix(sand_albedo, rock_with_sand_albedo, clamp(distance_to_sand,0,1));
+
+	return shade(albedo, p, normal);
+}
+
+vec3 background(Ray ray) {
+	// draw ground plane shaded as sound ("beneath" sdf) to hide that sometimes the sdf becomes invisible
+	// intersect against ground plane
+	float t = (-ray.p.y) / (ray.dir.y);
+	// intersection in front? draw ground
+	if (t > 0.0) {
+		vec3 hitpoint = ray.p + t * ray.dir;
+		vec3 a = abs(hitpoint);
+		float cam_distance = distance(ray.p.xz, hitpoint.xz);
+		return shade_surface(hitpoint, vec3(0,1,0));
+	}
+	return sky(ray.dir);
 }
 
 vec3 sphere_trace_ray(Ray ray) {
@@ -210,30 +251,9 @@ vec3 sphere_trace_ray(Ray ray) {
 		p = p + ray.dir * d;
 	}
 
-	if (d < EPSILON) { // shade surface
+	if (d < EPSILON) {
 		vec3 normal = normalize(gradient(p));
-		if (SHOW_HEIGHT_CONTOUR_LINES) {
-			float t = distance( fract( p.y/HEIGHT_CONTOUR_LINES_DISTANCE + 0.5 ), 0.5 );
-			if (t < 0.03) { return vec3(0); }
-		}
-		if (VISUALIZE_NORMALS) { return visualize_normal(normal); }
-		vec2 sand_uv = vec2(p.x, -p.z) * 0.2;
-		vec2 rock_uv = vec2(p.x, -p.z) * 0.05;
-		vec3 sand_albedo = texture(sand_albedo_texture, sand_uv).xyz;
-		vec3 rock_albedo = texture(rock_albedo_texture, rock_uv).xyz;
-		sand_albedo = sRGB_to_linear(sand_albedo) * vec3(1.0, 0.7, 0.7);
-		rock_albedo = sRGB_to_linear(rock_albedo) * vec3(1.0, 0.9, 0.8);
-
-		// add some sand on top of the rocks based on the normal y direction
-		float t = remap(0.5, 0.9, 0.0, sand_on_rock_amount, normal.y);
-		t = clamp(t, 0, sand_on_rock_amount);
-		vec3 rock_with_sand_albedo = mix(rock_albedo, sand_albedo, t);
-
-		// mix colors based on sdf
-		float distance_to_sand = sdfSand(p) - EPSILON;
-		vec3 albedo = mix(sand_albedo, rock_with_sand_albedo, clamp(distance_to_sand,0,1));
-
-		return shade(albedo, p, normal);
+		return shade_surface(p, normal);
 	}
 	else {
 		return background(ray);
@@ -246,7 +266,7 @@ void vertex() {
 		ray = orthographic_ray(ORTHO_CAM_SIZE_Y, aspect_ratio, UV);
 	}
 	else {
-		vec3 cam_pos = camera_position + vec3(0, smooth_height_at(camera_position), 0);
+		vec3 cam_pos = camera_position + vec3(0, smooth_height_at(camera_position, camera_position), 0);
 		ray = perspective_ray(azimuth, elevation, cam_pos, aspect_ratio, vertical_fov_radians, UV);
 	}
 	_ray_p = ray.p; _ray_dir = ray.dir;
