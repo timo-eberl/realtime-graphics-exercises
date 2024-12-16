@@ -19,8 +19,7 @@ uniform float aspect_ratio = 1.0; uniform vec3 camera_position = vec3(0,1.5,0);
 uniform float azimuth = 0.0; uniform float elevation = 0.0;
 uniform float vertical_fov_radians = 0.7854; // 45 degrees
 // sky (set from script)
-uniform vec3 zenith_color = vec3(0.2); uniform vec3 horizon_color = vec3(1);
-uniform vec3 sun_color = vec3(1); uniform vec3 sun_direction = vec3(0,1,0); // normalized in script
+uniform float time_of_day = 12.0; // 0 - 24
 uniform float cos_sun_radius = 0.999961923; // cos(0.5 degrees)
 // tone mapper (set from script)
 uniform float l_white : hint_range(0.0, 10.0) = 1.0;
@@ -29,6 +28,12 @@ uniform float exposure : hint_range(-10.0, 10.0) = 0.0;
 uniform float rock_height_offset = 0.0;
 uniform float rock_height = 200.0;
 uniform float sand_on_rock_amount = 0.5;
+// sky
+uniform sampler2D zenith_color_gradient : filter_linear, repeat_enable;
+uniform sampler2D horizon_color_gradient : filter_linear, repeat_enable;
+uniform sampler2D sun_color_gradient : filter_linear, repeat_enable;
+uniform sampler2D bloom_radius_gradient : filter_linear, repeat_enable;
+uniform sampler2D bloom_strength_gradient : filter_linear, repeat_enable;
 // textures
 uniform sampler2D sand_albedo_texture : filter_linear, repeat_enable;
 uniform sampler2D rock_albedo_texture : filter_linear, repeat_enable;
@@ -37,7 +42,6 @@ uniform float cam_rock_fade_distance_start = 2000.0;
 uniform float cam_rock_fade_distance_end = 3000.0;
 // used to generate the ray
 varying vec3 _ray_p; varying vec3 _ray_dir;
-
 // linearized colors
 varying vec3 _color_a; varying vec3 _color_b; varying vec3 _color_c; varying vec3 _color_d;
 varying vec3 _zenith_color; varying vec3 _horizon_color; varying vec3 _sun_color;
@@ -154,20 +158,69 @@ vec3 gradient(vec3 p) {
 	);
 }
 
-vec3 sky(vec3 dir) {
-	dir = normalize(dir);
-	vec3 sky_color = mix(_horizon_color, _zenith_color, clamp(pow(dir.y, 0.5), 0, 1));
-	float t = smoothstep(cos_sun_radius*0.999995, cos_sun_radius, dot(dir, sun_direction));
-	float t_bloom = smoothstep(cos_sun_radius*0.998, cos_sun_radius, dot(dir, sun_direction))
-		+ smoothstep(cos_sun_radius*0.99, cos_sun_radius, dot(dir, sun_direction)) * 0.4;
-	return mix(sky_color, _sun_color, t) + mix(sky_color, sun_color, t_bloom);
+vec3 sun_direction() {
+	// 0 (0:00) to TAU (24:00)
+	float remapped_time = remap(0.0, 24.0, 0.0, TAU, time_of_day);
+
+	float az = remapped_time; // east and west directions are incorrect but whatever
+
+	// cos wave that is lowest at 0:00, peaks at 12:00 and goes through 0 at sunrise (6:00) and sunset (18:00)
+	// peak is 45° or pi/4, which is roughly the maximum altitude at the equator (https://www.suncalc.org)
+	float el = -cos( remapped_time ) * PI * 0.25;
+
+	// convert spherical coordinates (azimuth, elevation) to direction
+	float x = cos(el) * cos(az);
+	float y = sin(el);
+	float z = cos(el) * sin(az);
+	return normalize(vec3(x,y,z));
 }
+
+// https://iquilezles.org/articles/functions/
+float rational_bump( float x, float k ) { return 1.0/(1.0+k*x*x); }
+
+vec3 sky(vec3 dir) {
+	float bloom_strength = texture(bloom_strength_gradient, vec2(time_of_day/24.0, 0)).x;
+	float bloom_radius = texture(bloom_radius_gradient, vec2(time_of_day/24.0, 0)).x;
+
+	dir = normalize(dir);
+	vec3 sky_color = mix(_horizon_color, _zenith_color, clamp(pow(dir.y, 0.2), 0, 1));
+	float t = smoothstep(cos_sun_radius*0.9998, cos_sun_radius, dot(dir, sun_direction()));
+	float t_bloom = inv_lerp(cos_sun_radius, cos_sun_radius*mix(1.0, 0.8, bloom_radius), dot(dir, sun_direction()));
+	t_bloom = rational_bump(t_bloom, 64.0) * bloom_strength * 15.0;
+
+	return mix(sky_color, _sun_color * 100.0, t)
+		+ mix(sky_color, _sun_color, t_bloom);
+}
+
+/*
+night
+	zenith: 010411
+	horizon: 243a51
+morning
+	zenith: 005291
+	horizon: fa2e00
+	sun: ff621f
+	bloom radius: 0.6855
+	bloom strength: 0.0667
+day
+	zenith: 2124db
+	horizon: 92ebfc
+	sun: f7edcb
+	bloom radius: 0.0035
+	bloom strength: 1
+evening
+	zenith: 133142
+	horizon: ff5e00
+	sun: cf8c55
+	bloom radius: 0.11
+	bloom strength: 0.366
+*/
 
 vec3 shade(vec3 albedo, vec3 point, vec3 normal) {
 	// sun : Lambertian
 	// the integral over the upper hemisphere times cos(theta) equals to pi
 	// this cancels out with albedo/pi from lambertian BRDF
-	vec3 res = albedo * max(0.0, dot(normal, sun_direction));
+	vec3 res = albedo * max(0.0, dot(normal, sun_direction()));
 	res += albedo * max(0.0, normal.y) * _zenith_color;
 	res += albedo * vec3(0.1); // ambient
 	return res;
@@ -202,7 +255,7 @@ vec3 shade_surface(vec3 p, vec3 normal) {
 	vec2 rock_uv = vec2(p.x, -p.z) * 0.05;
 	vec3 sand_albedo = texture(sand_albedo_texture, sand_uv).xyz;
 	vec3 rock_albedo = texture(rock_albedo_texture, rock_uv).xyz;
-	sand_albedo = sRGB_to_linear(sand_albedo) * vec3(1.0, 0.7, 0.7);
+	sand_albedo = sRGB_to_linear(sand_albedo) * vec3(1.0, 0.9, 0.9);
 	rock_albedo = sRGB_to_linear(rock_albedo) * vec3(1.0, 0.9, 0.8);
 
 	// add some sand on top of the rocks based on the normal y direction
@@ -272,8 +325,9 @@ void vertex() {
 	}
 	_ray_p = ray.p; _ray_dir = ray.dir;
 	// color space conversions
-	_zenith_color = sRGB_to_linear(zenith_color); _horizon_color = sRGB_to_linear(horizon_color);
-	_sun_color = sRGB_to_linear(sun_color);
+	_zenith_color = sRGB_to_linear( texture(zenith_color_gradient, vec2(time_of_day/24.0, 0.0)).xyz );
+	_horizon_color = sRGB_to_linear( texture(horizon_color_gradient, vec2(time_of_day/24.0, 0.0)).xyz );
+	_sun_color = sRGB_to_linear( texture(sun_color_gradient, vec2(time_of_day/24.0, 0.0)).xyz );
 	_color_a = sRGB_to_linear(color_a); _color_b = sRGB_to_linear(color_b);
 	_color_c = sRGB_to_linear(color_c); _color_d = sRGB_to_linear(color_d);
 }

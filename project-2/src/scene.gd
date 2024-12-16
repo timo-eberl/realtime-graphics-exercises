@@ -42,11 +42,9 @@ extends Control
 
 @export_subgroup("Sky")
 
-@export_color_no_alpha var zenith_color : Color = Color(0.2,0.3,0.5)
-@export_color_no_alpha var horizon_color : Color = Color(0.2,0.45,0.75)
+@export_range(0.0, 24.0, 0.01) var time_of_day : float = 12.0
+@export var time_speed : float = 1.0
 
-@export_color_no_alpha var sun_color : Color = Color(1.0, 1.0, 1.0)
-@export var sun_direction := Vector3(0.7,0.7,-0.7)
 @export_range(0.0, 10.0,0.01, "or_greater") var sun_radius_degrees : float = 0.5
 
 @export_group("Camera")
@@ -118,6 +116,8 @@ func dcos(degrees: float) -> float:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	#time_of_day += delta * time_speed
+	time_of_day = fmod(time_of_day, 24.0)
 	if not Engine.is_editor_hint(): # process input only when running stand-alone
 		if Input.is_action_just_pressed("ui_cancel"):
 			get_tree().quit()
@@ -145,10 +145,7 @@ func set_shader_parameters():
 	
 	# set shader parameters: sky
 	
-	panel.material.set_shader_parameter("zenith_color", zenith_color)
-	panel.material.set_shader_parameter("horizon_color", horizon_color)
-	panel.material.set_shader_parameter("sun_direction", sun_direction.normalized())
-	panel.material.set_shader_parameter("sun_color", sun_color)
+	panel.material.set_shader_parameter("time_of_day", time_of_day)
 	panel.material.set_shader_parameter("cos_sun_radius", cos(radians(sun_radius_degrees)))
 	
 	# set shader uniforms - camera
@@ -184,8 +181,8 @@ func set_condition(k: Key):
 	
 	var tween := create_tween()
 	
-	tween.set_trans(Tween.TRANS_CUBIC)
-	tween.set_ease(Tween.EASE_IN_OUT)
+	#tween.set_trans(Tween.TRANS_CUBIC)
+	#tween.set_ease(Tween.EASE_IN_OUT)
 	tween.set_parallel(true)
 	
 	match k:
@@ -232,17 +229,17 @@ func set_condition(k: Key):
 				tween.tween_property(self, "lambda", clamp(lambda + 0.25, 0.0, 1.0), 0.5)
 
 				
-		KEY_1: # daylight
-			tween.tween_property(self, "zenith_color", Color(0.2,0.3,0.5), 5.0)
-			tween.tween_property(self, "horizon_color", Color(0.2,0.45,0.75), 5.0)
-			tween.tween_property(self, "sun_color", Color(1.0,1.0,1.0), 5.0)
-			tween.tween_property(self, "sun_direction", Vector3(0.7,0.7,-0.7), 5.0)
+		KEY_1: # sunrise
+			tween.tween_property(self, "time_of_day", 6, time_speed)
 			
-		KEY_2: # sunset
-			tween.tween_property(self, "zenith_color", Color(0.2,0.05,0.05), 5.0)
-			tween.tween_property(self, "horizon_color", Color(0.5,0.2,0.05), 5.0)
-			tween.tween_property(self, "sun_color", Color(1.0,0.9,0.8), 5.0)
-			tween.tween_property(self, "sun_direction", Vector3(0.1,0.1,-0.7), 5.0)
+		KEY_2: # day
+			tween.tween_property(self, "time_of_day", 12, time_speed)
+			
+		KEY_3: # sunset
+			tween.tween_property(self, "time_of_day", 18, time_speed)
+			
+		KEY_4: # night
+			tween.tween_property(self, "time_of_day", 24, time_speed)
 			
 		KEY_P:
 			var image = get_viewport().get_texture().get_image()
