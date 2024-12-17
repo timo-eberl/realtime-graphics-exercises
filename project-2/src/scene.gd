@@ -97,13 +97,6 @@ const MAX_CAM_POS_Y := 250.0
 
 @onready var panel : Panel = $Panel
 
-
-func _ready():
-	# only if not in tool mode:
-	
-	if not Engine.is_editor_hint():
-		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-
 # trig helpers
 
 func radians(degrees: float) -> float:
@@ -271,8 +264,10 @@ func _input(event):
 		tween.set_trans(Tween.TRANS_CUBIC)
 		tween.set_ease(Tween.EASE_OUT)
 		tween.set_parallel(true)
-		
-	if event is InputEventMouseMotion:
+	
+	var mouse_1_down = Input.is_mouse_button_pressed(1) # left click
+	
+	if mouse_1_down and event is InputEventMouseMotion:
 		azimuth = fmod(azimuth - mouse_look_speed * event.relative.x ,360.0);
 		elevation = elevation - mouse_look_speed * event.relative.y;
 		elevation = clamp(elevation, MIN_ELEVATION, MAX_ELEVATION);
