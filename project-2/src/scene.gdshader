@@ -212,7 +212,7 @@ vec3 sky(vec3 dir) {
 
 	vec3 col = mix(sky_color, _sun_color * 100.0, t) + mix(sky_color, _sun_color, t_bloom);
 	vec3 col_with_fog = applyFog( col, 100000.0, normalize(dir), sun_direction() );
-	float ti = clamp( smoothstep(0.0,0.1, dir.y) ,0,1);
+	float ti = clamp( smoothstep(0.0,0.05, dir.y) ,0,1);
 	return mix(col_with_fog, col, ti);
 }
 
