@@ -34,10 +34,12 @@ uniform sampler2D horizon_color_gradient : filter_linear, repeat_enable;
 uniform sampler2D sun_color_gradient : filter_linear, repeat_enable;
 uniform sampler2D bloom_radius_gradient : filter_linear, repeat_enable;
 uniform sampler2D bloom_strength_gradient : filter_linear, repeat_enable;
-// textures
+// surface textures
 uniform sampler2D sand_albedo_texture : filter_linear, repeat_enable;
 uniform sampler2D rock_albedo_texture : filter_linear, repeat_enable;
+// clouds
 uniform sampler2D cloud_texture : filter_linear, repeat_enable;
+uniform sampler2D cloud_strength_gradient : filter_linear, repeat_enable;
 // controls after what distance the rocks will start to disappear
 uniform float cam_rock_fade_distance_start = 2000.0;
 uniform float cam_rock_fade_distance_end = 3000.0;
@@ -289,10 +291,13 @@ vec3 background(Ray ray) {
 	vec3 cloud_color = vec3(0.7);
 	if (t2 > 0.0) {
 		vec3 hitpoint = ray.p + t2 * ray.dir;
-		clouds = texture(cloud_texture, hitpoint.xz * 0.00003).x;
+		vec2 uv = hitpoint.xz * 0.00003;
+		uv.x += time_of_day * 0.1;
+		clouds = texture(cloud_texture, uv).x;
 		float cam_distance = distance(ray.p.xz, hitpoint.xz);
 		clouds *= clamp( inv_lerp(50000.0, 10000.0, cam_distance) ,0,1); // fade out in distance
-		clouds = clamp( mix(-0.5, 0.5, clouds) ,0,1);
+		float cloud_strength = texture(cloud_strength_gradient, vec2(time_of_day/24.0, 0)).x;
+		clouds = clamp( mix(-cloud_strength, cloud_strength, clouds) ,0,1);
 		// transmittance + reflection
 		cloud_color = shade(cloud_color, hitpoint, ray.dir) + shade(cloud_color, hitpoint, vec3(0,1,0));
 		cloud_color *= 0.5;

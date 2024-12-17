@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://hvoagqtln2c4"]
+[gd_scene load_steps=20 format=3 uid="uid://hvoagqtln2c4"]
 
 [ext_resource type="Script" path="res://scene.gd" id="1_pttkg"]
 [ext_resource type="Shader" path="res://scene.gdshader" id="1_vrx5x"]
@@ -18,6 +18,13 @@ colors = PackedColorArray(0, 0, 0, 1, 0.0666667, 0.0666667, 0.0666667, 1, 0.0784
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_hhp7a"]
 gradient = SubResource("Gradient_dv2eu")
+
+[sub_resource type="Gradient" id="Gradient_yhhot"]
+offsets = PackedFloat32Array(0.0671141, 0.224832, 0.379195, 0.52349, 0.751678, 0.902685)
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 0.188235, 0.188235, 0.188235, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_2u756"]
+gradient = SubResource("Gradient_yhhot")
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_0h7bi"]
 
@@ -69,7 +76,7 @@ shader_parameter/camera_position = Vector3(416.375, 18.865, -414.67)
 shader_parameter/azimuth = 3.14159
 shader_parameter/elevation = 0.354389
 shader_parameter/vertical_fov_radians = 0.785398
-shader_parameter/time_of_day = 12.0
+shader_parameter/time_of_day = 13.05
 shader_parameter/cos_sun_radius = 0.999762
 shader_parameter/l_white = 2.0
 shader_parameter/exposure = 0.0
@@ -86,6 +93,7 @@ shader_parameter/bloom_strength_gradient = SubResource("GradientTexture1D_hhp7a"
 shader_parameter/sand_albedo_texture = ExtResource("3_1qq44")
 shader_parameter/rock_albedo_texture = ExtResource("3_wrpgw")
 shader_parameter/cloud_texture = SubResource("NoiseTexture2D_na76e")
+shader_parameter/cloud_strength_gradient = SubResource("GradientTexture1D_2u756")
 
 [node name="Scene" type="Control"]
 layout_mode = 3
@@ -95,6 +103,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_pttkg")
+time_of_day = 13.05
 time_speed = 5.0
 sun_radius_degrees = 1.25
 azimuth = 180.0
