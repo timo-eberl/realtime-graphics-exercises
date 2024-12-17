@@ -1,9 +1,10 @@
-[gd_scene load_steps=20 format=3 uid="uid://hvoagqtln2c4"]
+[gd_scene load_steps=21 format=3 uid="uid://hvoagqtln2c4"]
 
 [ext_resource type="Script" path="res://scene.gd" id="1_pttkg"]
 [ext_resource type="Shader" path="res://scene.gdshader" id="1_vrx5x"]
 [ext_resource type="Texture2D" uid="uid://bvonknmop5oh1" path="res://red_sand/red_sand_diff_2k.jpg" id="3_1qq44"]
 [ext_resource type="Texture2D" uid="uid://xp8ab7wx271y" path="res://rock_face_03/rock_face_03_diff_2k.jpg" id="3_wrpgw"]
+[ext_resource type="PackedScene" uid="uid://df52fqkkdq2te" path="res://licenser/license_screen_loader_button.tscn" id="5_os4e2"]
 
 [sub_resource type="Gradient" id="Gradient_5tliu"]
 offsets = PackedFloat32Array(0, 0.25, 0.295302, 0.355705, 0.5, 0.701342, 0.75, 1)
@@ -90,10 +91,10 @@ shader_parameter/horizon_color_gradient = SubResource("GradientTexture1D_q0xt2")
 shader_parameter/sun_color_gradient = SubResource("GradientTexture1D_wq4ul")
 shader_parameter/bloom_radius_gradient = SubResource("GradientTexture1D_mcwyy")
 shader_parameter/bloom_strength_gradient = SubResource("GradientTexture1D_hhp7a")
+shader_parameter/cloud_strength_gradient = SubResource("GradientTexture1D_2u756")
+shader_parameter/cloud_texture = SubResource("NoiseTexture2D_na76e")
 shader_parameter/sand_albedo_texture = ExtResource("3_1qq44")
 shader_parameter/rock_albedo_texture = ExtResource("3_wrpgw")
-shader_parameter/cloud_texture = SubResource("NoiseTexture2D_na76e")
-shader_parameter/cloud_strength_gradient = SubResource("GradientTexture1D_2u756")
 
 [node name="Scene" type="Control"]
 layout_mode = 3
@@ -104,7 +105,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_pttkg")
 time_of_day = 6.0
-time_speed = 25.0
+time_speed = 10.0
 sun_radius_degrees = 1.25
 azimuth = 189.93
 camera_position = Vector3(318.99, 6.565, -326.925)
@@ -122,3 +123,8 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="License Screen Loader Button" parent="." instance=ExtResource("5_os4e2")]
+layout_mode = 1
+offset_left = -372.0
+offset_right = 372.0
