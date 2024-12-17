@@ -178,6 +178,25 @@ vec3 sun_direction() {
 	return normalize(vec3(x,y,z));
 }
 
+float fog_density() {
+	float cloud_strength = texture(cloud_strength_gradient, vec2(time_of_day/24.0, 0)).x;
+	return mix(0.0001, 0.0004, cloud_strength);
+}
+
+// https://iquilezles.org/articles/fog/
+vec3 applyFog( in vec3  col,   // color of pixel
+			   in float t,	   // distance to point
+			   in vec3  rd,	   // camera to point
+			   in vec3  lig )  // sun direction
+{
+	float b = fog_density();
+	float sunAmount = max( dot(rd, lig), 0.0 );
+	vec3  fogColor  = mix( mix(_zenith_color, vec3(0.5,0.6,0.7), 0.7),
+						   _sun_color,
+						   pow(sunAmount,4.0) );
+	return col*exp(-t*b) + fogColor*(1.0-exp(-t*b));
+}
+
 // https://iquilezles.org/articles/functions/
 float rational_bump( float x, float k ) { return 1.0/(1.0+k*x*x); }
 
@@ -191,8 +210,10 @@ vec3 sky(vec3 dir) {
 	float t_bloom = inv_lerp(cos_sun_radius, cos_sun_radius*mix(1.0, 0.8, bloom_radius), dot(dir, sun_direction()));
 	t_bloom = rational_bump(t_bloom, 64.0) * bloom_strength * 15.0;
 
-	return mix(sky_color, _sun_color * 100.0, t)
-		+ mix(sky_color, _sun_color, t_bloom);
+	vec3 col = mix(sky_color, _sun_color * 100.0, t) + mix(sky_color, _sun_color, t_bloom);
+	vec3 col_with_fog = applyFog( col, 100000.0, normalize(dir), sun_direction() );
+	float ti = clamp( smoothstep(0.0,0.1, dir.y) ,0,1);
+	return mix(col_with_fog, col, ti);
 }
 
 /*
@@ -270,7 +291,10 @@ vec3 shade_surface(vec3 p, vec3 normal) {
 	float distance_to_sand = sdfSand(p) - EPSILON;
 	vec3 albedo = mix(sand_albedo, rock_with_sand_albedo, clamp(distance_to_sand,0,1));
 
-	return shade(albedo, p, normal);
+	return applyFog(
+		shade(albedo, p, normal),
+		distance(p, _ray_p), normalize(_ray_dir), sun_direction()
+	);
 }
 
 vec3 background(Ray ray) {
@@ -297,6 +321,7 @@ vec3 background(Ray ray) {
 		float cam_distance = distance(ray.p.xz, hitpoint.xz);
 		clouds *= clamp( inv_lerp(50000.0, 10000.0, cam_distance) ,0,1); // fade out in distance
 		float cloud_strength = texture(cloud_strength_gradient, vec2(time_of_day/24.0, 0)).x;
+		cloud_strength = mix(0.1, 1.0, cloud_strength);
 		clouds = clamp( mix(-cloud_strength, cloud_strength, clouds) ,0,1);
 		// transmittance + reflection
 		cloud_color = shade(cloud_color, hitpoint, ray.dir) + shade(cloud_color, hitpoint, vec3(0,1,0));
