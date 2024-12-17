@@ -1,4 +1,4 @@
-### Free blue noise textures
+### WebGL noise library
 
 (c) 2011 by Ashima Arts (Simplex noise)
 (c) 2011-2016 by Stefan Gustavson (Classic noise and others)

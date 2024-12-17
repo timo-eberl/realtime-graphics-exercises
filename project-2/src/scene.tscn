@@ -91,10 +91,10 @@ shader_parameter/horizon_color_gradient = SubResource("GradientTexture1D_q0xt2")
 shader_parameter/sun_color_gradient = SubResource("GradientTexture1D_wq4ul")
 shader_parameter/bloom_radius_gradient = SubResource("GradientTexture1D_mcwyy")
 shader_parameter/bloom_strength_gradient = SubResource("GradientTexture1D_hhp7a")
-shader_parameter/cloud_strength_gradient = SubResource("GradientTexture1D_2u756")
-shader_parameter/cloud_texture = SubResource("NoiseTexture2D_na76e")
 shader_parameter/sand_albedo_texture = ExtResource("3_1qq44")
 shader_parameter/rock_albedo_texture = ExtResource("3_wrpgw")
+shader_parameter/cloud_texture = SubResource("NoiseTexture2D_na76e")
+shader_parameter/cloud_strength_gradient = SubResource("GradientTexture1D_2u756")
 
 [node name="Scene" type="Control"]
 layout_mode = 3
