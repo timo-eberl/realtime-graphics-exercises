@@ -44,6 +44,7 @@ extends Control
 
 @export_range(0.0, 24.0, 0.01) var time_of_day : float = 12.0
 @export var time_speed : float = 1.0
+@export var pass_time : bool = false
 
 @export_range(0.0, 10.0,0.01, "or_greater") var sun_radius_degrees : float = 0.5
 
@@ -116,7 +117,8 @@ func dcos(degrees: float) -> float:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	#time_of_day += delta * time_speed
+	if (pass_time):
+		time_of_day += delta * time_speed / 5.0
 	time_of_day = fmod(time_of_day, 24.0)
 	if not Engine.is_editor_hint(): # process input only when running stand-alone
 		if Input.is_action_just_pressed("ui_cancel"):

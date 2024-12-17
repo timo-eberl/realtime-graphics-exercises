@@ -2,7 +2,7 @@ shader_type canvas_item;
 // constants
 const float EPSILON = 0.5; // larger than 0, but so small every smaller value is negative
 const float GRADIENT_DT = 0.25;
-const int MAX_STEPS = 150; // ray march steps
+const int MAX_STEPS = 200; // ray march steps
 const float MAX_DISTANCE = 1000.0; // from surface; if we are that far, we won't hit anything
 const bool ORTHO_VIEW = false;
 const bool SHOW_HEIGHT_CONTOUR_LINES = false;
