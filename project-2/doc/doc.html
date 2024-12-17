@@ -1,0 +1,151 @@
+<style>
+body {
+    max-width: 60em;
+    line-height: 150%;
+    font-family: sans-serif;
+    padding: 1em;
+    margin: 0 auto;
+}
+img, video {
+    width: 100%;
+    max-width: 512px;
+}
+iframe {
+    width: 100%;
+    max-width: 700px;
+    height: 400px;
+}
+pre {
+    border: 1px solid black;
+    padding: 1em 2em;
+}
+/* dark mode */
+@media (prefers-color-scheme: dark) {
+    body {
+        color: #cac5be;
+        background-color: #181a1b;
+    }
+    pre {
+        border: 1px solid white;
+    }
+    h1, h2, h3, h4, h5 {
+        border-color: rgba(255, 255, 255, 0.48) !important;
+    }
+    a {
+        color: #6eb2ee;
+    }
+}
+</style>
+<h1 id="project-2---weather-in-the-desert">Project 2 - Weather in the
+desert</h1>
+<h2 id="interactive-version">Interactive version</h2>
+<iframe src="../export/index.html">
+Can’t load iframe
+</iframe>
+<p>Look around: Left click + move mouse Walk: <code>W</code>,
+<code>A</code>, <code>S</code>, <code>D</code> Change height:
+<code>Shift</code>, <code>Ctrl</code> Change daytime: <code>1</code>
+(sunrise), <code>2</code> (day), <code>3</code> (sunset), <code>4</code>
+(night)</p>
+<h2 id="video-recording">Video recording</h2>
+<video alt="desert day cycle recording" controls>
+<source src="videos/recording.webm">
+</video>
+<h2 id="step-by-step-documentation">Step by step documentation</h2>
+<h3 id="geometry">Geometry</h3>
+<p><img src="images/1-sdf.png" /></p>
+<p>The desert geometry is constructed with a smooth union between two
+plane SDFs displaced by the height of the terrain. SDF functions and
+operations are taken from <a
+href="https://iquilezles.org/articles/distfunctions/">this article</a>.
+The height is calculated by two height functions, one for the sand and
+one for the rocks. Both use noise functions from <a
+href="https://github.com/stegu/webgl-noise/tree/master">this WebGL noise
+library</a>.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode glsl"><code class="sourceCode glsl"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> sd_sand <span class="op">=</span> <span class="fu">sdPlane</span><span class="op">(</span>p<span class="op">,</span> <span class="dt">vec3</span><span class="op">(</span><span class="dv">0</span><span class="op">,</span><span class="dv">1</span><span class="op">,</span><span class="dv">0</span><span class="op">),</span> <span class="op">-</span>sand_height<span class="op">);</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> sd_rock <span class="op">=</span> <span class="fu">sdPlane</span><span class="op">(</span>p<span class="op">,</span> <span class="dt">vec3</span><span class="op">(</span><span class="dv">0</span><span class="op">,</span><span class="dv">1</span><span class="op">,</span><span class="dv">0</span><span class="op">),</span> <span class="op">-</span>rock_height<span class="op">);</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> sd <span class="op">=</span> <span class="fu">opSmoothUnion</span><span class="op">(</span>sd_sand<span class="op">,</span> sd_rock<span class="op">,</span> <span class="fl">5.0</span><span class="op">);</span></span></code></pre></div>
+<h3 id="height-contour-lines">Height contour lines</h3>
+<p><img src="images/height-contour-lines.png" /></p>
+<p>For debugging purposes height contour lines and an orthographic
+camera were implemented. They can be enabled with the variables
+<code>ORTHO_VIEW</code> and <code>SHOW_HEIGHT_CONTOUR_LINES</code> in
+the shader.</p>
+<h3 id="normal-visualization">Normal visualization</h3>
+<p><img src="images/normal-visualization.png" /></p>
+<p>To visualize the normal of the terrain, a normal visualization mode
+can be enabled that illuminates the terrain with five directional lights
+from the directions x, -x, z, -z and -y.</p>
+<p>When looking at a sphere, we can see why this works as a normal
+visualization:</p>
+<p><img src="images/sphere-normal-visualization.png" /></p>
+<p>The colors for the light in x and -x directions are red and pink. We
+can see that the parts where the normal points in the x direction are
+shaded red while at the locations the normal points in the -x direction
+they are shaded pink. Where the normal points to the top (y), the
+shading is green. The same goes for the z and -z directions, which are
+illuminated as dark blue and bright blue.</p>
+<h3 id="texturing">Texturing</h3>
+<p><img src="images/texturing.png" /></p>
+<p>The terrain is shaded using a sand and a rock texture from <a
+href="https://polyhaven.com/">Polyhaven</a>.</p>
+<p>To determine which texture to use at what location, the distance to
+the individual SDFs (sand and rock) is used.</p>
+<p>In addition, at the mountain the rock and send texture are blended
+based on the terrains normal to give the impression that some sand is
+sitting on top of the rock.</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode glsl"><code class="sourceCode glsl"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> t <span class="op">=</span> <span class="fu">remap</span><span class="op">(</span><span class="fl">0.5</span><span class="op">,</span> <span class="fl">0.9</span><span class="op">,</span> <span class="fl">0.0</span><span class="op">,</span> sand_on_rock_amount<span class="op">,</span> normal<span class="op">.</span><span class="fu">y</span><span class="op">);</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> <span class="bu">clamp</span><span class="op">(</span>t<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> sand_on_rock_amount<span class="op">);</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="dt">vec3</span> rock_with_sand_albedo <span class="op">=</span> <span class="bu">mix</span><span class="op">(</span>rock_albedo<span class="op">,</span> sand_albedo<span class="op">,</span> t<span class="op">);</span></span></code></pre></div>
+<h3 id="sky-and-lighting">Sky and lighting</h3>
+<p><img src="images/sky.png" /></p>
+<p>The sky and the directional light (that represents the sun) adjust
+automatically based on the time of day, which is an exposed Godot-level
+variable.</p>
+<p><img src="images/sky-gradients.png" /></p>
+<p>All colors and the bloom effect of the sun are based on gradient
+textures that represent the color/value gradients over the day. They
+have been carefully chosen.</p>
+<p>The position of the sun is calculated with the following
+function:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode glsl"><code class="sourceCode glsl"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">vec3</span> <span class="fu">sun_direction</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 0 (0:00) to TAU (24:00)</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> remapped_time <span class="op">=</span> <span class="fu">remap</span><span class="op">(</span><span class="fl">0.0</span><span class="op">,</span> <span class="fl">24.0</span><span class="op">,</span> <span class="fl">0.0</span><span class="op">,</span> TAU<span class="op">,</span> time_of_day<span class="op">);</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> az <span class="op">=</span> remapped_time<span class="op">;</span> <span class="co">// east and west directions are incorrect but whatever</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">// cos wave that is lowest at 0:00, peaks at 12:00 and goes through 0 at sunrise (6:00) and sunset (18:00)</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">// peak is 45° or pi/4, which is roughly the maximum altitude at the equator (https://www.suncalc.org)</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> el <span class="op">=</span> <span class="op">-</span><span class="bu">cos</span><span class="op">(</span> remapped_time <span class="op">)</span> <span class="op">*</span> PI <span class="op">*</span> <span class="fl">0.25</span><span class="op">;</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">// convert spherical coordinates (azimuth, elevation) to direction</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> x <span class="op">=</span> <span class="bu">cos</span><span class="op">(</span>el<span class="op">)</span> <span class="op">*</span> <span class="bu">cos</span><span class="op">(</span>az<span class="op">);</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> y <span class="op">=</span> <span class="bu">sin</span><span class="op">(</span>el<span class="op">);</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> z <span class="op">=</span> <span class="bu">cos</span><span class="op">(</span>el<span class="op">)</span> <span class="op">*</span> <span class="bu">sin</span><span class="op">(</span>az<span class="op">);</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> <span class="bu">normalize</span><span class="op">(</span><span class="dt">vec3</span><span class="op">(</span>x<span class="op">,</span>y<span class="op">,</span>z<span class="op">));</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3 id="participating-media">Participating media</h3>
+<p>Clouds and fog are implemented.</p>
+<p><img src="images/clouds-and-fog.png" /></p>
+<p>The clouds are drawn as part of the sky background on a plane at 500m
+height, which is always above the terrain. They are based on a noise
+texture and fade out in the distance. The clouds move along the x
+direction as the day progresses.</p>
+<p>The fog is based on <a
+href="https://iquilezles.org/articles/fog/">this article</a>. It is
+colored based on the sun direction and color.</p>
+<p>The strength of both clouds and fog changes over the course of a day
+based on a gradient texture:</p>
+<p><img src="images/cloud-gradient.png" /></p>
+<h3 id="different-weather-and-time-of-day-situations">Different weather
+and time of day situations</h3>
+<p>Four weather and time of day situations have been carefully crafted.
+They can be blended by pressing <code>1</code>, <code>2</code>,
+<code>3</code> and <code>4</code>.</p>
+<p>Morning (6:00) and mid day (12:00):</p>
+<p><img src="images/daytime-morning-day.png" /></p>
+<p>Evening (18:00) and night (0:00):</p>
+<p><img src="images/daytime-evening-night.png" /></p>
