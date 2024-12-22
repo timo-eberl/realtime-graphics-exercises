@@ -70,7 +70,7 @@ float fractal_snoise( vec2 x, int from, int to, int last ) {
 	float frequency = 1.0;
 	float amplitude = 1.0;
 	float max_n = 0.0;
-
+	
 	for (int i = 0; i < from; i++) {
 		max_n += amplitude;
 		frequency *= lacunarity;
