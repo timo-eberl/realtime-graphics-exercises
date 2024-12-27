@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://5m26lyuduny4"]
+
+[ext_resource type="Script" path="res://camera_controller.gd" id="1_c1u7q"]
+
+[sub_resource type="Environment" id="Environment_cwrva"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_fj4hd"]
+
+[node name="World" type="Node3D"]
+
+[node name="DirectionalLight" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.40806, 0.912955, 0, -0.912955, 0.40806, 0, 10, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_cwrva")
+
+[node name="CameraController" type="Node3D" parent="."]
+transform = Transform3D(0.980271, -0.0985298, 0.171348, 0, 0.866897, 0.498488, -0.197657, -0.488653, 0.849794, 0, 0.5, 0)
+script = ExtResource("1_c1u7q")
+
+[node name="Camera" type="Camera3D" parent="CameraController"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.96046e-08, 0, 2.52939)
+fov = 45.0
+
+[node name="CameraTarget" type="Node3D" parent="."]
+
+[node name="Ground" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_fj4hd")
