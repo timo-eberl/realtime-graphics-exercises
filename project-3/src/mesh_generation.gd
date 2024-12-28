@@ -283,14 +283,14 @@ func add_curve_limited_flat_ring_to_mesh(
 	st.generate_normals()
 	st.commit(mesh)
 
-func add_gem_to_mesh(mesh: ArrayMesh, segments: int, radius: float, center_size: float):
+func add_gem_to_mesh(mesh: ArrayMesh, segments: int, radius: float, center_size: float, radial_offset: float):
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	st.set_smooth_group(-1) # flat shading
 	
 	for i in segments:
-		var phi_curr = (float(i-0.5) / segments) * TAU # angle around the "circle"
-		var phi_next = (float(i+0.5) / segments) * TAU # angle around the "circle"
+		var phi_curr = (float(i-radial_offset  ) / segments) * TAU # angle around the "circle"
+		var phi_next = (float(i-radial_offset+1) / segments) * TAU # angle around the "circle"
 		
 		var vc := Vector3(radius * cos(phi_curr), radius * sin(phi_curr), 0)
 		var vn := Vector3(radius * cos(phi_next), radius * sin(phi_next), 0)
