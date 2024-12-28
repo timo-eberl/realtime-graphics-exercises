@@ -12,6 +12,10 @@ extends MeshInstance3D
 @export_range(0,90) var tip_bend_angle := 15
 @export var tube_radius: float = 0.02
 
+@export_group("Materials")
+@export var metal_material: Material
+@export var gem_material: Material
+
 @export_group("Tip Curves")
 @export var path : Path2D
 @export var curve_flat_ring : Curve
@@ -30,10 +34,15 @@ func gen_mesh() -> Mesh:
 		m, path.curve, radius, tube_radius, tips_radial_segments, tube_segments,
 		tip_count, tip_height, deg_to_rad(tip_bend_angle), 0.125
 	)
+	m.surface_set_material(m.get_surface_count()-1, metal_material)
 	MeshGeneration.add_torus_to_mesh(m, radius, tube_radius, ring_radial_segments, tube_segments,  0.1)
+	m.surface_set_material(m.get_surface_count()-1, metal_material)
 	MeshGeneration.add_torus_to_mesh(m, radius, tube_radius, ring_radial_segments, tube_segments,  0)
+	m.surface_set_material(m.get_surface_count()-1, metal_material)
 	#MeshGeneration.add_flat_ring_to_mesh(m, radius, ring_radial_segments, 0.1, false, 0)
+	MeshGeneration.add_curve_limited_flat_ring_to_mesh(m, curve_flat_ring, radius, ring_radial_segments, false, tip_count, 0)
+	m.surface_set_material(m.get_surface_count()-1, metal_material)
 	#MeshGeneration.add_flat_ring_to_mesh(m, radius, ring_radial_segments, 0.1, true, 0)
 	MeshGeneration.add_curve_limited_flat_ring_to_mesh(m, curve_flat_ring, radius, ring_radial_segments, true, tip_count, 0)
-	MeshGeneration.add_curve_limited_flat_ring_to_mesh(m, curve_flat_ring, radius, ring_radial_segments, false, tip_count, 0)
+	m.surface_set_material(m.get_surface_count()-1, metal_material)
 	return m
