@@ -5,6 +5,7 @@ extends MeshInstance3D
 	set(value):
 		self.mesh = gen_mesh()
 @export_range(1,50) var tip_count := 8
+@export_range(0,90) var tip_bend_angle := 15
 @export_range(0.0,2.0) var tip_height := 0.4
 @export var path : Path2D
 
@@ -21,7 +22,8 @@ func _ready():
 func gen_mesh() -> Mesh:
 	var mesh := ArrayMesh.new()
 	MeshGeneration.add_mirrored_curve_ring_to_mesh(
-		mesh, path.curve, radius, tube_radius, tips_radial_segments, tube_segments, tip_count, tip_height, 0.125
+		mesh, path.curve, radius, tube_radius, tips_radial_segments, tube_segments,
+		tip_count, tip_height, deg_to_rad(tip_bend_angle), 0.125
 	)
 	MeshGeneration.add_torus_to_mesh(mesh, radius, tube_radius, ring_radial_segments, tube_segments,  0.1)
 	MeshGeneration.add_torus_to_mesh(mesh, radius, tube_radius, ring_radial_segments, tube_segments,  0)

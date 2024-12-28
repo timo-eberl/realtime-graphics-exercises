@@ -112,7 +112,7 @@ func add_torus_to_mesh(
 func add_mirrored_curve_ring_to_mesh(
 	mesh: ArrayMesh, curve: Curve2D,
 	radius: float, tube_radius: float, radial_segments: int, tube_segments: int,
-	repetitions: int, ring_height: float, height_offset: float
+	repetitions: int, ring_height: float, ring_bend_angle: float, height_offset: float
 ):
 	#for i in 40:
 		#print_curve_sample(curve, i / 40.0) # for debugging
@@ -148,13 +148,13 @@ func add_mirrored_curve_ring_to_mesh(
 			
 			# move and rotate the segments so they end up on the path defined by the curve
 			var m2 := Transform3D.IDENTITY \
-				.translated(Vector3(radius, 0, 0)) \
 				.translated(Vector3(0, sp.y * ring_height, 0)) \
+				.rotated(Vector3(0,0,-1), ring_bend_angle) \
+				.translated(Vector3(radius, 0, 0)) \
 				.rotated(Vector3(0,1,0), theta) \
 				.translated(Vector3(0, height_offset, 0))
 			
-			# position on segment
-			var v := Vector3( tube_radius * cos(phi), tube_radius * sin(phi), 0 )
+			var v := Vector3( tube_radius * cos(phi), tube_radius * sin(phi), 0 ) # pos on segment
 			# apply m1, make sure distance to segment center is tube_radius, apply m2
 			v = m2 * ((m1 * v).normalized() * Vector3(tube_radius,tube_radius,tube_radius))
 			vertices.append(v)
