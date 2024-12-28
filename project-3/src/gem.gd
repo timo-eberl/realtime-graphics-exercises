@@ -13,6 +13,6 @@ func _ready():
 	self.mesh = gen_mesh()
 
 func gen_mesh() -> Mesh:
-	var mesh := ArrayMesh.new()
-	MeshGeneration.add_gem_to_mesh(mesh, segments, radius, center_size)
-	return mesh
+	var m := ArrayMesh.new()
+	MeshGeneration.add_gem_to_mesh(m, segments, radius, center_size)
+	return m

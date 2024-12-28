@@ -4,6 +4,7 @@ extends MeshInstance3D
 @export var generate_button : bool:
 	set(value):
 		self.mesh = gen_mesh()
+
 @export_range(1,50) var tip_count := 8
 @export_range(0,90) var tip_bend_angle := 15
 @export_range(0.0,2.0) var tip_height := 0.4
@@ -21,15 +22,15 @@ func _ready():
 	self.mesh = gen_mesh()
 
 func gen_mesh() -> Mesh:
-	var mesh := ArrayMesh.new()
+	var m := ArrayMesh.new()
 	MeshGeneration.add_mirrored_curve_ring_to_mesh(
-		mesh, path.curve, radius, tube_radius, tips_radial_segments, tube_segments,
+		m, path.curve, radius, tube_radius, tips_radial_segments, tube_segments,
 		tip_count, tip_height, deg_to_rad(tip_bend_angle), 0.125
 	)
-	MeshGeneration.add_torus_to_mesh(mesh, radius, tube_radius, ring_radial_segments, tube_segments,  0.1)
-	MeshGeneration.add_torus_to_mesh(mesh, radius, tube_radius, ring_radial_segments, tube_segments,  0)
-	#MeshGeneration.add_flat_ring_to_mesh(mesh, radius, ring_radial_segments, 0.1, false, 0)
-	#MeshGeneration.add_flat_ring_to_mesh(mesh, radius, ring_radial_segments, 0.1, true, 0)
-	MeshGeneration.add_curve_limited_flat_ring_to_mesh(mesh, curve_flat_ring, radius, ring_radial_segments, true, tip_count, 0)
-	MeshGeneration.add_curve_limited_flat_ring_to_mesh(mesh, curve_flat_ring, radius, ring_radial_segments, false, tip_count, 0)
-	return mesh
+	MeshGeneration.add_torus_to_mesh(m, radius, tube_radius, ring_radial_segments, tube_segments,  0.1)
+	MeshGeneration.add_torus_to_mesh(m, radius, tube_radius, ring_radial_segments, tube_segments,  0)
+	#MeshGeneration.add_flat_ring_to_mesh(m, radius, ring_radial_segments, 0.1, false, 0)
+	#MeshGeneration.add_flat_ring_to_mesh(m, radius, ring_radial_segments, 0.1, true, 0)
+	MeshGeneration.add_curve_limited_flat_ring_to_mesh(m, curve_flat_ring, radius, ring_radial_segments, true, tip_count, 0)
+	MeshGeneration.add_curve_limited_flat_ring_to_mesh(m, curve_flat_ring, radius, ring_radial_segments, false, tip_count, 0)
+	return m

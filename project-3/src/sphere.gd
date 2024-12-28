@@ -10,6 +10,6 @@ func _ready():
 	self.mesh = gen_mesh()
 
 func gen_mesh() -> Mesh:
-	var mesh := ArrayMesh.new()
-	MeshGeneration.add_subdivided_sphere_to_mesh(mesh, subdivision_levels)
-	return mesh
+	var m := ArrayMesh.new()
+	MeshGeneration.add_subdivided_sphere_to_mesh(m, subdivision_levels)
+	return m
