@@ -66,8 +66,8 @@ func add_torus_to_mesh(
 	var vertices: Array[Vector3] = []
 	for i in radial_segments:
 		for j in tube_segments:
-			var theta = (float(i) / radial_segments) * PI * 2  # angle around the main circle
-			var phi = (float(j) / tube_segments) * PI * 2  # angle around the tube circle
+			var theta = (float(i) / radial_segments) * TAU # angle around the main circle
+			var phi = (float(j) / tube_segments) * TAU # angle around the tube circle
 			
 			var v := Vector3( # position on segment
 				tube_radius * cos(phi),
@@ -278,6 +278,37 @@ func add_curve_limited_flat_ring_to_mesh(
 		else:
 			st.add_vertex(ct)
 			st.add_vertex(nt)
+	
+	st.index()
+	st.generate_normals()
+	st.commit(mesh)
+
+func add_gem_to_mesh(mesh: ArrayMesh, segments: int, radius: float):
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	
+	for i in segments:
+		var phi_curr = (float(i-0.5) / segments) * TAU # angle around the "circle"
+		var phi_next = (float(i+0.5) / segments) * TAU # angle around the "circle"
+		
+		var vc := Vector3(radius * cos(phi_curr), radius * sin(phi_curr), 0)
+		var vn := Vector3(radius * cos(phi_next), radius * sin(phi_next), 0)
+		
+		# front
+		st.set_smooth_group(-1) # flat shading
+		st.add_vertex(Vector3(0,0,radius))
+		st.set_smooth_group(-1)
+		st.add_vertex(vn)
+		st.set_smooth_group(-1)
+		st.add_vertex(vc)
+		
+		# back
+		st.set_smooth_group(-1)
+		st.add_vertex(Vector3(0,0,-radius))
+		st.set_smooth_group(-1)
+		st.add_vertex(vc)
+		st.set_smooth_group(-1)
+		st.add_vertex(vn)
 	
 	st.index()
 	st.generate_normals()
