@@ -40,9 +40,9 @@ func add_subdivided_sphere_to_mesh(mesh: ArrayMesh, subdivision_levels: int):
 
 func tri(v1 : Vector3, v2 : Vector3, v3: Vector3, level: int, st: SurfaceTool) -> void:
 	if level > 0: # subdivide further
-		var v12 := midpoint(v1, v2)
-		var v23 := midpoint(v2, v3)
-		var v31 := midpoint(v3, v1)
+		var v12 := midpoint_sphere(v1, v2)
+		var v23 := midpoint_sphere(v2, v3)
+		var v31 := midpoint_sphere(v3, v1)
 		tri(v1 , v12, v31, level-1, st)
 		tri(v12, v2 , v23, level-1, st)
 		tri(v23, v3 , v31, level-1, st)
@@ -52,7 +52,7 @@ func tri(v1 : Vector3, v2 : Vector3, v3: Vector3, level: int, st: SurfaceTool) -
 		st.add_vertex(v2)
 		st.add_vertex(v3)
 
-func midpoint(v1 : Vector3, v2: Vector3) -> Vector3:
+func midpoint_sphere(v1 : Vector3, v2: Vector3) -> Vector3:
 	return (v1+v2).normalized()
 
 ## TORUS
@@ -283,7 +283,7 @@ func add_curve_limited_flat_ring_to_mesh(
 	st.generate_normals()
 	st.commit(mesh)
 
-func add_gem_to_mesh(mesh: ArrayMesh, segments: int, radius: float):
+func add_gem_to_mesh(mesh: ArrayMesh, segments: int, radius: float, center_size: float):
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
@@ -294,21 +294,59 @@ func add_gem_to_mesh(mesh: ArrayMesh, segments: int, radius: float):
 		var vc := Vector3(radius * cos(phi_curr), radius * sin(phi_curr), 0)
 		var vn := Vector3(radius * cos(phi_next), radius * sin(phi_next), 0)
 		
-		# front
-		st.set_smooth_group(-1) # flat shading
-		st.add_vertex(Vector3(0,0,radius))
-		st.set_smooth_group(-1)
-		st.add_vertex(vn)
-		st.set_smooth_group(-1)
-		st.add_vertex(vc)
+		var k := center_size
+		var center := Vector3(0,0,radius*0.5)
+		var vcm := Vector3(vc.x*k, vc.y*k, radius*0.5)
+		var vnm := Vector3(vn.x*k, vn.y*k, radius*0.5)
 		
-		# back
+		# front side
+		# connect mid points 1
+		st.set_smooth_group(-1) # flat shading
+		st.add_vertex(vc)
 		st.set_smooth_group(-1)
-		st.add_vertex(Vector3(0,0,-radius))
+		st.add_vertex(vcm)
 		st.set_smooth_group(-1)
+		st.add_vertex(vn)
+		# connect mid points 2
+		st.set_smooth_group(-1)
+		st.add_vertex(vn)
+		st.set_smooth_group(-1)
+		st.add_vertex(vcm)
+		st.set_smooth_group(-1)
+		st.add_vertex(vnm)
+		# connect to center
+		st.set_smooth_group(-1)
+		st.add_vertex(center)
+		st.set_smooth_group(-1)
+		st.add_vertex(vnm)
+		st.set_smooth_group(-1)
+		st.add_vertex(vcm)
+		
+		center = Vector3(0,0,-radius*0.5)
+		vcm = Vector3(vc.x*k, vc.y*k, -radius*0.5)
+		vnm = Vector3(vn.x*k, vn.y*k, -radius*0.5)
+		# back side
+		# connect mid points 1
+		st.set_smooth_group(-1) # flat shading
 		st.add_vertex(vc)
 		st.set_smooth_group(-1)
 		st.add_vertex(vn)
+		st.set_smooth_group(-1)
+		st.add_vertex(vcm)
+		# connect mid points 2
+		st.set_smooth_group(-1)
+		st.add_vertex(vn)
+		st.set_smooth_group(-1)
+		st.add_vertex(vnm)
+		st.set_smooth_group(-1)
+		st.add_vertex(vcm)
+		# connect to center
+		st.set_smooth_group(-1)
+		st.add_vertex(center)
+		st.set_smooth_group(-1)
+		st.add_vertex(vcm)
+		st.set_smooth_group(-1)
+		st.add_vertex(vnm)
 	
 	st.index()
 	st.generate_normals()

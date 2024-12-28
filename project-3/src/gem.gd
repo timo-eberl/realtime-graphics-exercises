@@ -7,11 +7,12 @@ extends MeshInstance3D
 
 @export_range(1,50) var segments := 8
 @export var radius := 0.5
+@export_range(0.0,1.0) var center_size := 0.5
 
 func _ready():
 	self.mesh = gen_mesh()
 
 func gen_mesh() -> Mesh:
 	var mesh := ArrayMesh.new()
-	MeshGeneration.add_gem_to_mesh(mesh, segments, radius)
+	MeshGeneration.add_gem_to_mesh(mesh, segments, radius, center_size)
 	return mesh
