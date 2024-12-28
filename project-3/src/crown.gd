@@ -8,6 +8,7 @@ extends MeshInstance3D
 @export_range(0,90) var tip_bend_angle := 15
 @export_range(0.0,2.0) var tip_height := 0.4
 @export var path : Path2D
+@export var curve_flat_ring : Curve
 
 @export var radius: float = 0.5
 @export var tube_radius: float = 0.02
@@ -27,6 +28,8 @@ func gen_mesh() -> Mesh:
 	)
 	MeshGeneration.add_torus_to_mesh(mesh, radius, tube_radius, ring_radial_segments, tube_segments,  0.1)
 	MeshGeneration.add_torus_to_mesh(mesh, radius, tube_radius, ring_radial_segments, tube_segments,  0)
-	MeshGeneration.add_flat_ring_to_mesh(mesh, radius, ring_radial_segments, 0.1, false, 0)
-	MeshGeneration.add_flat_ring_to_mesh(mesh, radius, ring_radial_segments, 0.1, true, 0)
+	#MeshGeneration.add_flat_ring_to_mesh(mesh, radius, ring_radial_segments, 0.1, false, 0)
+	#MeshGeneration.add_flat_ring_to_mesh(mesh, radius, ring_radial_segments, 0.1, true, 0)
+	MeshGeneration.add_curve_limited_flat_ring_to_mesh(mesh, curve_flat_ring, radius, ring_radial_segments, true, tip_count, 0)
+	MeshGeneration.add_curve_limited_flat_ring_to_mesh(mesh, curve_flat_ring, radius, ring_radial_segments, false, tip_count, 0)
 	return mesh

@@ -242,3 +242,43 @@ func add_flat_ring_to_mesh(
 	st.index()
 	st.generate_normals()
 	st.commit(mesh)
+
+func add_curve_limited_flat_ring_to_mesh(
+	mesh: ArrayMesh, curve: Curve,
+	radius: float, radial_segments: int, inside: bool,
+	repetitions: int, height_offset: float
+):
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	
+	for i in radial_segments:
+		var first := Vector3(radius, 0, 0)
+		var current := first.rotated(Vector3.UP, (float( i ) / radial_segments) * TAU)
+		var next    := first.rotated(Vector3.UP, (float(i+1) / radial_segments) * TAU)
+		var current_height := curve.sample( fmod(float( ( i ) * repetitions ) / radial_segments, 1.0) )
+		var next_height    := curve.sample( fmod(float( (i+1) * repetitions ) / radial_segments, 1.0) )
+		
+		var c  := current + Vector3(0,height_offset,0)
+		var n  := next    + Vector3(0,height_offset,0)
+		var ct := current + Vector3(0,height_offset + current_height,0)
+		var nt := next    + Vector3(0,height_offset + next_height,0)
+		
+		st.add_vertex(c)
+		if inside:
+			st.add_vertex(n)
+			st.add_vertex(nt)
+		else:
+			st.add_vertex(nt)
+			st.add_vertex(n)
+		
+		st.add_vertex(c)
+		if inside:
+			st.add_vertex(nt)
+			st.add_vertex(ct)
+		else:
+			st.add_vertex(ct)
+			st.add_vertex(nt)
+	
+	st.index()
+	st.generate_normals()
+	st.commit(mesh)
