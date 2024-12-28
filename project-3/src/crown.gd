@@ -5,16 +5,19 @@ extends MeshInstance3D
 	set(value):
 		self.mesh = gen_mesh()
 
+@export_group("General")
+@export var radius: float = 0.5
 @export_range(1,50) var tip_count := 8
-@export_range(0,90) var tip_bend_angle := 15
 @export_range(0.0,2.0) var tip_height := 0.4
+@export_range(0,90) var tip_bend_angle := 15
+@export var tube_radius: float = 0.02
+
+@export_group("Tip Curves")
 @export var path : Path2D
 @export var curve_flat_ring : Curve
 
-@export var radius: float = 0.5
-@export var tube_radius: float = 0.02
+@export_group("Subdivision")
 @export var tube_segments: int = 16
-
 @export var tips_radial_segments: int = 1024
 @export var ring_radial_segments: int = 64
 
