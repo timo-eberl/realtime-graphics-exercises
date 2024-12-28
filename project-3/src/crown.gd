@@ -4,7 +4,7 @@ extends MeshInstance3D
 @export var generate_button : bool:
 	set(value):
 		self.mesh = gen_mesh()
-@export_range(0,50) var tip_count := 8
+@export_range(1,50) var tip_count := 8
 @export_range(0.0,2.0) var tip_height := 0.4
 @export var path : Path2D
 

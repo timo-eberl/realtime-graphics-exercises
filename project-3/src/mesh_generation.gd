@@ -123,7 +123,9 @@ func add_mirrored_curve_ring_to_mesh(
 		for j in tube_segments:
 			var phi = (float(j) / tube_segments) * TAU # angle around the tube circle
 			
-			var f : float = repetitions
+			# for some reason the mesh is fucked up if reprtitions is a multiple of 10
+			# therefore we add a very small value, so its no longer a multiple of 10 :p
+			var f : float = repetitions + 0.0001
 			var t := float(i*f) / radial_segments # [0;f]
 			var sample = sample_curve_mirrored(curve, t)
 			var sp : Vector2 = sample["position"]
