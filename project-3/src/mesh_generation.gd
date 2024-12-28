@@ -205,3 +205,40 @@ func sample_curve_mirrored(curve: Curve2D, t: float) -> Dictionary:
 func print_curve_sample(curve: Curve2D, t: float):
 	var s = sample_curve_mirrored(curve,t)
 	print("curve(",t,"): ", s["position"], " rot: ", rad_to_deg(s["rotation"]))
+
+func add_flat_ring_to_mesh(
+	mesh: ArrayMesh,
+	radius: float, radial_segments: int, height: float, inside: bool, height_offset: float
+):
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	
+	for i in radial_segments:
+		var first := Vector3(radius, 0, 0)
+		var current := first.rotated(Vector3.UP, (float( i ) / radial_segments) * TAU)
+		var next    := first.rotated(Vector3.UP, (float(i+1) / radial_segments) * TAU)
+		
+		var c  := current + Vector3(0,height_offset,0)
+		var n  := next    + Vector3(0,height_offset,0)
+		var ct := current + Vector3(0,height_offset + height,0)
+		var nt := next    + Vector3(0,height_offset + height,0)
+		
+		st.add_vertex(c)
+		if inside:
+			st.add_vertex(n)
+			st.add_vertex(nt)
+		else:
+			st.add_vertex(nt)
+			st.add_vertex(n)
+		
+		st.add_vertex(c)
+		if inside:
+			st.add_vertex(nt)
+			st.add_vertex(ct)
+		else:
+			st.add_vertex(ct)
+			st.add_vertex(nt)
+	
+	st.index()
+	st.generate_normals()
+	st.commit(mesh)
