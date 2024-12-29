@@ -14,7 +14,9 @@ extends MeshInstance3D
 
 @export_group("Gems")
 @export var gem_top: PackedScene
+@export var gem_top_height_percentage := 1.09
 @export var gem_middle: PackedScene
+@export var gem_middle_height_percentage := 0.4
 @export var gem_lower: PackedScene
 
 @export_group("Materials")
@@ -36,7 +38,6 @@ extends MeshInstance3D
 
 var curved_tube_height_offset := 0.125
 var second_ring_height_offset := 0.1
-var gem_top_offset := 0.03
 
 func _ready():
 	update_crown()
@@ -44,6 +45,7 @@ func _ready():
 func update_crown():
 	self.mesh = gen_mesh()
 	spawn_gems_top()
+	spawn_gems_middle()
 
 func spawn_gems_top():
 	# delete existing nodes
@@ -54,7 +56,7 @@ func spawn_gems_top():
 	for i in tip_count:
 		var theta := (float(i) / tip_count) * TAU
 		var m := Transform3D.IDENTITY \
-			.translated(Vector3(0, tip_height + 0.03, 0)) \
+			.translated(Vector3(0, tip_height * gem_top_height_percentage, 0)) \
 			.rotated(Vector3(0,0,-1), deg_to_rad(tip_bend_angle)) \
 			.translated(Vector3(radius, 0, 0)) \
 			.rotated(Vector3(0,1,0), theta) \
@@ -63,6 +65,28 @@ func spawn_gems_top():
 		var gem_node : MeshInstance3D = gem_top.instantiate()
 		gem_node.name = "Gem" + str(i)
 		gems_top_container.add_child(gem_node)
+		gem_node.owner = get_tree().edited_scene_root
+		gem_node.transform = m * gem_node.transform
+		gem_node.material_override = gem_material
+
+func spawn_gems_middle():
+	# delete existing nodes
+	for node : Node in gems_middle_container.get_children():
+		gems_middle_container.remove_child(node)
+		node.queue_free()
+	
+	for i in tip_count:
+		var theta := (float(i) / tip_count) * TAU
+		var m := Transform3D.IDENTITY \
+			.translated(Vector3(0, tip_height * gem_middle_height_percentage, 0)) \
+			.rotated(Vector3(0,0,-1), deg_to_rad(tip_bend_angle)) \
+			.translated(Vector3(radius, 0, 0)) \
+			.rotated(Vector3(0,1,0), theta) \
+			.translated(Vector3(0, curved_tube_height_offset, 0))
+		
+		var gem_node : MeshInstance3D = gem_middle.instantiate()
+		gem_node.name = "Gem" + str(i)
+		gems_middle_container.add_child(gem_node)
 		gem_node.owner = get_tree().edited_scene_root
 		gem_node.transform = m * gem_node.transform
 		gem_node.material_override = gem_material
