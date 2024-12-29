@@ -17,7 +17,8 @@ extends MeshInstance3D
 @export var gem_top_height_percentage := 1.09
 @export var gem_middle: PackedScene
 @export var gem_middle_height_percentage := 0.4
-@export var gem_lower: PackedScene
+@export var gem_bottom: PackedScene
+@export_range(0,50) var gem_bottom_count := 20
 
 @export_group("Materials")
 @export var metal_material: Material
@@ -46,6 +47,7 @@ func update_crown():
 	self.mesh = gen_mesh()
 	spawn_gems_top()
 	spawn_gems_middle()
+	spawn_gems_bottom()
 
 func spawn_gems_top():
 	# delete existing nodes
@@ -63,7 +65,7 @@ func spawn_gems_top():
 			.translated(Vector3(0, curved_tube_height_offset, 0))
 		
 		var gem_node : MeshInstance3D = gem_top.instantiate()
-		gem_node.name = "Gem" + str(i)
+		gem_node.name += str(i)
 		gems_top_container.add_child(gem_node)
 		gem_node.owner = get_tree().edited_scene_root
 		gem_node.transform = m * gem_node.transform
@@ -85,7 +87,26 @@ func spawn_gems_middle():
 			.translated(Vector3(0, curved_tube_height_offset, 0))
 		
 		var gem_node : MeshInstance3D = gem_middle.instantiate()
-		gem_node.name = "Gem" + str(i)
+		gem_node.name += str(i)
+		gems_middle_container.add_child(gem_node)
+		gem_node.owner = get_tree().edited_scene_root
+		gem_node.transform = m * gem_node.transform
+		gem_node.material_override = gem_material
+
+func spawn_gems_bottom():
+	# delete existing nodes
+	for node : Node in gems_bottom_container.get_children():
+		gems_middle_container.remove_child(node)
+		node.queue_free()
+	
+	for i in gem_bottom_count:
+		var theta := (float(i) / gem_bottom_count) * TAU
+		var m := Transform3D.IDENTITY \
+			.translated(Vector3(radius, second_ring_height_offset * 0.5, 0)) \
+			.rotated(Vector3(0,1,0), theta)
+		
+		var gem_node : MeshInstance3D = gem_bottom.instantiate()
+		gem_node.name += str(i)
 		gems_middle_container.add_child(gem_node)
 		gem_node.owner = get_tree().edited_scene_root
 		gem_node.transform = m * gem_node.transform
