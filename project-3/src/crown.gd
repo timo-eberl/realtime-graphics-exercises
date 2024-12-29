@@ -7,9 +7,9 @@ extends MeshInstance3D
 
 @export_group("General")
 @export var radius: float = 0.5
-@export_range(1,50) var tip_count := 8
-@export_range(0.0,2.0) var tip_height := 0.4
-@export_range(0,90) var tip_bend_angle := 15
+@export_range(1,50) var tip_count := 10
+@export_range(0.0,2.0) var tip_height := 0.35
+@export_range(0,90) var tip_bend_angle := 10
 @export var tube_radius: float = 0.02
 
 @export_group("Gems")
@@ -17,6 +17,7 @@ extends MeshInstance3D
 @export var gem_top_height_percentage := 1.09
 @export var gem_middle: PackedScene
 @export var gem_middle_height_percentage := 0.4
+@export var gem_middle_tweaked_for_tip_count := 10
 @export var gem_bottom: PackedScene
 @export_range(0,50) var gem_bottom_count := 20
 
@@ -80,6 +81,7 @@ func spawn_gems_middle():
 	for i in tip_count:
 		var theta := (float(i) / tip_count) * TAU
 		var m := Transform3D.IDENTITY \
+			.scaled(Vector3(1, 1, float(gem_middle_tweaked_for_tip_count)/tip_count)) \
 			.translated(Vector3(0, tip_height * gem_middle_height_percentage, 0)) \
 			.rotated(Vector3(0,0,-1), deg_to_rad(tip_bend_angle)) \
 			.translated(Vector3(radius, 0, 0)) \
