@@ -101,7 +101,7 @@ func spawn_gems_middle():
 func spawn_gems_bottom():
 	# delete existing nodes
 	for node : Node in gems_bottom_container.get_children():
-		gems_middle_container.remove_child(node)
+		gems_bottom_container.remove_child(node)
 		node.queue_free()
 	
 	for i in gem_bottom_count:
@@ -113,7 +113,7 @@ func spawn_gems_bottom():
 		var gem_node : MeshInstance3D = gem_bottom.instantiate()
 		gem_node.name += str(i)
 		gem_node.layers = self.layers
-		gems_middle_container.add_child(gem_node)
+		gems_bottom_container.add_child(gem_node)
 		gem_node.owner = get_tree().edited_scene_root
 		gem_node.transform = m * gem_node.transform
 		gem_node.material_override = gem_material
