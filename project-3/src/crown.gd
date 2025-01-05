@@ -68,6 +68,7 @@ func spawn_gems_top():
 		
 		var gem_node : MeshInstance3D = gem_top.instantiate()
 		gem_node.name += str(i)
+		gem_node.layers = self.layers
 		gems_top_container.add_child(gem_node)
 		gem_node.owner = get_tree().edited_scene_root
 		gem_node.transform = m * gem_node.transform
@@ -91,6 +92,7 @@ func spawn_gems_middle():
 		
 		var gem_node : MeshInstance3D = gem_middle.instantiate()
 		gem_node.name += str(i)
+		gem_node.layers = self.layers
 		gems_middle_container.add_child(gem_node)
 		gem_node.owner = get_tree().edited_scene_root
 		gem_node.transform = m * gem_node.transform
@@ -110,6 +112,7 @@ func spawn_gems_bottom():
 		
 		var gem_node : MeshInstance3D = gem_bottom.instantiate()
 		gem_node.name += str(i)
+		gem_node.layers = self.layers
 		gems_middle_container.add_child(gem_node)
 		gem_node.owner = get_tree().edited_scene_root
 		gem_node.transform = m * gem_node.transform
