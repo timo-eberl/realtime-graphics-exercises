@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=4 uid="uid://blu7oeu5dpogk"]
 
-[ext_resource type="Script" path="res://gem.gd" id="1_yux10"]
+[ext_resource type="Script" path="res://src/gem.gd" id="1_yux10"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_iuunb"]
 _surfaces = [{

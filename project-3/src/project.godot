@@ -17,7 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-MeshGeneration="*res://mesh_generation.gd"
+MeshGeneration="*res://src/mesh_generation.gd"
 
 [input]
 
