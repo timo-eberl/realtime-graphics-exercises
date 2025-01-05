@@ -129,10 +129,18 @@ func gen_mesh() -> Mesh:
 	m.surface_set_material(m.get_surface_count()-1, metal_material)
 	MeshGeneration.add_torus_to_mesh(m, radius, tube_radius, torus_radial_segments, tube_segments, 0)
 	m.surface_set_material(m.get_surface_count()-1, metal_material)
-	#MeshGeneration.add_flat_ring_to_mesh(m, radius, flat_ring_radial_segments, second_ring_height_offset, false, 0)
-	MeshGeneration.add_curve_limited_flat_ring_to_mesh(m, curve_flat_ring, radius, flat_ring_radial_segments, false, tip_count, 0)
+	MeshGeneration.add_flat_ring_to_mesh(m, radius, flat_ring_radial_segments, second_ring_height_offset, false, 0)
 	m.surface_set_material(m.get_surface_count()-1, metal_material)
-	#MeshGeneration.add_flat_ring_to_mesh(m, radius, flat_ring_radial_segments, second_ring_height_offset, true, 0)
-	MeshGeneration.add_curve_limited_flat_ring_to_mesh(m, curve_flat_ring, radius, flat_ring_radial_segments, true, tip_count, 0)
+	MeshGeneration.add_curve_limited_flat_ring_to_mesh(
+		m, curve_flat_ring, radius, flat_ring_radial_segments,
+		deg_to_rad(tip_bend_angle), false, tip_count, second_ring_height_offset
+	)
+	m.surface_set_material(m.get_surface_count()-1, metal_material)
+	MeshGeneration.add_flat_ring_to_mesh(m, radius, flat_ring_radial_segments, second_ring_height_offset, true, 0)
+	m.surface_set_material(m.get_surface_count()-1, metal_material)
+	MeshGeneration.add_curve_limited_flat_ring_to_mesh(
+		m, curve_flat_ring, radius, flat_ring_radial_segments,
+		deg_to_rad(tip_bend_angle), true, tip_count, second_ring_height_offset
+	)
 	m.surface_set_material(m.get_surface_count()-1, metal_material)
 	return m

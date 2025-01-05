@@ -15,7 +15,7 @@ _surfaces = [{
 }]
 
 [node name="Gem" type="MeshInstance3D"]
-transform = Transform3D(-5.68248e-09, 0, 0.095, 0, 0.17, 0, -0.13, 0, -4.15258e-09, 0, 0, 0)
+transform = Transform3D(-6.55671e-09, 0, 0.095, 0, 0.19, 0, -0.15, 0, -4.15258e-09, 0, 0, 0)
 mesh = SubResource("ArrayMesh_1wvhm")
 script = ExtResource("1_en04d")
 segments = 16

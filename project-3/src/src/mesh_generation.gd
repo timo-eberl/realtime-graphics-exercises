@@ -245,7 +245,7 @@ func add_flat_ring_to_mesh(
 
 func add_curve_limited_flat_ring_to_mesh(
 	mesh: ArrayMesh, curve: Curve,
-	radius: float, radial_segments: int, inside: bool,
+	radius: float, radial_segments: int, bend_angle: float, inside: bool,
 	repetitions: int, height_offset: float
 ):
 	var st := SurfaceTool.new()
@@ -255,13 +255,20 @@ func add_curve_limited_flat_ring_to_mesh(
 		var first := Vector3(radius, 0, 0)
 		var current := first.rotated(Vector3.UP, (float( i ) / radial_segments) * TAU)
 		var next    := first.rotated(Vector3.UP, (float(i+1) / radial_segments) * TAU)
-		var current_height := curve.sample( fmod(float( ( i ) * repetitions ) / radial_segments, 1.0) )
-		var next_height    := curve.sample( fmod(float( (i+1) * repetitions ) / radial_segments, 1.0) )
+		var current_height := \
+			curve.sample( fmod(float( ( i ) * repetitions ) / radial_segments, 1.0) )
+		var next_height    := \
+			curve.sample( fmod(float( (i+1) * repetitions ) / radial_segments, 1.0) )
 		
 		var c  := current + Vector3(0,height_offset,0)
 		var n  := next    + Vector3(0,height_offset,0)
 		var ct := current + Vector3(0,height_offset + current_height,0)
 		var nt := next    + Vector3(0,height_offset + next_height,0)
+		
+		var rot_vec_c = current.normalized().rotated(Vector3.UP, TAU * 0.25)
+		ct = (ct - c).rotated(rot_vec_c, bend_angle) + c
+		var rot_vec_n = next.normalized().rotated(Vector3.UP, TAU * 0.25)
+		nt = (nt - n).rotated(rot_vec_n, bend_angle) + n
 		
 		st.add_vertex(c)
 		if inside:
