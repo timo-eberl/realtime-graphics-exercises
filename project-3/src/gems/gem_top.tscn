@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://src/gem.gd" id="1_smi1h"]
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_usqwn"]
+[sub_resource type="ArrayMesh" id="ArrayMesh_kdejb"]
 _surfaces = [{
 "aabb": AABB(-0.5, -0.5, -0.25, 1, 1, 0.5),
 "format": 34359742471,
@@ -16,7 +16,7 @@ _surfaces = [{
 
 [node name="Gem" type="MeshInstance3D"]
 transform = Transform3D(-5.46392e-09, 0, 0.093, 0, 0.164, 0, -0.125, 0, -4.06516e-09, 0, 0, 0)
-mesh = SubResource("ArrayMesh_usqwn")
+mesh = SubResource("ArrayMesh_kdejb")
 script = ExtResource("1_smi1h")
 segments = 4
 radial_offset = 0.0
