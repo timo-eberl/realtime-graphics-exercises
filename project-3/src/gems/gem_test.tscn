@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://src/gem.gd" id="1_kpeyj"]
 [ext_resource type="Texture2D" uid="uid://bhw64eq7rap6w" path="res://hdri_sepulchral_chapel_basement/sepulchral_chapel_basement_4k.hdr" id="3_p4hya"]
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_t1jdu"]
+[sub_resource type="ArrayMesh" id="ArrayMesh_sj5ku"]
 _surfaces = [{
 "aabb": AABB(-0.490393, -0.490393, -0.25, 0.980785, 0.980785, 0.5),
 "format": 34359742471,
@@ -127,7 +127,7 @@ shader_parameter/texture_albedo = SubResource("NoiseTexture2D_68swt")
 [node name="Gem" type="MeshInstance3D"]
 transform = Transform3D(-6.55671e-09, 0, 0.095, 0, 0.19, 0, -0.15, 0, -4.15258e-09, 0, 0, 0)
 material_override = ExtResource("1_efmii")
-mesh = SubResource("ArrayMesh_t1jdu")
+mesh = SubResource("ArrayMesh_sj5ku")
 script = ExtResource("1_kpeyj")
 segments = 16
 center_size = 0.545

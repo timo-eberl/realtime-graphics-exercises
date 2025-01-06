@@ -52,7 +52,8 @@ func _ready():
 	update_age()
 
 func update_age():
-	gem_material.set_shader_parameter("dirt_level", lerp(0.0, 0.2, age))
+	gem_material.set_shader_parameter("dirt_level", lerp(0.0, 0.25, age))
+	metal_material.set_shader_parameter("age", age)
 	if gem_material.next_pass:
 		gem_material.next_pass.set_shader_parameter("age", age)
 

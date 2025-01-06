@@ -1,10 +1,45 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cktxag3e0n3bd"]
+[gd_resource type="ShaderMaterial" load_steps=7 format=3 uid="uid://cktxag3e0n3bd"]
 
-[ext_resource type="Shader" path="res://shaders/metal.gdshader" id="1_5f4x0"]
+[ext_resource type="Shader" path="res://shaders/metal.gdshader" id="1_b0yqq"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_nno73"]
+noise_type = 0
+frequency = 0.0855
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_d2njp"]
+width = 1024
+height = 1024
+seamless = true
+noise = SubResource("FastNoiseLite_nno73")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_4bo8y"]
+frequency = 0.0109
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_eodkf"]
+seamless = true
+seamless_blend_skirt = 0.2
+noise = SubResource("FastNoiseLite_4bo8y")
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_a5v2k"]
+width = 1024
+height = 1024
+seamless = true
+as_normal_map = true
+noise = SubResource("FastNoiseLite_nno73")
 
 [resource]
 render_priority = 0
-shader = ExtResource("1_5f4x0")
-shader_parameter/age = 0.0
+shader = ExtResource("1_b0yqq")
+shader_parameter/age = 1.0
 shader_parameter/albedo_new = Color(1, 0.737255, 0.368627, 1)
-shader_parameter/roughness_new = 0.27
+shader_parameter/roughness_new = 0.07
+shader_parameter/albedo_old = Color(0.51, 0.376125, 0.1887, 1)
+shader_parameter/roughness_old = 0.6
+shader_parameter/oxidized_albedo = Color(0.07, 0.07, 0.07, 1)
+shader_parameter/oxidized_roughness = 1.0
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/uv1_offset = null
+shader_parameter/uv1_blend_sharpness = 1.0
+shader_parameter/noise_map_old = SubResource("NoiseTexture2D_d2njp")
+shader_parameter/noise_map_old_2 = SubResource("NoiseTexture2D_eodkf")
+shader_parameter/normal_map_old = SubResource("NoiseTexture2D_a5v2k")

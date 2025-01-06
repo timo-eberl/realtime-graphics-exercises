@@ -30,12 +30,12 @@ bool ray_plane_intersection(Ray ray, Plane plane, out vec3 intersection_point) {
 	float denominator = dot(ray.dir, plane.n);
 	// if denominator is 0, the ray is parallel
 	if (denominator == 0.0) return false;
-	
+
 	vec3 ray_to_plane = plane.p - ray.p;
 	float t = dot(ray_to_plane, plane.n) / denominator;
 	// if t is negative, the intersection is behind the rays origin
 	if (t < 0.0) return false;
-	
+
 	intersection_point = ray.p + t * ray.dir;
 	return true;
 }
@@ -59,29 +59,29 @@ void fragment() {
 	ROUGHNESS = 0.2;
 	METALLIC = 0.0;
 	SPECULAR = 0.15;
-	
+
 	vec3 r = refract(-VIEW, NORMAL, 1.0 / refractive_index);
 	r = mat3(INV_VIEW_MATRIX) * r;
 	vec3 v = mat3(INV_VIEW_MATRIX) * -VIEW;
-	
+
 	Ray ray = Ray(
 		(INV_VIEW_MATRIX * vec4(VERTEX, 1)).xyz, r
 	);
-	
+
 	vec3 p_n = mat3(INV_VIEW_MATRIX) * NORMAL;
 	Plane plane = Plane(
 		NODE_POSITION_WORLD - p_n * fake_distance, p_n
 	);
-	
+
 	vec3 intersection_point;
 	bool is_intersecting = ray_plane_intersection(ray, plane, intersection_point);
-	
+
 	if (is_intersecting) {
 		vec2 inner_uv = uv_on_plane(plane, intersection_point) * gem_noise_scale + 0.5;
 		float s = texture(gem_noise_texture, inner_uv).x;
-		
+
 		ALBEDO = mix(color_0, color_1, s);
-	
+
 		NORMAL = normalize(vec3(
 			texture(random_1d_texture_0, vec2(s, 0)).x,
 			texture(random_1d_texture_1, vec2(s, 0)).x,

@@ -39,7 +39,7 @@ void fragment() {
 	ALPHA = mix(0.0, 0.9, age);
 	ALBEDO = albedo;
 	ROUGHNESS = mix(0.0, 0.6, age);
-	
+
 	NORMAL_MAP = triplanar_texture(normal_map, uv1_power_normal, uv1_triplanar_pos).rgb;
 	NORMAL_MAP_DEPTH = mix(0.0, 1.0, age);
 }
