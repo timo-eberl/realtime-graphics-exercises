@@ -1,4 +1,4 @@
-[gd_scene load_steps=85 format=4 uid="uid://5m26lyuduny4"]
+[gd_scene load_steps=86 format=4 uid="uid://5m26lyuduny4"]
 
 [ext_resource type="Script" path="res://src/camera_controller.gd" id="1_c1u7q"]
 [ext_resource type="Texture2D" uid="uid://bhw64eq7rap6w" path="res://hdri_sepulchral_chapel_basement/sepulchral_chapel_basement_4k.hdr" id="1_i4ysi"]
@@ -12,6 +12,7 @@
 [ext_resource type="Material" uid="uid://cktxag3e0n3bd" path="res://materials/gold.tres" id="9_248hn"]
 [ext_resource type="Material" uid="uid://c161307vvkk32" path="res://materials/gem_dirt_layer.tres" id="10_b2t68"]
 [ext_resource type="Script" path="res://ui.gd" id="12_5g4r3"]
+[ext_resource type="PackedScene" uid="uid://df52fqkkdq2te" path="res://licenser/license_screen_loader_button.tscn" id="13_y3khx"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_rqmfj"]
 panorama = ExtResource("1_i4ysi")
@@ -837,6 +838,11 @@ mesh = SubResource("TorusMesh_judl8")
 [node name="CameraController" type="Node3D" parent="."]
 transform = Transform3D(0.980271, -0.0547537, 0.189922, 0, 0.960866, 0.277013, -0.197657, -0.271547, 0.94191, 0, 0.65, 0)
 script = ExtResource("1_c1u7q")
+look_speed = 0.15
+zoom_speed = 0.07
+distance_limit_min = 0.8
+distance_limit_max = 5.0
+rotation_limit_downwards = 10
 
 [node name="Camera" type="Camera3D" parent="CameraController"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.14672e-08, 7.45058e-09, 2.37532)
@@ -1414,3 +1420,5 @@ layout_mode = 2
 size_flags_horizontal = 8
 text = "8"
 horizontal_alignment = 2
+
+[node name="License Screen Loader Button" parent="." instance=ExtResource("13_y3khx")]
