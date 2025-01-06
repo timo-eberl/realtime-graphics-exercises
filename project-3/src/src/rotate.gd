@@ -1,4 +1,5 @@
 extends Node3D
+class_name Rotate
 
 @export var rotation_time := 5.0
 

@@ -16,7 +16,7 @@ func _ready() -> void:
 	assert(is_zero_approx(camera.position.y), "Only z component of camera.position should be modified")
 	assert(camera.rotation.is_zero_approx(), "To change camera rotation, change the camera controllers rotation")
 
-func _input(event):
+func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and Input.is_action_pressed("mouse_down"):
 		self.rotation_degrees.y -= look_speed * event.relative.x;
 		self.rotation_degrees.x -= look_speed * event.relative.y;

@@ -1,5 +1,6 @@
 @tool
 extends MeshInstance3D
+class_name Crown
 
 @export var generate_button : bool:
 	set(value):
@@ -12,7 +13,10 @@ extends MeshInstance3D
 
 @export_group("General")
 @export var radius: float = 0.5
-@export_range(1,50) var tip_count := 10
+@export_range(1,50) var tip_count := 10:
+	set(value):
+		tip_count = value
+		update_crown()
 @export_range(0.0,2.0) var tip_height := 0.35
 @export_range(0,90) var tip_bend_angle := 10
 @export var tube_radius: float = 0.02
