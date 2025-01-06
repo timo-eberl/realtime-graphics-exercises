@@ -1,7 +1,7 @@
 [gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://bs8kdyjphctop"]
 
-[ext_resource type="Material" uid="uid://c0xo2v8ag4h16" path="res://gem_material.tres" id="1_oil7b"]
-[ext_resource type="Shader" path="res://gem_aged_layer.gdshader" id="1_xub6s"]
+[ext_resource type="Material" uid="uid://c0xo2v8ag4h16" path="res://materials/gem_reflection_layer.tres" id="1_oil7b"]
+[ext_resource type="Shader" path="res://shaders/gem_aged_layer.gdshader" id="1_xub6s"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_yg25o"]
 noise_type = 2

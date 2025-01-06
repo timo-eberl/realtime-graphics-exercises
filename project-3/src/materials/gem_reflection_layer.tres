@@ -1,7 +1,7 @@
 [gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://c0xo2v8ag4h16"]
 
-[ext_resource type="Material" uid="uid://ca0wk7jcm5a57" path="res://gem_inside_material.tres" id="1_pr5ay"]
-[ext_resource type="Shader" path="res://gem_material.gdshader" id="2_u75g7"]
+[ext_resource type="Material" uid="uid://ca0wk7jcm5a57" path="res://materials/gem_inside.tres" id="1_pr5ay"]
+[ext_resource type="Shader" path="res://shaders/gem_reflection_layer.gdshader" id="2_u75g7"]
 
 [resource]
 render_priority = 0

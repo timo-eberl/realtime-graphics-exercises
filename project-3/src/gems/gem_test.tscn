@@ -1,10 +1,10 @@
 [gd_scene load_steps=13 format=4 uid="uid://wvh63jwvhrqx"]
 
-[ext_resource type="Material" uid="uid://bs8kdyjphctop" path="res://gem_aged_layer_material.tres" id="1_efmii"]
+[ext_resource type="Material" uid="uid://bs8kdyjphctop" path="res://materials/gem_aged_layer.tres" id="1_efmii"]
 [ext_resource type="Script" path="res://src/gem.gd" id="1_kpeyj"]
 [ext_resource type="Texture2D" uid="uid://bhw64eq7rap6w" path="res://hdri_sepulchral_chapel_basement/sepulchral_chapel_basement_4k.hdr" id="3_p4hya"]
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_iddy5"]
+[sub_resource type="ArrayMesh" id="ArrayMesh_t1jdu"]
 _surfaces = [{
 "aabb": AABB(-0.490393, -0.490393, -0.25, 0.980785, 0.980785, 0.5),
 "format": 34359742471,
@@ -19,12 +19,12 @@ _surfaces = [{
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_003o4"]
 panorama = ExtResource("3_p4hya")
 
-[sub_resource type="Sky" id="Sky_8j2wu"]
+[sub_resource type="Sky" id="Sky_yap15"]
 sky_material = SubResource("PanoramaSkyMaterial_003o4")
 
 [sub_resource type="Environment" id="Environment_aysn2"]
 background_mode = 2
-sky = SubResource("Sky_8j2wu")
+sky = SubResource("Sky_yap15")
 tonemap_mode = 1
 tonemap_exposure = 4.0
 tonemap_white = 16.0
@@ -127,7 +127,7 @@ shader_parameter/texture_albedo = SubResource("NoiseTexture2D_68swt")
 [node name="Gem" type="MeshInstance3D"]
 transform = Transform3D(-6.55671e-09, 0, 0.095, 0, 0.19, 0, -0.15, 0, -4.15258e-09, 0, 0, 0)
 material_override = ExtResource("1_efmii")
-mesh = SubResource("ArrayMesh_iddy5")
+mesh = SubResource("ArrayMesh_t1jdu")
 script = ExtResource("1_kpeyj")
 segments = 16
 center_size = 0.545

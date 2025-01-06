@@ -1,7 +1,7 @@
 [gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://c161307vvkk32"]
 
-[ext_resource type="Shader" path="res://dirt.gdshader" id="1_2wmjb"]
-[ext_resource type="Material" uid="uid://bs8kdyjphctop" path="res://gem_aged_layer_material.tres" id="1_m5o5f"]
+[ext_resource type="Shader" path="res://shaders/dirt_layer.gdshader" id="1_2wmjb"]
+[ext_resource type="Material" uid="uid://bs8kdyjphctop" path="res://materials/gem_aged_layer.tres" id="1_m5o5f"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_opyaj"]
 frequency = 0.037

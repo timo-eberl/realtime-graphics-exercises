@@ -17,10 +17,10 @@ float remap(float a1, float b1, float a2, float b2, float t) {
 void fragment() {
 	vec3 world_vert = (INV_VIEW_MATRIX * vec4(VERTEX,1)).xyz;
 	float c = texture(cor_texture, world_vert * 10.0).x;
-	
+
 	c = remap(dirt_level, dirt_level+transition, 1, 0, c);
 	c = clamp(c,0,1);
-	
+
 	ALPHA = c;
 	ALBEDO = dirt_color;
 	ROUGHNESS = 1.0;
