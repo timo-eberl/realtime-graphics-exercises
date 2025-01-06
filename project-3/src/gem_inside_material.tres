@@ -1,0 +1,29 @@
+[gd_resource type="ShaderMaterial" load_steps=7 format=3 uid="uid://ca0wk7jcm5a57"]
+
+[ext_resource type="Shader" path="res://gem.gdshader" id="1_0rajw"]
+[ext_resource type="Texture2D" uid="uid://ddc4ynmo816tx" path="res://random_texture_1d_0.tres" id="3_1w2v7"]
+[ext_resource type="Texture2D" uid="uid://wrubw37bvhne" path="res://random_texture_1d_1.tres" id="4_n3nls"]
+[ext_resource type="Texture2D" uid="uid://dvf10f1ejmyc2" path="res://random_texture_1d_2.tres" id="5_b4dm8"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_j0noe"]
+noise_type = 2
+fractal_octaves = 2
+cellular_return_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_3mbwd"]
+width = 4096
+height = 4096
+noise = SubResource("FastNoiseLite_j0noe")
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_0rajw")
+shader_parameter/gem_noise_scale = Vector2(1, 1)
+shader_parameter/refractive_index = 1.57
+shader_parameter/color_0 = Color(0, 1, 0.516667, 1)
+shader_parameter/color_1 = Color(0, 0.37, 0.191167, 1)
+shader_parameter/fake_distance = 0.1
+shader_parameter/gem_noise_texture = SubResource("NoiseTexture2D_3mbwd")
+shader_parameter/random_1d_texture_0 = ExtResource("3_1w2v7")
+shader_parameter/random_1d_texture_1 = ExtResource("4_n3nls")
+shader_parameter/random_1d_texture_2 = ExtResource("5_b4dm8")

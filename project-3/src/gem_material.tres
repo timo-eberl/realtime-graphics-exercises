@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://c0xo2v8ag4h16"]
+
+[ext_resource type="Material" uid="uid://ca0wk7jcm5a57" path="res://gem_inside_material.tres" id="1_pr5ay"]
+
+[resource]
+next_pass = ExtResource("1_pr5ay")
+transparency = 1
+blend_mode = 1
+albedo_color = Color(0, 0.43, 0.1505, 1)
+metallic_specular = 0.69
+roughness = 0.2
