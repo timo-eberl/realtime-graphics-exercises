@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bhw64eq7rap6w"
-path.bptc="res://.godot/imported/sepulchral_chapel_basement_4k.hdr-c39d33cc2a3fbc6f31a7446f70387eb6.bptc.ctex"
+path="res://.godot/imported/sepulchral_chapel_basement_4k.hdr-c39d33cc2a3fbc6f31a7446f70387eb6.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://hdri_sepulchral_chapel_basement/sepulchral_chapel_basement_4k.hdr"
-dest_files=["res://.godot/imported/sepulchral_chapel_basement_4k.hdr-c39d33cc2a3fbc6f31a7446f70387eb6.bptc.ctex"]
+dest_files=["res://.godot/imported/sepulchral_chapel_basement_4k.hdr-c39d33cc2a3fbc6f31a7446f70387eb6.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
