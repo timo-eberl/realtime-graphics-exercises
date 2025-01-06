@@ -1,4 +1,4 @@
-[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://bs8kdyjphctop"]
+[gd_resource type="ShaderMaterial" load_steps=7 format=3 uid="uid://bs8kdyjphctop"]
 
 [ext_resource type="Material" uid="uid://ca0wk7jcm5a57" path="res://gem_inside_material.tres" id="1_xhl4n"]
 [ext_resource type="Shader" path="res://gem_aged_layer.gdshader" id="1_xub6s"]
@@ -62,9 +62,24 @@ shader_parameter/uv1_offset = Vector3(0, 0, 0)
 shader_parameter/uv2_scale = Vector3(1, 1, 1)
 shader_parameter/uv2_offset = Vector3(0, 0, 0)
 
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_yg25o"]
+noise_type = 2
+frequency = 0.0076
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_nhfsi"]
+seamless = true
+seamless_blend_skirt = 0.5
+as_normal_map = true
+bump_strength = 12.0
+noise = SubResource("FastNoiseLite_yg25o")
+
 [resource]
 render_priority = 1
 next_pass = SubResource("ShaderMaterial_0pe61")
 shader = ExtResource("1_xub6s")
 shader_parameter/age = 1.0
 shader_parameter/albedo = Color(0, 0.56, 0.289333, 1)
+shader_parameter/uv1_scale = Vector3(0.7, 0.7, 0.7)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv1_blend_sharpness = null
+shader_parameter/normal_map = SubResource("NoiseTexture2D_nhfsi")
