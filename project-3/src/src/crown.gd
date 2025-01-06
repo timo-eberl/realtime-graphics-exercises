@@ -5,6 +5,11 @@ extends MeshInstance3D
 	set(value):
 		update_crown()
 
+@export_range(0.0, 1.0) var age : float = 0.0:
+	set(value):
+		age = value
+		update_age()
+
 @export_group("General")
 @export var radius: float = 0.5
 @export_range(1,50) var tip_count := 10
@@ -22,8 +27,8 @@ extends MeshInstance3D
 @export_range(0,50) var gem_bottom_count := 20
 
 @export_group("Materials")
-@export var metal_material: Material
-@export var gem_material: Material
+@export var metal_material: ShaderMaterial
+@export var gem_material: ShaderMaterial
 
 @export_group("Tip Curves")
 @export var path : Path2D
@@ -44,6 +49,12 @@ var second_ring_height_offset := 0.1
 
 func _ready():
 	update_crown()
+	update_age()
+
+func update_age():
+	gem_material.set_shader_parameter("dirt_level", lerp(0.0, 0.2, age))
+	if gem_material.next_pass:
+		gem_material.next_pass.set_shader_parameter("age", age)
 
 func update_crown():
 	self.mesh = gen_mesh()

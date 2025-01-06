@@ -1,4 +1,7 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://c0xo2v8ag4h16"]
+[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://bs8kdyjphctop"]
+
+[ext_resource type="Material" uid="uid://ca0wk7jcm5a57" path="res://gem_inside_material.tres" id="1_xhl4n"]
+[ext_resource type="Shader" path="res://gem_aged_layer.gdshader" id="1_xub6s"]
 
 [sub_resource type="Shader" id="Shader_x5nq1"]
 code = "// NOTE: Shader automatically converted from Godot Engine 4.3.stable's StandardMaterial3D.
@@ -44,8 +47,9 @@ void fragment() {
 }
 "
 
-[resource]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0pe61"]
 render_priority = 0
+next_pass = ExtResource("1_xhl4n")
 shader = SubResource("Shader_x5nq1")
 shader_parameter/albedo = Color(0, 0.21, 0.0735, 1)
 shader_parameter/point_size = 1.0
@@ -57,3 +61,10 @@ shader_parameter/uv1_scale = Vector3(1, 1, 1)
 shader_parameter/uv1_offset = Vector3(0, 0, 0)
 shader_parameter/uv2_scale = Vector3(1, 1, 1)
 shader_parameter/uv2_offset = Vector3(0, 0, 0)
+
+[resource]
+render_priority = 1
+next_pass = SubResource("ShaderMaterial_0pe61")
+shader = ExtResource("1_xub6s")
+shader_parameter/age = 1.0
+shader_parameter/albedo = Color(0, 0.56, 0.289333, 1)

@@ -1,0 +1,22 @@
+[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://c161307vvkk32"]
+
+[ext_resource type="Shader" path="res://dirt.gdshader" id="1_2wmjb"]
+[ext_resource type="Material" uid="uid://bs8kdyjphctop" path="res://gem_aged_layer_material.tres" id="1_m5o5f"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_opyaj"]
+frequency = 0.037
+
+[sub_resource type="NoiseTexture3D" id="NoiseTexture3D_0xphj"]
+invert = true
+seamless = true
+seamless_blend_skirt = 1.0
+noise = SubResource("FastNoiseLite_opyaj")
+
+[resource]
+render_priority = 2
+next_pass = ExtResource("1_m5o5f")
+shader = ExtResource("1_2wmjb")
+shader_parameter/dirt_level = 0.3
+shader_parameter/transition = 0.23
+shader_parameter/dirt_color = Color(0.26, 0.20254, 0.0572, 1)
+shader_parameter/cor_texture = SubResource("NoiseTexture3D_0xphj")
