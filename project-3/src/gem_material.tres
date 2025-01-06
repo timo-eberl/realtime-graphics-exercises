@@ -1,11 +1,19 @@
-[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://c0xo2v8ag4h16"]
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://c0xo2v8ag4h16"]
 
 [ext_resource type="Material" uid="uid://ca0wk7jcm5a57" path="res://gem_inside_material.tres" id="1_pr5ay"]
+[ext_resource type="Shader" path="res://gem_material.gdshader" id="2_u75g7"]
 
 [resource]
+render_priority = 0
 next_pass = ExtResource("1_pr5ay")
-transparency = 1
-blend_mode = 1
-albedo_color = Color(0, 0.21, 0.0735, 1)
-metallic_specular = 0.69
-roughness = 0.2
+shader = ExtResource("2_u75g7")
+shader_parameter/albedo = Color(0, 0.21, 0.0735, 1)
+shader_parameter/point_size = 1.0
+shader_parameter/roughness = 0.2
+shader_parameter/metallic_texture_channel = null
+shader_parameter/specular = 0.69
+shader_parameter/metallic = 0.0
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
