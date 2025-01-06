@@ -1,5 +1,4 @@
 shader_type spatial;
-render_mode cull_disabled;
 
 uniform sampler2D gem_noise_texture : filter_nearest, repeat_enable;
 uniform vec2 gem_noise_scale = vec2(1);

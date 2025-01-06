@@ -1,4 +1,4 @@
-[gd_scene load_steps=83 format=4 uid="uid://5m26lyuduny4"]
+[gd_scene load_steps=84 format=4 uid="uid://5m26lyuduny4"]
 
 [ext_resource type="Script" path="res://src/camera_controller.gd" id="1_c1u7q"]
 [ext_resource type="Texture2D" uid="uid://bhw64eq7rap6w" path="res://hdri_sepulchral_chapel_basement/sepulchral_chapel_basement_4k.hdr" id="1_i4ysi"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://blu7oeu5dpogk" path="res://gems/gem_bottom.tscn" id="6_7vm41"]
 [ext_resource type="Material" uid="uid://c0xo2v8ag4h16" path="res://gem_material.tres" id="9_2b6e7"]
 [ext_resource type="Script" path="res://src/rotate.gd" id="9_7mow2"]
+[ext_resource type="Material" uid="uid://cktxag3e0n3bd" path="res://gold_material.tres" id="9_248hn"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_rqmfj"]
 panorama = ExtResource("1_i4ysi")
@@ -857,7 +858,7 @@ gem_middle = ExtResource("5_6n0uc")
 gem_middle_height_percentage = 0.36
 gem_bottom = ExtResource("6_7vm41")
 gem_bottom_count = 30
-metal_material = SubResource("StandardMaterial3D_yofhr")
+metal_material = ExtResource("9_248hn")
 gem_material = ExtResource("9_2b6e7")
 path = NodePath("Path2D")
 curve_flat_ring = SubResource("Curve_l56mh")

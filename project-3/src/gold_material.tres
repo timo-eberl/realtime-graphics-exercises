@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cktxag3e0n3bd"]
+
+[ext_resource type="Shader" path="res://gold.gdshader" id="1_5f4x0"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_5f4x0")
+shader_parameter/albedo_new = Color(1, 0.737255, 0.368627, 1)
+shader_parameter/roughness_new = 0.27
