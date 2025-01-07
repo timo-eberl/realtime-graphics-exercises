@@ -1,0 +1,122 @@
+<style>
+body {
+    max-width: 60em;
+    line-height: 150%;
+    font-family: sans-serif;
+    padding: 1em;
+    margin: 0 auto;
+}
+img, video {
+    width: 100%;
+    max-width: 512px;
+}
+iframe {
+    width: 100%;
+    height: 38em;
+}
+pre {
+    border: 1px solid black;
+    padding: 1em 2em;
+}
+/* dark mode */
+@media (prefers-color-scheme: dark) {
+    body {
+        color: #cac5be;
+        background-color: #181a1b;
+    }
+    pre {
+        border: 1px solid white;
+    }
+    h1, h2, h3, h4, h5 {
+        border-color: rgba(255, 255, 255, 0.48) !important;
+    }
+    a {
+        color: #6eb2ee;
+    }
+}
+</style>
+<h1 id="project-3---a-crown-old-and-new">Project 3 - A crown, old and
+new</h1>
+<h2 id="interactive-version">Interactive Version</h2>
+<iframe src="../export/index.html">
+Can’t load iframe
+</iframe>
+<ul>
+<li>Look around: Left click + move mouse</li>
+<li>Zoom: Scroll</li>
+</ul>
+<h2 id="video-recording">Video Recording</h2>
+<video alt="recording" controls>
+<source src="videos/recording.webm">
+</video>
+<h2 id="step-by-step-documentation">Step by Step Documentation</h2>
+<h3 id="crown-mesh-generation">Crown Mesh Generation</h3>
+<p><img src="images/mesh-combined.png" /></p>
+<p>The crown mesh consists of multiple parts (from left to right): A
+curved torus at the top, two torus shapes and a thin flat part. The top
+part of the mesh is bent slightly outward.</p>
+<p>The bent torus follows a Bézier curve defined with the
+<code>Path2D</code> Node in Godot:</p>
+<p><img src="images/curve2d.png" /></p>
+<p>The number of tips is configurable as well as the height and the
+subdivision detail of the mesh.</p>
+<p>A crown with reduced subdivision detail and 2 tips:</p>
+<p><img src="images/mesh-low-detail-2-tips.png" /></p>
+<h3 id="gem-mesh-generation">Gem Mesh Generation</h3>
+<p>An algorithm was implemented that can generate different kinds of
+gems with different parameters. Three gem were created using this
+algorithm. They have been scaled using the <code>Node3D</code>s
+transform.</p>
+<p><img src="images/gems.png" /></p>
+<p>The script <code>mesh_generation.gd</code> contains the code for the
+mesh generation of both the gem and the individual crown parts.</p>
+<h3 id="gem-placement">Gem Placement</h3>
+<p><img src="images/mesh-with-gems.png" /></p>
+<p>The script <code>crown.gd</code> contains the functions
+<code>spawn_gems_top</code>, <code>spawn_gems_middle</code>,
+<code>spawn_gems_bottom</code>, which place the gems.</p>
+<h3 id="metal-material">Metal Material</h3>
+<p><img src="images/gold-material.png" /></p>
+<p>A gold material was created by setting according albedo, metallic and
+roughness values.</p>
+<h3 id="corroded-metal">Corroded Metal</h3>
+<p><img src="images/gold-corroded.png" /></p>
+<p>The corroded version of the gold material adds normal detail as well
+as oxidization.</p>
+<h3 id="gem-material">Gem Material</h3>
+<p><img src="images/gem-material.gif" /></p>
+<p>The shader for the gem fakes details of a gem by doing a refraction
+along the surface normal. The shader then imitates an infinite plane
+that lies inside the diamond, which is parallel to the currently viewed
+surface. A cellular noise texture is mapped onto that plane and used to
+adjust the color and normal of each cell differently.</p>
+<p>Additionally a second material is used using the
+<code>next_pass</code> feature of Godot to render the specular
+highlights of the actual mesh on top of the “inside” of the gem.</p>
+<p>The material is configured to imitate an emerald.</p>
+<h3 id="corroded-gem">Corroded Gem</h3>
+<p><img src="images/gem-corroded.png" /></p>
+<p>The corroded version of the gem adds normal detail, changes the
+roughness and adds dirt.</p>
+<h3 id="aging-process">Aging Process</h3>
+<p><img src="images/age-blend.gif" /></p>
+<p>The corroded versions can be blended to the initial version to
+simulate the aging process.</p>
+<h3 id="complete-interactive-scene">Complete interactive Scene</h3>
+<p>A scene was created to showcase the meshes and materials:</p>
+<ul>
+<li>A <a href="https://polyhaven.com/a/sepulchral_chapel_basement">HDRI
+from Polyhaven</a> is used as background.</li>
+<li>Bloom is enabled.</li>
+<li>The crown was placed on a red pillow.</li>
+<li>A spotlight rotates around the crown and illuminates it.</li>
+<li>A weak directional light shines from the top.</li>
+<li>Both lights cast shadows using Godots shadow mapping
+capabilities.</li>
+<li>A <code>ReflectionProbe</code> is placed in the center of the crown
+to approximate reflections.</li>
+<li>UI elements are available to change the speed of the spotlight, the
+age of the crown and the number of tips on the crown.</li>
+<li>The camera can be controlled using the mouse.</li>
+</ul>
+<p><img src="images/scene.png" /></p>
