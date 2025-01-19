@@ -244,7 +244,7 @@ vec3 shade(vec3 albedo, vec3 point, vec3 normal) {
 	// sun : Lambertian
 	// the integral over the upper hemisphere times cos(theta) equals to pi
 	// this cancels out with albedo/pi from lambertian BRDF
-	vec3 res = albedo * max(0.0, dot(normal, sun_direction() * _sun_color));
+	vec3 res = albedo * max(0.0, dot(normal, sun_direction())) * _sun_color;
 	res += albedo * max(0.0, normal.y) * _zenith_color;
 	res += albedo * vec3(0.1); // ambient
 	return res;
