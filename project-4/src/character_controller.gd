@@ -9,7 +9,7 @@ extends CharacterBody3D
 @export var jump_velocity := 5.0
 
 @onready var camera : Node3D = $Head/Camera
-
+@onready var initial_position : Vector3 = self.global_position
 
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -47,3 +47,7 @@ func _physics_process(delta: float) -> void:
 		self.velocity.z = move_toward(self.velocity.z, 0, speed)
 
 	self.move_and_slide()
+	
+	# respawn when falling down
+	if self.global_position.y < -3.0:
+		self.global_position = initial_position
