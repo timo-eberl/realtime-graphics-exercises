@@ -1,0 +1,59 @@
+[gd_scene load_steps=11 format=3 uid="uid://b0dugdwvenvtn"]
+
+[ext_resource type="Script" path="res://character_controller.gd" id="1_j0nyi"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_at7ed"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_jbxg8"]
+noise = SubResource("FastNoiseLite_at7ed")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2dfyt"]
+albedo_texture = SubResource("NoiseTexture2D_jbxg8")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_x3507"]
+size = Vector2(20, 20)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_i18xe"]
+size = Vector3(20, 1, 20)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_w4kr8"]
+
+[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_idn88"]
+
+[sub_resource type="Sky" id="Sky_de08i"]
+sky_material = SubResource("PhysicalSkyMaterial_idn88")
+
+[sub_resource type="Environment" id="Environment_6mosr"]
+background_mode = 2
+sky = SubResource("Sky_de08i")
+
+[node name="World" type="Node3D"]
+
+[node name="Ground" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_2dfyt")
+mesh = SubResource("PlaneMesh_x3507")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Ground"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+shape = SubResource("BoxShape3D_i18xe")
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+script = ExtResource("1_j0nyi")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+shape = SubResource("CapsuleShape3D_w4kr8")
+
+[node name="Head" type="Node3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+
+[node name="Camera" type="Camera3D" parent="CharacterBody3D/Head"]
+fov = 90.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_6mosr")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.51438, 0.857563, 0, -0.857563, -0.51438, 0, 0, 0)
