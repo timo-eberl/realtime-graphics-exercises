@@ -12,11 +12,11 @@ extends CharacterBody3D
 @onready var initial_position : Vector3 = self.global_position
 
 func _ready() -> void:
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN
 
 # look with mouse
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion:
+	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CONFINED_HIDDEN:
 		self.rotation_degrees.y -= look_speed * event.relative.x;
 		camera.rotation_degrees.x -= look_speed * event.relative.y;
 		camera.rotation_degrees.x = clampf(camera.rotation_degrees.x, -rotation_limit_upwards, rotation_limit_downwards)
@@ -26,6 +26,11 @@ func _process(delta: float) -> void:
 	self.rotation_degrees.y -= look_speed * input_dir.x * delta * 500.0;
 	camera.rotation_degrees.x -= look_speed * input_dir.y * delta * 500.0;
 	camera.rotation_degrees.x = clampf(camera.rotation_degrees.x, -rotation_limit_upwards, rotation_limit_downwards)
+	
+	if Input.is_action_just_pressed("ui_cancel"):
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	if Input.is_action_just_pressed("mouse_click"):
+		Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
