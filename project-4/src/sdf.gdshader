@@ -40,7 +40,7 @@ vec3 gradient(vec3 p) {
 vec3 shade(vec3 albedo, vec3 normal) {
 	vec3 sun_direction = normalize(vec3(0,1,0));
 	return
-		albedo * max(0.0, dot(normal, sun_direction)); // diffuse
+		albedo * max(0.0, dot(normal, sun_direction)) // diffuse
 		+ albedo * vec3(0.1); // ambient
 }
 
