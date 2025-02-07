@@ -1,7 +1,7 @@
-[gd_scene load_steps=15 format=3 uid="uid://b0dugdwvenvtn"]
+[gd_scene load_steps=16 format=3 uid="uid://b0dugdwvenvtn"]
 
 [ext_resource type="Script" path="res://character_controller.gd" id="1_j0nyi"]
-[ext_resource type="Shader" path="res://sdf_sphere.gdshader" id="2_6e7c0"]
+[ext_resource type="Shader" path="res://sdf.gdshader" id="2_3u7ph"]
 [ext_resource type="Script" path="res://sdf.gd" id="3_4phkp"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_at7ed"]
@@ -20,6 +20,19 @@ size = Vector3(20, 1, 20)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_w4kr8"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1rqpr"]
+render_priority = 0
+shader = ExtResource("2_3u7ph")
+shader_parameter/aspect_ratio = 3.21417
+shader_parameter/camera_position = Vector3(0, 2.2, 0)
+shader_parameter/azimuth = 0.0
+shader_parameter/elevation = 0.0
+shader_parameter/vertical_fov_radians = 1.5708
+
+[sub_resource type="QuadMesh" id="QuadMesh_euf02"]
+flip_faces = true
+size = Vector2(2, 2)
+
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_idn88"]
 
 [sub_resource type="Sky" id="Sky_de08i"]
@@ -31,16 +44,6 @@ sky = SubResource("Sky_de08i")
 
 [sub_resource type="BoxMesh" id="BoxMesh_aqhr3"]
 size = Vector3(2, 1.5, 1.5)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ygoyx"]
-shader = ExtResource("2_6e7c0")
-shader_parameter/l_white = 1.0
-shader_parameter/exposure = 0.0
-shader_parameter/aspect_ratio = 1.77778
-shader_parameter/camera_position = Vector3(0, 0, 3)
-shader_parameter/azimuth = 0.0
-shader_parameter/elevation = 0.0
-shader_parameter/vertical_fov_radians = 0.7854
 
 [node name="World" type="Node3D"]
 
@@ -68,6 +71,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
 unique_name_in_owner = true
 fov = 90.0
 
+[node name="SDF" type="MeshInstance3D" parent="CharacterBody3D/Head/Camera"]
+material_override = SubResource("ShaderMaterial_1rqpr")
+extra_cull_margin = 16384.0
+mesh = SubResource("QuadMesh_euf02")
+script = ExtResource("3_4phkp")
+
 [node name="Sun" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -0.51438, 0.857563, 0, -0.857563, -0.51438, 0, 0, 0)
 
@@ -79,13 +88,3 @@ environment = SubResource("Environment_6mosr")
 [node name="Box" type="MeshInstance3D" parent="ExhibitFur"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -7)
 mesh = SubResource("BoxMesh_aqhr3")
-
-[node name="SDF" type="Panel" parent="."]
-material = SubResource("ShaderMaterial_ygoyx")
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-script = ExtResource("3_4phkp")

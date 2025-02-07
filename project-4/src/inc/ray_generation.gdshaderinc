@@ -19,8 +19,8 @@ Ray perspective_ray(
 	right = right * p_aspect;
 	forward = forward * focal_length;
 	// center on (0.0) ; make the y range from -1 to 1 and point upwards
-	vec2 xy = (p_uv - vec2(0.5)) * vec2(2, -2);
-	return Ray(p_camera_position, forward + xy.x * right + xy.y * up);
+	vec2 xy = (p_uv - vec2(0.5)) * vec2(2.0, -2.0);
+	return Ray(p_camera_position, normalize(forward + xy.x * right + xy.y * up));
 }
 
 Ray orthographic_ray(float p_size_y, float p_aspect_ratio, vec2 p_uv) {

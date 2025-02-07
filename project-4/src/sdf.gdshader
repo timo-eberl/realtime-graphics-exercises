@@ -1,34 +1,29 @@
-shader_type canvas_item;
+shader_type spatial;
+// Prevent the quad from being affected by lighting and fog. This also improves performance.
+render_mode unshaded, fog_disabled;
 
 // constants
 const float EPSILON = 0.001; // larger than 0, but so small every smaller value is negative
 const float GRADIENT_DT = 0.05; // half of the step size
 const int MAX_STEPS = 100; // ray march steps
 const float MAX_DISTANCE = 100.0; // from surface; if we are that far, we won't hit anything
-// tone mapper
-uniform float l_white : hint_range(0.0, 10.0) = 1.0;
-uniform float exposure : hint_range(-10.0, 10.0) = 0.0;
 // camera (set from script)
 uniform float aspect_ratio = 1.0; uniform vec3 camera_position = vec3(0,0,3);
 uniform float azimuth = 0.0; uniform float elevation = 0.0;
 uniform float vertical_fov_radians = 0.7854; // 45 degrees
-// used to generate the ray
-varying vec3 _ray_p; varying vec3 _ray_dir;
 
-#include "res://inc/tone_mapping.gdshaderinc"
 #include "res://inc/sdf_primitives.gdshaderinc"
 #include "res://inc/matrices.gdshaderinc"
 #include "res://inc/ray_generation.gdshaderinc"
 
+uniform sampler2D depth_texture : source_color, hint_depth_texture;
+
 void vertex() {
-	Ray ray = perspective_ray(
-		azimuth, elevation, camera_position, aspect_ratio, vertical_fov_radians, UV
-	);
-	_ray_p = ray.p; _ray_dir = ray.dir;
+	POSITION = vec4(VERTEX.xy, 1.0, 1.0);
 }
 
 float sdf(vec3 p) {
-	return sdSphere(p - 1.0, 1.0);
+	return sdSphere(p, 1.0);
 }
 
 vec3 gradient(vec3 p) {
@@ -52,11 +47,14 @@ vec3 shade(vec3 albedo, vec3 normal) {
 		+ albedo * vec3(0.1); // ambient
 }
 
-bool sphere_trace_ray(Ray ray, out vec3 color) {
+bool sphere_trace_ray(Ray ray, vec3 world_position, out vec3 color) {
 	// step front-to-back over the ray
 	vec3 p = ray.p;
 	float d;
 	for (int i = 0; i < MAX_STEPS; ++i) {
+		if (distance(p, camera_position) > distance(world_position, camera_position)) {
+			return false;
+		}
 		d = sdf(p);
 		if (d < EPSILON || d > MAX_DISTANCE) {
 			break;
@@ -76,12 +74,30 @@ bool sphere_trace_ray(Ray ray, out vec3 color) {
 }
 
 void fragment() {
-	Ray ray = Ray(_ray_p, normalize(_ray_dir));
+	// https://docs.godotengine.org/en/stable/tutorials/shaders/advanced_postprocessing.html
+	
+	float depth = texture(depth_texture, SCREEN_UV).x;
+	
+	// This assumes the use of the Forward+ or Mobile renderers
+	vec3 ndc = vec3(SCREEN_UV * 2.0 - 1.0, depth);
+	// Use this for the compatibility renderer
+	//vec3 ndc = vec3(SCREEN_UV, depth) * 2.0 - 1.0;
+	
+	vec4 view = INV_PROJECTION_MATRIX * vec4(ndc, 1.0);
+	view.xyz /= view.w;
+	float linear_depth = -view.z;
+	
+	vec4 world = INV_VIEW_MATRIX * INV_PROJECTION_MATRIX * vec4(ndc, 1.0);
+	vec3 world_position = world.xyz / world.w;
+	
+	Ray ray = perspective_ray(
+		azimuth, elevation, camera_position, aspect_ratio, vertical_fov_radians, SCREEN_UV
+	);
 
 	vec3 color;
-	bool hit = sphere_trace_ray(ray, color);
+	bool hit = sphere_trace_ray(ray, world_position, color);
 	if (!hit) {
 		discard;
 	}
-	COLOR = vec4(linear_to_sRGB(tonemap_reinhard(color * pow(2.0, exposure), l_white)), 1.0);
+	ALBEDO.xyz = color;
 }
