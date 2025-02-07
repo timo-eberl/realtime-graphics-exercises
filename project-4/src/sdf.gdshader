@@ -7,18 +7,15 @@ const float EPSILON = 0.001; // larger than 0, but so small every smaller value 
 const float GRADIENT_DT = 0.05; // half of the step size
 const int MAX_STEPS = 100; // ray march steps
 const float MAX_DISTANCE = 100.0; // from surface; if we are that far, we won't hit anything
-// camera (set from script)
-uniform float aspect_ratio = 1.0; uniform vec3 camera_position = vec3(0,0,3);
-uniform float azimuth = 0.0; uniform float elevation = 0.0;
-uniform float vertical_fov_radians = 0.7854; // 45 degrees
+
+struct Ray { vec3 p; vec3 dir; };
 
 #include "res://inc/sdf_primitives.gdshaderinc"
-#include "res://inc/matrices.gdshaderinc"
-#include "res://inc/ray_generation.gdshaderinc"
 
 uniform sampler2D depth_texture : source_color, hint_depth_texture;
 
 void vertex() {
+	// don't do any transformations
 	POSITION = vec4(VERTEX.xy, 1.0, 1.0);
 }
 
@@ -47,12 +44,12 @@ vec3 shade(vec3 albedo, vec3 normal) {
 		+ albedo * vec3(0.1); // ambient
 }
 
-bool sphere_trace_ray(Ray ray, vec3 world_position, out vec3 color) {
+bool sphere_trace_ray(Ray ray, vec3 depth_map_position, out vec3 color) {
 	// step front-to-back over the ray
 	vec3 p = ray.p;
 	float d;
 	for (int i = 0; i < MAX_STEPS; ++i) {
-		if (distance(p, camera_position) > distance(world_position, camera_position)) {
+		if (distance(p, ray.p) > distance(depth_map_position, ray.p)) {
 			return false;
 		}
 		d = sdf(p);
@@ -75,25 +72,17 @@ bool sphere_trace_ray(Ray ray, vec3 world_position, out vec3 color) {
 
 void fragment() {
 	// https://docs.godotengine.org/en/stable/tutorials/shaders/advanced_postprocessing.html
-	
 	float depth = texture(depth_texture, SCREEN_UV).x;
-	
 	// This assumes the use of the Forward+ or Mobile renderers
 	vec3 ndc = vec3(SCREEN_UV * 2.0 - 1.0, depth);
 	// Use this for the compatibility renderer
 	//vec3 ndc = vec3(SCREEN_UV, depth) * 2.0 - 1.0;
-	
-	vec4 view = INV_PROJECTION_MATRIX * vec4(ndc, 1.0);
-	view.xyz /= view.w;
-	float linear_depth = -view.z;
-	
 	vec4 world = INV_VIEW_MATRIX * INV_PROJECTION_MATRIX * vec4(ndc, 1.0);
 	vec3 world_position = world.xyz / world.w;
 	
-	Ray ray = perspective_ray(
-		azimuth, elevation, camera_position, aspect_ratio, vertical_fov_radians, SCREEN_UV
-	);
-
+	vec3 camera_position = (INV_VIEW_MATRIX * vec4(0,0,0,1)).xyz;
+	Ray ray = Ray(camera_position, normalize(world_position - camera_position));
+	
 	vec3 color;
 	bool hit = sphere_trace_ray(ray, world_position, color);
 	if (!hit) {

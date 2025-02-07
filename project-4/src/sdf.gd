@@ -3,8 +3,8 @@ extends MeshInstance3D
 @onready var camera : Camera3D = %Camera
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	set_shader_parameters();
+#func _process(_delta: float) -> void:
+	#set_shader_parameters();
 
 func radians(degrees: float) -> float:
 	return degrees / 360.0 * TAU

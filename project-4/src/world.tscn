@@ -23,11 +23,6 @@ size = Vector3(20, 1, 20)
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1rqpr"]
 render_priority = 0
 shader = ExtResource("2_3u7ph")
-shader_parameter/aspect_ratio = 3.21417
-shader_parameter/camera_position = Vector3(0, 2.2, 0)
-shader_parameter/azimuth = 0.0
-shader_parameter/elevation = 0.0
-shader_parameter/vertical_fov_radians = 1.5708
 
 [sub_resource type="QuadMesh" id="QuadMesh_euf02"]
 flip_faces = true
