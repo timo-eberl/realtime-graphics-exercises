@@ -8,7 +8,7 @@ extends CharacterBody3D
 @export var speed := 5.0
 @export var jump_velocity := 5.0
 
-@onready var camera : Node3D = $Head/Camera
+@onready var camera : Node3D = %Camera
 @onready var initial_position : Vector3 = self.global_position
 
 #func _ready() -> void:

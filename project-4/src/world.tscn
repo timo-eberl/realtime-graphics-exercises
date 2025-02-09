@@ -1,8 +1,10 @@
-[gd_scene load_steps=16 format=3 uid="uid://b0dugdwvenvtn"]
+[gd_scene load_steps=24 format=3 uid="uid://b0dugdwvenvtn"]
 
 [ext_resource type="Script" path="res://character_controller.gd" id="1_j0nyi"]
+[ext_resource type="Script" path="res://button_checker.gd" id="2_3cecl"]
 [ext_resource type="Shader" path="res://sdf.gdshader" id="2_3u7ph"]
 [ext_resource type="Script" path="res://sdf.gd" id="3_4qshk"]
+[ext_resource type="Script" path="res://button.gd" id="4_l47f5"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_at7ed"]
 
@@ -30,16 +32,37 @@ background_mode = 2
 sky = SubResource("Sky_de08i")
 
 [sub_resource type="BoxMesh" id="BoxMesh_aqhr3"]
-size = Vector3(2, 1, 2)
+size = Vector3(1.5, 1, 1.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fwnfx"]
+cull_mode = 2
+albedo_color = Color(0.266575, 0.266575, 0.266575, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_h1meo"]
+size = Vector2(1, 0.36)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1rqpr"]
 render_priority = 0
 shader = ExtResource("2_3u7ph")
-shader_parameter/morph_progress = 1.0
-shader_parameter/sun_direction = Vector3(0.312267, 0.920507, -0.234852)
+shader_parameter/morph_progress = 0.0
+shader_parameter/sun_direction = Vector3(0.312268, 0.920507, -0.234852)
 
 [sub_resource type="BoxMesh" id="BoxMesh_xx5lw"]
 size = Vector3(4, 4, 2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rlhwv"]
+albedo_color = Color(1, 0.25, 0.25, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_wuqxb"]
+radius = 0.1
+height = 0.12
+
+[sub_resource type="TorusMesh" id="TorusMesh_3nae3"]
+inner_radius = 0.085
+outer_radius = 0.115
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_85llm"]
+radius = 0.2
 
 [node name="World" type="Node3D"]
 
@@ -61,11 +84,14 @@ script = ExtResource("1_j0nyi")
 shape = SubResource("CapsuleShape3D_w4kr8")
 
 [node name="Head" type="Node3D" parent="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
 
 [node name="Camera" type="Camera3D" parent="CharacterBody3D/Head"]
 unique_name_in_owner = true
 fov = 60.0
+
+[node name="ButtonChecker" type="Node3D" parent="CharacterBody3D/Head"]
+script = ExtResource("2_3cecl")
 
 [node name="Sun" type="DirectionalLight3D" parent="."]
 unique_name_in_owner = true
@@ -81,9 +107,79 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -7)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 mesh = SubResource("BoxMesh_aqhr3")
 
+[node name="Sign" type="MeshInstance3D" parent="ExhibitSDF"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1.0024, 0.541862)
+material_override = SubResource("StandardMaterial3D_fwnfx")
+mesh = SubResource("QuadMesh_h1meo")
+
+[node name="Label3D" type="Label3D" parent="ExhibitSDF/Sign"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, -0.169572, 0.00172555)
+text = "It is said that topologists see no difference
+between before and after"
+font_size = 64
+outline_size = 0
+vertical_alignment = 2
+
 [node name="SDF" type="MeshInstance3D" parent="ExhibitSDF"]
 transform = Transform3D(0.37, 0, 0, 0, 0.37, 0, 0, 0, 0.37, 0, 1, 0)
 material_override = SubResource("ShaderMaterial_1rqpr")
 mesh = SubResource("BoxMesh_xx5lw")
 skeleton = NodePath("../../CharacterBody3D/Head/Camera")
 script = ExtResource("3_4qshk")
+
+[node name="Button" type="Area3D" parent="ExhibitSDF"]
+transform = Transform3D(1, 0, 0, 0, 1, -3.55271e-15, 0, 3.55271e-15, 1, 0, 1.0024, 0.497705)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("4_l47f5")
+
+[node name="Sphere" type="MeshInstance3D" parent="ExhibitSDF/Button"]
+material_override = SubResource("StandardMaterial3D_rlhwv")
+mesh = SubResource("SphereMesh_wuqxb")
+skeleton = NodePath("../..")
+
+[node name="Torus" type="MeshInstance3D" parent="ExhibitSDF/Button"]
+mesh = SubResource("TorusMesh_3nae3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ExhibitSDF/Button"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("SphereShape3D_85llm")
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="PressPopup" type="ColorRect" parent="UI"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -75.0
+offset_top = -25.0
+offset_right = 75.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+color = Color(0, 0, 0, 0.333333)
+
+[node name="Label" type="Label" parent="UI/PressPopup"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 24
+text = "E - Press"
+horizontal_alignment = 1
+vertical_alignment = 1
