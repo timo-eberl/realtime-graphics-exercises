@@ -2,6 +2,8 @@ shader_type spatial;
 // Prevent the quad from being affected by lighting and fog. This also improves performance.
 render_mode unshaded, fog_disabled;
 
+uniform float morph_progress : hint_range(0.0, 1.0, 0.01) = 0.0;
+
 // constants
 const float EPSILON = 0.001; // larger than 0, but so small every smaller value is negative
 const float GRADIENT_DT = 0.05; // half of the step size
@@ -20,7 +22,9 @@ void vertex() {
 }
 
 float sdf(vec3 p) {
-	return sdSphere(p, 1.0);
+	float torus = sdTorus(p, vec2(1.0, 0.5));
+	float box = sdBox(p, vec3(1.0, 1.0, 1.0));
+	return mix(torus, box, morph_progress);
 }
 
 vec3 gradient(vec3 p) {
@@ -44,7 +48,7 @@ vec3 shade(vec3 albedo, vec3 normal) {
 		+ albedo * vec3(0.1); // ambient
 }
 
-bool sphere_trace_ray(Ray ray, vec3 depth_map_position, out vec3 color) {
+bool sphere_trace_ray(Ray ray, vec3 depth_map_position, out vec3 normal) {
 	// step front-to-back over the ray
 	vec3 p = ray.p;
 	float d;
@@ -60,9 +64,7 @@ bool sphere_trace_ray(Ray ray, vec3 depth_map_position, out vec3 color) {
 	}
 
 	if (d < EPSILON) {
-		vec3 normal = normalize(gradient(p));
-		vec3 albedo = vec3(1,0,0);
-		color = shade(albedo, normal);
+		normal = normalize(gradient(p));
 		return true;
 	}
 	else {
@@ -80,13 +82,19 @@ void fragment() {
 	vec4 world = INV_VIEW_MATRIX * INV_PROJECTION_MATRIX * vec4(ndc, 1.0);
 	vec3 world_position = world.xyz / world.w;
 	
-	vec3 camera_position = (INV_VIEW_MATRIX * vec4(0,0,0,1)).xyz;
-	Ray ray = Ray(camera_position, normalize(world_position - camera_position));
+	mat4 inv_model_matrix = inverse(MODEL_MATRIX);
+	vec3 local = (inv_model_matrix * vec4(world_position, 1.0)).xyz;
+	vec3 local_cam_pos = (inv_model_matrix * vec4(CAMERA_POSITION_WORLD, 1.0)).xyz;
+	Ray ray = Ray(local_cam_pos, normalize(local - local_cam_pos));
 	
-	vec3 color;
-	bool hit = sphere_trace_ray(ray, world_position, color);
+	vec3 normal;
+	bool hit = sphere_trace_ray(ray, local, normal);
 	if (!hit) {
 		discard;
 	}
+	
+	normal = mat3(MODEL_MATRIX) * normal;
+	vec3 albedo = vec3(1,0,0);
+	vec3 color = shade(albedo, normal);
 	ALBEDO.xyz = color;
 }
