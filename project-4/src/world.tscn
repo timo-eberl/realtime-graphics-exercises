@@ -1,7 +1,8 @@
-[gd_scene load_steps=15 format=3 uid="uid://b0dugdwvenvtn"]
+[gd_scene load_steps=16 format=3 uid="uid://b0dugdwvenvtn"]
 
 [ext_resource type="Script" path="res://character_controller.gd" id="1_j0nyi"]
 [ext_resource type="Shader" path="res://sdf.gdshader" id="2_3u7ph"]
+[ext_resource type="Script" path="res://sdf.gd" id="3_4qshk"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_at7ed"]
 
@@ -29,16 +30,16 @@ background_mode = 2
 sky = SubResource("Sky_de08i")
 
 [sub_resource type="BoxMesh" id="BoxMesh_aqhr3"]
-size = Vector3(2, 1.5, 1.5)
+size = Vector3(2, 1, 2)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1rqpr"]
 render_priority = 0
 shader = ExtResource("2_3u7ph")
-shader_parameter/morph_progress = 0.0
+shader_parameter/morph_progress = 1.0
+shader_parameter/sun_direction = Vector3(0.312267, 0.920507, -0.234852)
 
-[sub_resource type="QuadMesh" id="QuadMesh_euf02"]
-flip_faces = true
-size = Vector2(2, 2)
+[sub_resource type="BoxMesh" id="BoxMesh_xx5lw"]
+size = Vector3(4, 4, 2)
 
 [node name="World" type="Node3D"]
 
@@ -53,34 +54,36 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 shape = SubResource("BoxShape3D_i18xe")
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("1_j0nyi")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
 shape = SubResource("CapsuleShape3D_w4kr8")
 
 [node name="Head" type="Node3D" parent="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
 [node name="Camera" type="Camera3D" parent="CharacterBody3D/Head"]
 unique_name_in_owner = true
-fov = 90.0
+fov = 60.0
 
 [node name="Sun" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -0.51438, 0.857563, 0, -0.857563, -0.51438, 0, 0, 0)
+unique_name_in_owner = true
+transform = Transform3D(-0.915838, 0.252447, 0.312267, 0.35739, 0.157921, 0.920507, 0.183066, 0.954637, -0.234852, 0, 0, 0)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_6mosr")
 
-[node name="ExhibitFur" type="Node3D" parent="."]
+[node name="ExhibitSDF" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -7)
 
-[node name="Box" type="MeshInstance3D" parent="ExhibitFur"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -7)
+[node name="Table" type="MeshInstance3D" parent="ExhibitSDF"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 mesh = SubResource("BoxMesh_aqhr3")
 
-[node name="SDF" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.152865, 0.830153, -4.29457)
+[node name="SDF" type="MeshInstance3D" parent="ExhibitSDF"]
+transform = Transform3D(0.37, 0, 0, 0, 0.37, 0, 0, 0, 0.37, 0, 1, 0)
 material_override = SubResource("ShaderMaterial_1rqpr")
-extra_cull_margin = 16384.0
-mesh = SubResource("QuadMesh_euf02")
-skeleton = NodePath("../CharacterBody3D/Head/Camera")
+mesh = SubResource("BoxMesh_xx5lw")
+skeleton = NodePath("../../CharacterBody3D/Head/Camera")
+script = ExtResource("3_4qshk")

@@ -26,13 +26,28 @@ float sdBox( vec3 p, vec3 b ) {
 	return length(max(q,0.0)) + min(max(q.x,max(q.y,q.z)),0.0);
 }
 
+float sdCylinder( vec3 p, vec3 c ) {
+	return length(p.xz-c.xy)-c.z;
+}
+
 float sdCappedCylinder( vec3 p, float h, float r ) {
 	vec2 d = abs(vec2(length(p.xz),p.y)) - vec2(r,h);
 	return min(max(d.x,d.y),0.0) + length(max(d,0.0));
 }
 
+// torus that faces the y direction
 float sdTorus( vec3 p, vec2 t ) {
 	vec2 q = vec2(length(p.xz)-t.x,p.y);
+	return length(q)-t.y;
+}
+
+vec3 opElongatePos( in vec3 p, in vec3 h ) {
+	return p - clamp( p, -h, h );
+}
+
+// torus that faces the z direction
+float sdTorusZ( vec3 p, vec2 t ) {
+	vec2 q = vec2(length(p.xy)-t.x,p.z);
 	return length(q)-t.y;
 }
 
@@ -43,6 +58,15 @@ float sdPlane( vec3 p, vec3 n, float h ) {
 
 float opUnion( float d1, float d2 ) {
 	return min(d1,d2);
+}
+float opSubtraction( float d1, float d2 ) {
+	return max(-d1,d2);
+}
+float opIntersection( float d1, float d2 ) {
+	return max(d1,d2);
+}
+float opXor(float d1, float d2 ) {
+	return max(min(d1,d2),-max(d1,d2));
 }
 
 float opSmoothUnion( float d1, float d2, float k ) {

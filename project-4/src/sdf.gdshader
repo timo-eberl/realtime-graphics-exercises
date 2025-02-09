@@ -1,12 +1,16 @@
 shader_type spatial;
 // Prevent the quad from being affected by lighting and fog. This also improves performance.
-render_mode unshaded, fog_disabled;
+// Disable culling (render face front and back side), because we use our mesh essentially
+// as a bounding volume and want to render the SDF also when inside the bounding volume.
+// Disable Depth testing, because we do that manually.
+render_mode unshaded, fog_disabled, cull_disabled, depth_test_disabled;
 
 uniform float morph_progress : hint_range(0.0, 1.0, 0.01) = 0.0;
+uniform vec3 sun_direction = vec3(0,1,0);
 
 // constants
 const float EPSILON = 0.001; // larger than 0, but so small every smaller value is negative
-const float GRADIENT_DT = 0.05; // half of the step size
+const float GRADIENT_DT = 0.0005; // half of the step size
 const int MAX_STEPS = 100; // ray march steps
 const float MAX_DISTANCE = 100.0; // from surface; if we are that far, we won't hit anything
 
@@ -16,15 +20,41 @@ struct Ray { vec3 p; vec3 dir; };
 
 uniform sampler2D depth_texture : source_color, hint_depth_texture;
 
-void vertex() {
-	// don't do any transformations
-	POSITION = vec4(VERTEX.xy, 1.0, 1.0);
+float sdf_mug(vec3 p, float radius, float height, float thickness, float handle_radius, float handle_thickness) {
+    float half_height = height * 0.5;
+    float half_thickness = thickness * 0.5;
+	
+	// the "sides" of the mug - an elongated torus
+	float body_side = sdTorus(
+		opElongatePos(p - vec3(0,half_height,0), vec3(0,half_height-half_thickness,0)), // elongation
+		vec2(radius-half_thickness, half_thickness) // torus parameters
+	);
+	// the bottom of the mug - just a cylinder
+	float body_bottom = sdCappedCylinder(p - vec3(0,half_thickness,0), half_thickness, (radius - half_thickness));
+    float mug_body = opUnion(body_side, body_bottom);
+    
+	vec3 handle_pos = p - vec3(radius + 0.15, half_height * 1.15, 0.0); // translate
+	handle_pos.y *= 0.7; // scale
+    float handle_ring = sdTorusZ(handle_pos, vec2(handle_radius, handle_thickness));
+	float inner_cylinder = sdCylinder(p, vec3(0,0,radius-half_thickness));
+    float handle = opSubtraction(inner_cylinder, handle_ring);
+    
+	return opSmoothUnion(mug_body, handle, 0.07);
 }
 
 float sdf(vec3 p) {
-	float torus = sdTorus(p, vec2(1.0, 0.5));
-	float box = sdBox(p, vec3(1.0, 1.0, 1.0));
-	return mix(torus, box, morph_progress);
+	// adjust interpolation
+	float t = smoothstep(0,1,morph_progress);
+	t = pow(t, 0.5);
+	
+	float mug = sdf_mug(p, 1.0, 2.0, 0.12, 0.45, 0.08);
+	
+	// move torus to the position of the handle during interpolation, so the transition looks nicer
+	vec3 torus_pos = mix(vec3(0,1,0), vec3(1.8,1.2,0), pow(t, 0.7));
+	float torus = sdTorusZ(p - torus_pos, vec2(0.6, 0.4));
+	
+	// morph between the two SDFs
+	return mix(torus, mug, t);
 }
 
 vec3 gradient(vec3 p) {
@@ -42,7 +72,6 @@ vec3 gradient(vec3 p) {
 }
 
 vec3 shade(vec3 albedo, vec3 normal) {
-	vec3 sun_direction = normalize(vec3(0,1,0));
 	return
 		albedo * max(0.0, dot(normal, sun_direction)) // diffuse
 		+ albedo * vec3(0.1); // ambient
