@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://b0dugdwvenvtn"]
+[gd_scene load_steps=31 format=3 uid="uid://b0dugdwvenvtn"]
 
 [ext_resource type="Script" path="res://character_controller.gd" id="1_j0nyi"]
 [ext_resource type="Script" path="res://button_checker.gd" id="2_3cecl"]
@@ -34,6 +34,9 @@ sky = SubResource("Sky_de08i")
 
 [sub_resource type="BoxMesh" id="BoxMesh_aqhr3"]
 size = Vector3(1.5, 1, 1.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sdnfr"]
+size = Vector3(1.5, 5, 1.5)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fwnfx"]
 cull_mode = 2
@@ -124,6 +127,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -7)
 [node name="Table" type="MeshInstance3D" parent="ExhibitSDF"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 mesh = SubResource("BoxMesh_aqhr3")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="ExhibitSDF/Table"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ExhibitSDF/Table/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("BoxShape3D_sdnfr")
 
 [node name="Sign" type="MeshInstance3D" parent="ExhibitSDF"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1.0024, 0.541862)
