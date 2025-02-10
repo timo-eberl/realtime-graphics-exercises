@@ -1,10 +1,11 @@
-[gd_scene load_steps=24 format=3 uid="uid://b0dugdwvenvtn"]
+[gd_scene load_steps=30 format=3 uid="uid://b0dugdwvenvtn"]
 
 [ext_resource type="Script" path="res://character_controller.gd" id="1_j0nyi"]
 [ext_resource type="Script" path="res://button_checker.gd" id="2_3cecl"]
 [ext_resource type="Shader" path="res://sdf.gdshader" id="2_3u7ph"]
 [ext_resource type="Script" path="res://sdf.gd" id="3_4qshk"]
-[ext_resource type="Script" path="res://button.gd" id="4_l47f5"]
+[ext_resource type="Script" path="res://rotate.gd" id="3_tq28i"]
+[ext_resource type="Script" path="res://button_sdf.gd" id="5_16rrw"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_at7ed"]
 
@@ -40,6 +41,23 @@ albedo_color = Color(0.266575, 0.266575, 0.266575, 1)
 
 [sub_resource type="QuadMesh" id="QuadMesh_h1meo"]
 size = Vector2(1, 0.36)
+
+[sub_resource type="Gradient" id="Gradient_mxhvv"]
+colors = PackedColorArray(0.54, 0.1512, 0.1512, 1, 0.757638, 0.46593, 0.309618, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_pr066"]
+frequency = 0.02
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_h6l6g"]
+color_ramp = SubResource("Gradient_mxhvv")
+noise = SubResource("FastNoiseLite_pr066")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w0byl"]
+albedo_texture = SubResource("NoiseTexture2D_h6l6g")
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_p8ax5"]
+material = SubResource("StandardMaterial3D_w0byl")
+height = 0.1
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1rqpr"]
 render_priority = 0
@@ -120,18 +138,25 @@ font_size = 64
 outline_size = 0
 vertical_alignment = 2
 
-[node name="SDF" type="MeshInstance3D" parent="ExhibitSDF"]
-transform = Transform3D(0.37, 0, 0, 0, 0.37, 0, 0, 0, 0.37, 0, 1, 0)
+[node name="Plate" type="MeshInstance3D" parent="ExhibitSDF"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.181876)
+mesh = SubResource("CylinderMesh_p8ax5")
+script = ExtResource("3_tq28i")
+speed = 0.0
+
+[node name="SDF" type="MeshInstance3D" parent="ExhibitSDF/Plate"]
+unique_name_in_owner = true
+transform = Transform3D(0.37, 0, 0, 0, 0.37, 0, 0, 0, 0.37, 0, 0.05, 0)
 material_override = SubResource("ShaderMaterial_1rqpr")
 mesh = SubResource("BoxMesh_xx5lw")
-skeleton = NodePath("../../CharacterBody3D/Head/Camera")
+skeleton = NodePath("../../../CharacterBody3D/Head/Camera")
 script = ExtResource("3_4qshk")
 
 [node name="Button" type="Area3D" parent="ExhibitSDF"]
 transform = Transform3D(1, 0, 0, 0, 1, -3.55271e-15, 0, 3.55271e-15, 1, 0, 1.0024, 0.497705)
 collision_layer = 4
 collision_mask = 0
-script = ExtResource("4_l47f5")
+script = ExtResource("5_16rrw")
 
 [node name="Sphere" type="MeshInstance3D" parent="ExhibitSDF/Button"]
 material_override = SubResource("StandardMaterial3D_rlhwv")
