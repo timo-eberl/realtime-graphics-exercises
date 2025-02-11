@@ -1,12 +1,12 @@
 shader_type spatial;
-// Prevent the quad from being affected by lighting and fog. This also improves performance.
 // Disable culling (render face front and back side), because we use our mesh essentially
 // as a bounding volume and want to render the SDF also when inside the bounding volume.
 // Disable Depth testing, because we do that manually.
-render_mode unshaded, fog_disabled, cull_disabled, depth_test_disabled;
+render_mode cull_disabled, depth_test_disabled;
 
 uniform float morph_progress : hint_range(0.0, 1.0, 0.01) = 0.0;
-uniform vec3 sun_direction = vec3(0,1,0);
+uniform float roughness : hint_range(0.0, 1.0);
+uniform float specular : hint_range(0.0, 1.0, 0.01);
 
 // constants
 const float EPSILON = 0.001; // larger than 0, but so small every smaller value is negative
@@ -71,12 +71,6 @@ vec3 gradient(vec3 p) {
 	);
 }
 
-vec3 shade(vec3 albedo, vec3 normal) {
-	return
-		albedo * max(0.0, dot(normal, sun_direction)) // diffuse
-		+ albedo * vec3(0.1); // ambient
-}
-
 bool sphere_trace_ray(Ray ray, vec3 depth_map_position, out vec3 normal) {
 	// step front-to-back over the ray
 	vec3 p = ray.p;
@@ -118,12 +112,12 @@ void fragment() {
 	
 	vec3 normal;
 	bool hit = sphere_trace_ray(ray, local, normal);
-	if (!hit) {
-		discard;
-	}
+	if (!hit) { discard; }
 	
-	normal = mat3(MODEL_MATRIX) * normal;
-	vec3 albedo = vec3(1,0,0);
-	vec3 color = shade(albedo, normal);
-	ALBEDO.xyz = color;
+	vec3 world_normal = normalize(mat3(MODEL_MATRIX) * normal);
+	NORMAL = mat3(VIEW_MATRIX) * world_normal;
+	
+	ALBEDO.xyz = vec3(1,0,0);
+	ROUGHNESS = roughness;
+	SPECULAR = specular;
 }
