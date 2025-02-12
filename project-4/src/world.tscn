@@ -158,7 +158,9 @@ render_priority = 0
 shader = ExtResource("7_0yukn")
 shader_parameter/images = 3
 shader_parameter/slices = 4
+shader_parameter/lenticular_magnification = 0.8
 shader_parameter/angle = 0.5
+shader_parameter/intended_max_angle = 0.2
 shader_parameter/sliced_image = ExtResource("8_eb1x7")
 
 [sub_resource type="QuadMesh" id="QuadMesh_fijqq"]
