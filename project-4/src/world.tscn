@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=3 uid="uid://b0dugdwvenvtn"]
+[gd_scene load_steps=67 format=3 uid="uid://b0dugdwvenvtn"]
 
 [ext_resource type="Script" path="res://character_controller.gd" id="1_j0nyi"]
 [ext_resource type="Script" path="res://button_checker.gd" id="2_3cecl"]
@@ -8,12 +8,26 @@
 [ext_resource type="Script" path="res://rotate.gd" id="3_tq28i"]
 [ext_resource type="Script" path="res://button_sdf.gd" id="5_16rrw"]
 [ext_resource type="Shader" path="res://lenticular.gdshader" id="7_0yukn"]
-[ext_resource type="Texture2D" uid="uid://dfnuy1jk4730d" path="res://butterfly_0.jpg" id="8_o16xl"]
 [ext_resource type="Texture2D" uid="uid://c5bsikj4vcxhq" path="res://screenshot.png" id="10_48vgb"]
-[ext_resource type="Texture2D" uid="uid://l3npb4fnbdtw" path="res://butterfly_2.jpg" id="10_50dqs"]
 [ext_resource type="Shader" path="res://interlaced.gdshader" id="12_e6wl7"]
+[ext_resource type="Texture2D" uid="uid://c1iuubjgcudf0" path="res://animation_frames_crown/15.png" id="13_3gh4w"]
+[ext_resource type="Texture2D" uid="uid://3kb3im6bkwed" path="res://animation_frames_crown/0.png" id="13_n1gei"]
 [ext_resource type="Script" path="res://render_interlaced.gd" id="13_xfiin"]
+[ext_resource type="Texture2D" uid="uid://bnrqa3cd5oe2y" path="res://animation_frames_crown/14.png" id="14_qe14h"]
+[ext_resource type="Texture2D" uid="uid://ctpf6ogtjo3ml" path="res://animation_frames_crown/1.png" id="14_swa43"]
 [ext_resource type="Script" path="res://pick_up.gd" id="15_m78xb"]
+[ext_resource type="Texture2D" uid="uid://c0tlps50l7usr" path="res://animation_frames_crown/10.png" id="15_ogpeu"]
+[ext_resource type="Texture2D" uid="uid://coggwg31ys38x" path="res://animation_frames_crown/11.png" id="16_bwgu1"]
+[ext_resource type="Texture2D" uid="uid://cem7itypim44f" path="res://animation_frames_crown/2.png" id="17_p1bir"]
+[ext_resource type="Texture2D" uid="uid://dcc15j31d8am" path="res://animation_frames_crown/3.png" id="18_sgf5c"]
+[ext_resource type="Texture2D" uid="uid://bcc33pcussbhu" path="res://animation_frames_crown/4.png" id="19_v7eiw"]
+[ext_resource type="Texture2D" uid="uid://bj2xfoupmnx0q" path="res://animation_frames_crown/5.png" id="20_0gtt6"]
+[ext_resource type="Texture2D" uid="uid://e0mwnb3341lu" path="res://animation_frames_crown/6.png" id="21_agpfq"]
+[ext_resource type="Texture2D" uid="uid://c1edgmv5dfm30" path="res://animation_frames_crown/13.png" id="21_x3eup"]
+[ext_resource type="Texture2D" uid="uid://mwysghqydu0n" path="res://animation_frames_crown/7.png" id="22_coj7p"]
+[ext_resource type="Texture2D" uid="uid://c286i00sl4aqb" path="res://animation_frames_crown/12.png" id="22_uq3bb"]
+[ext_resource type="Texture2D" uid="uid://uh88ktml284w" path="res://animation_frames_crown/8.png" id="23_j1yij"]
+[ext_resource type="Texture2D" uid="uid://ys2j21xh8wt2" path="res://animation_frames_crown/9.png" id="24_m17i3"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_at7ed"]
 
@@ -159,7 +173,7 @@ size = Vector3(1.5, 1, 1.5)
 size = Vector3(1.5, 5, 1.5)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_lwdtg"]
-frequency = 0.2148
+frequency = 0.4693
 fractal_type = 0
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_pb2k8"]
@@ -169,19 +183,20 @@ noise = SubResource("FastNoiseLite_lwdtg")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4s0vd"]
 render_priority = 0
 shader = ExtResource("7_0yukn")
-shader_parameter/images = 3
-shader_parameter/slices = 70
+shader_parameter/images = 16
+shader_parameter/slices = 200
 shader_parameter/lenticular_magnification = 0.6
-shader_parameter/intended_max_angle = 0.2
-shader_parameter/roughness = 0.284
+shader_parameter/intended_max_angle = 1.0
+shader_parameter/roughness = 0.325
+shader_parameter/specular = 0.249
 shader_parameter/normal_scale = 0.0500008
 shader_parameter/sliced_image = ExtResource("10_48vgb")
-shader_parameter/image_0 = ExtResource("10_50dqs")
-shader_parameter/image_1 = ExtResource("8_o16xl")
-shader_parameter/image_2 = ExtResource("10_50dqs")
 shader_parameter/texture_normal = SubResource("NoiseTexture2D_pb2k8")
 
 [sub_resource type="QuadMesh" id="QuadMesh_fijqq"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0qnkv"]
+albedo_color = Color(0.288518, 0.288518, 0.288518, 1)
 
 [sub_resource type="QuadMesh" id="QuadMesh_xgi7u"]
 size = Vector2(1, 0.27)
@@ -189,11 +204,24 @@ size = Vector2(1, 0.27)
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3i6ba"]
 render_priority = 0
 shader = ExtResource("12_e6wl7")
-shader_parameter/images = 3
-shader_parameter/slices = 70
-shader_parameter/image_0 = ExtResource("10_50dqs")
-shader_parameter/image_1 = ExtResource("8_o16xl")
-shader_parameter/image_2 = ExtResource("10_50dqs")
+shader_parameter/images = 16
+shader_parameter/slices = 200
+shader_parameter/image_0 = ExtResource("13_n1gei")
+shader_parameter/image_1 = ExtResource("14_swa43")
+shader_parameter/image_2 = ExtResource("17_p1bir")
+shader_parameter/image_3 = ExtResource("18_sgf5c")
+shader_parameter/image_4 = ExtResource("19_v7eiw")
+shader_parameter/image_5 = ExtResource("20_0gtt6")
+shader_parameter/image_6 = ExtResource("21_agpfq")
+shader_parameter/image_7 = ExtResource("22_coj7p")
+shader_parameter/image_8 = ExtResource("23_j1yij")
+shader_parameter/image_9 = ExtResource("24_m17i3")
+shader_parameter/image_10 = ExtResource("15_ogpeu")
+shader_parameter/image_11 = ExtResource("16_bwgu1")
+shader_parameter/image_12 = ExtResource("22_uq3bb")
+shader_parameter/image_13 = ExtResource("21_x3eup")
+shader_parameter/image_14 = ExtResource("14_qe14h")
+shader_parameter/image_15 = ExtResource("13_3gh4w")
 
 [sub_resource type="QuadMesh" id="QuadMesh_ndkph"]
 
@@ -329,15 +357,22 @@ shape = SubResource("BoxShape3D_6tjjx")
 
 [node name="CardRestingPlace" type="Node3D" parent="ExhibitLenticular"]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1.01197, 0)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1.00251, 0)
 
 [node name="LenticularCard" type="Node3D" parent="ExhibitLenticular/CardRestingPlace"]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, -8.35188e-23, 0, 8.35188e-23, 1, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 8.35188e-23, 0, 8.35188e-23, 1, 0, 0, 0)
 
-[node name="Mesh" type="MeshInstance3D" parent="ExhibitLenticular/CardRestingPlace/LenticularCard"]
+[node name="Front" type="MeshInstance3D" parent="ExhibitLenticular/CardRestingPlace/LenticularCard"]
 transform = Transform3D(0.47, -9.80909e-45, -3.41546e-22, 0, 0.345, -8.35188e-23, 1.60526e-22, 2.8814e-23, 1, 0, 0, 0)
 material_override = SubResource("ShaderMaterial_4s0vd")
+extra_cull_margin = 16384.0
+mesh = SubResource("QuadMesh_fijqq")
+skeleton = NodePath("../../..")
+
+[node name="Back" type="MeshInstance3D" parent="ExhibitLenticular/CardRestingPlace/LenticularCard"]
+transform = Transform3D(0.47, -9.80909e-45, 3.41545e-22, 0, 0.345, 8.35188e-23, 1.60526e-22, 2.8814e-23, -1, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_0qnkv")
 extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_fijqq")
 skeleton = NodePath("../../..")
@@ -361,7 +396,7 @@ visible = false
 material_override = SubResource("ShaderMaterial_3i6ba")
 mesh = SubResource("QuadMesh_ndkph")
 script = ExtResource("13_xfiin")
-resolution = Vector2i(3072, 1024)
+resolution = Vector2i(16384, 1024)
 
 [node name="OmniLight3D" type="OmniLight3D" parent="ExhibitLenticular"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.23615, 1.33752, 1.61358)

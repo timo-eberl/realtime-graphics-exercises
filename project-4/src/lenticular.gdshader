@@ -8,11 +8,8 @@ uniform float lenticular_magnification : hint_range(0.0, 2.0, 0.01) = 1.0;
 uniform float intended_max_angle : hint_range(0.0, 1.0) = 1.0;
 uniform sampler2D sliced_image : source_color, filter_linear, repeat_disable;
 
-uniform sampler2D image_0 : source_color, filter_linear, repeat_disable;
-uniform sampler2D image_1 : source_color, filter_linear, repeat_disable;
-uniform sampler2D image_2 : source_color, filter_linear, repeat_disable;
-
 uniform float roughness : hint_range(0.0, 1.0);
+uniform float specular : hint_range(0.0, 1.0);
 uniform sampler2D texture_normal : hint_roughness_normal, filter_linear_mipmap, repeat_enable;
 uniform float normal_scale : hint_range(-16.0, 16.0);
 
@@ -25,38 +22,18 @@ void vertex() {
 	view_local_2d = (camera_position_local - VERTEX).xz;
 }
 
-vec4 interlaced_texture(vec2 uv) {
-	int total_strips = images * slices;
-	float m = fract(uv.x * float(total_strips));
-	float slice_size = 1.0 / float(slices);
-	int slice = int(uv.x * float(slices)); // id of the slice [0;slices[
-	float n = (m + float(slice)) * slice_size;
-	float slice_u = fract(uv.x * float(slices)); // u of the slice [0;1]
-
-	vec4 sample_0 = texture(image_0, vec2(n, uv.y));
-	vec4 sample_1 = texture(image_1, vec2(n, uv.y));
-	vec4 sample_2 = texture(image_2, vec2(n, uv.y));
-	if (slice_u < 1.0/3.0) {
-		return sample_0;
-	}
-	else if (slice_u < 2.0/3.0) {
-		return sample_1;
-	}
-	else {
-		return sample_2;
-	}
-}
-
 void fragment() {
 	vec2 v = normalize(view_local_2d); // local direction from fragment to camera, y ignored
 	vec2 n = normalize(normal_local_2d); // local normal, y ignored
 	float n_dot_v = dot(n,v);
+	// make it so that 45° angle results in 0.5 instead of 0.707
+	float n_dot_v_linear = -acos(n_dot_v)/(PI*0.5) + 1.0;
 	float a;
 	if (v.x - n.x > 0.0) { // viewing from right side
-		a = mix(1.0, 0.5, n_dot_v);
+		a = mix(1.0, 0.5, n_dot_v_linear);
 	}
 	else { // viewing from left side
-		a = mix(0.0, 0.5, n_dot_v);
+		a = mix(0.0, 0.5, n_dot_v_linear);
 	}
 	// a is [0;1]
 	float range_abs = 1.0 / intended_max_angle;
@@ -78,13 +55,12 @@ void fragment() {
 	float final_u = mix(outer_u_from, outer_u_to, inner_u);
 
 	vec2 uv = vec2(final_u, UV.y);
-	ALBEDO.xyz = interlaced_texture(uv).xyz;
 	ALBEDO.xyz = texture(sliced_image, uv).xyz;
 
-	//ALBEDO.xyz = interlaced_texture(UV).xyz;
 	//ALBEDO.xyz = texture(sliced_image, UV).xyz;
 
 	ROUGHNESS = roughness;
-	NORMAL_MAP = texture(texture_normal, UV * vec2(1.0, 0.0)).rgb;
+	SPECULAR = specular;
+	NORMAL_MAP = texture(texture_normal, UV * vec2(1.0, 0.01)).rgb;
 	NORMAL_MAP_DEPTH = normal_scale;
 }
