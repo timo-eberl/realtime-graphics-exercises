@@ -5,9 +5,12 @@ uniform int images = 3; // every slice consists of that many strips/lenticules
 uniform int slices = 10;
 // if <0 one lenticular lens shows only a portion of a strip
 uniform float lenticular_magnification : hint_range(0.0, 2.0, 0.01) = 1.0;
-uniform float angle : hint_range(-1.0, 2.0, 0.01) = 0.5;
 uniform float intended_max_angle : hint_range(0.0, 1.0) = 1.0;
 uniform sampler2D sliced_image : source_color, filter_linear, repeat_disable;
+
+uniform sampler2D image_0 : source_color, filter_linear, repeat_disable;
+uniform sampler2D image_1 : source_color, filter_linear, repeat_disable;
+uniform sampler2D image_2 : source_color, filter_linear, repeat_disable;
 
 varying vec2 view_local_2d;
 varying vec2 normal_local_2d;
@@ -16,6 +19,28 @@ void vertex() {
 	normal_local_2d = NORMAL.xz;
 	vec3 camera_position_local = (inverse(MODEL_MATRIX) * vec4(CAMERA_POSITION_WORLD, 1.0)).xyz;
 	view_local_2d = (camera_position_local - VERTEX).xz;
+}
+
+vec4 interlaced_texture(vec2 uv) {
+	int total_strips = images * slices;
+	float m = fract(uv.x * float(total_strips));
+	float slice_size = 1.0 / float(slices);
+	int slice = int(uv.x * float(slices)); // id of the slice [0;slices[
+	float n = (m + float(slice)) * slice_size;
+	float slice_u = fract(uv.x * float(slices)); // u of the slice [0;1]
+
+	vec4 sample_0 = texture(image_0, vec2(n, uv.y));
+	vec4 sample_1 = texture(image_1, vec2(n, uv.y));
+	vec4 sample_2 = texture(image_2, vec2(n, uv.y));
+	if (slice_u < 1.0/3.0) {
+		return sample_0;
+	}
+	else if (slice_u < 2.0/3.0) {
+		return sample_1;
+	}
+	else {
+		return sample_2;
+	}
 }
 
 void fragment() {
@@ -48,5 +73,10 @@ void fragment() {
 	float outer_u_to = float(slice+1) / float(slices);
 	float final_u = mix(outer_u_from, outer_u_to, inner_u);
 
-	ALBEDO.xyz = texture(sliced_image, vec2(final_u, UV.y)).xyz;
+	vec2 uv = vec2(final_u, UV.y);
+	ALBEDO.xyz = interlaced_texture(uv).xyz;
+	//ALBEDO.xyz = texture(sliced_image, uv).xyz;
+
+	//ALBEDO.xyz = interlaced_texture(UV).xyz;
+	//ALBEDO.xyz = texture(sliced_image, UV).xyz;
 }
