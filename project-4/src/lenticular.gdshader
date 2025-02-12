@@ -1,5 +1,5 @@
 shader_type spatial;
-render_mode unshaded;
+//render_mode unshaded;
 
 uniform int images = 3; // every slice consists of that many strips/lenticules
 uniform int slices = 10;
@@ -11,6 +11,10 @@ uniform sampler2D sliced_image : source_color, filter_linear, repeat_disable;
 uniform sampler2D image_0 : source_color, filter_linear, repeat_disable;
 uniform sampler2D image_1 : source_color, filter_linear, repeat_disable;
 uniform sampler2D image_2 : source_color, filter_linear, repeat_disable;
+
+uniform float roughness : hint_range(0.0, 1.0);
+uniform sampler2D texture_normal : hint_roughness_normal, filter_linear_mipmap, repeat_enable;
+uniform float normal_scale : hint_range(-16.0, 16.0);
 
 varying vec2 view_local_2d;
 varying vec2 normal_local_2d;
@@ -75,8 +79,12 @@ void fragment() {
 
 	vec2 uv = vec2(final_u, UV.y);
 	ALBEDO.xyz = interlaced_texture(uv).xyz;
-	//ALBEDO.xyz = texture(sliced_image, uv).xyz;
+	ALBEDO.xyz = texture(sliced_image, uv).xyz;
 
 	//ALBEDO.xyz = interlaced_texture(UV).xyz;
 	//ALBEDO.xyz = texture(sliced_image, UV).xyz;
+
+	ROUGHNESS = roughness;
+	NORMAL_MAP = texture(texture_normal, UV * vec2(1.0, 0.0)).rgb;
+	NORMAL_MAP_DEPTH = normal_scale;
 }

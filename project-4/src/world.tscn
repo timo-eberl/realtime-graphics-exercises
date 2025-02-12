@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=3 uid="uid://b0dugdwvenvtn"]
+[gd_scene load_steps=50 format=3 uid="uid://b0dugdwvenvtn"]
 
 [ext_resource type="Script" path="res://character_controller.gd" id="1_j0nyi"]
 [ext_resource type="Script" path="res://button_checker.gd" id="2_3cecl"]
@@ -161,6 +161,14 @@ size = Vector3(1.5, 1, 1.5)
 [sub_resource type="BoxShape3D" id="BoxShape3D_6tjjx"]
 size = Vector3(1.5, 5, 1.5)
 
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_lwdtg"]
+frequency = 0.2148
+fractal_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_pb2k8"]
+as_normal_map = true
+noise = SubResource("FastNoiseLite_lwdtg")
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4s0vd"]
 render_priority = 0
 shader = ExtResource("7_0yukn")
@@ -168,10 +176,13 @@ shader_parameter/images = 3
 shader_parameter/slices = 70
 shader_parameter/lenticular_magnification = 0.6
 shader_parameter/intended_max_angle = 0.2
+shader_parameter/roughness = 0.284
+shader_parameter/normal_scale = 0.0500008
 shader_parameter/sliced_image = ExtResource("10_48vgb")
 shader_parameter/image_0 = ExtResource("10_50dqs")
 shader_parameter/image_1 = ExtResource("8_o16xl")
 shader_parameter/image_2 = ExtResource("10_50dqs")
+shader_parameter/texture_normal = SubResource("NoiseTexture2D_pb2k8")
 
 [sub_resource type="QuadMesh" id="QuadMesh_fijqq"]
 
@@ -221,7 +232,7 @@ mesh = SubResource("CapsuleMesh_nc6uu")
 
 [node name="Sun" type="DirectionalLight3D" parent="."]
 unique_name_in_owner = true
-transform = Transform3D(-0.915838, 0.252447, 0.312267, 0.35739, 0.157921, 0.920507, 0.183066, 0.954637, -0.234852, 0, 0, 0)
+transform = Transform3D(-0.786002, 0.252447, 0.564332, 0.608871, 0.157921, 0.777391, 0.107131, 0.954637, -0.277834, 0, 0, 0)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_6mosr")
@@ -324,6 +335,14 @@ material_override = SubResource("ShaderMaterial_3i6ba")
 mesh = SubResource("QuadMesh_ndkph")
 script = ExtResource("13_xfiin")
 resolution = Vector2i(3072, 1024)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="ExhibitLenticular"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.915303, 1.73361, 1.13957)
+light_energy = 0.25
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="ExhibitLenticular"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.412182, 1.50943, 1.13957)
+light_energy = 0.25
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
