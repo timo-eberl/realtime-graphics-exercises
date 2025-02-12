@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://b0dugdwvenvtn"]
+[gd_scene load_steps=40 format=3 uid="uid://b0dugdwvenvtn"]
 
 [ext_resource type="Script" path="res://character_controller.gd" id="1_j0nyi"]
 [ext_resource type="Script" path="res://button_checker.gd" id="2_3cecl"]
@@ -6,6 +6,8 @@
 [ext_resource type="Script" path="res://sdf.gd" id="3_4qshk"]
 [ext_resource type="Script" path="res://rotate.gd" id="3_tq28i"]
 [ext_resource type="Script" path="res://button_sdf.gd" id="5_16rrw"]
+[ext_resource type="Shader" path="res://lenticular.gdshader" id="7_0yukn"]
+[ext_resource type="Texture2D" uid="uid://ch8xwyoyplpsk" path="res://slided_image_test.png" id="8_eb1x7"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_at7ed"]
 
@@ -148,6 +150,19 @@ outer_radius = 0.115
 [sub_resource type="SphereShape3D" id="SphereShape3D_85llm"]
 radius = 0.2
 
+[sub_resource type="BoxMesh" id="BoxMesh_l4ped"]
+size = Vector3(1.5, 1, 1.5)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4s0vd"]
+render_priority = 0
+shader = ExtResource("7_0yukn")
+shader_parameter/images = 3
+shader_parameter/slices = 4
+shader_parameter/angle = 0.5
+shader_parameter/sliced_image = ExtResource("8_eb1x7")
+
+[sub_resource type="QuadMesh" id="QuadMesh_fijqq"]
+
 [node name="World" type="Node3D"]
 
 [node name="Ground" type="MeshInstance3D" parent="."]
@@ -161,7 +176,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 shape = SubResource("BoxShape3D_i18xe")
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 1, 0)
 script = ExtResource("1_j0nyi")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
@@ -257,6 +272,18 @@ mesh = SubResource("TorusMesh_3nae3")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ExhibitSDF/Button"]
 shape = SubResource("SphereShape3D_85llm")
+
+[node name="ExhibitLenticular" type="Node3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -7, 0, 0)
+
+[node name="Table" type="MeshInstance3D" parent="ExhibitLenticular"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("BoxMesh_l4ped")
+
+[node name="Card" type="MeshInstance3D" parent="ExhibitLenticular"]
+transform = Transform3D(1, 0, 0, 0, 0.69, 0, 0, 0, 1, 0, 1.72553, 0)
+material_override = SubResource("ShaderMaterial_4s0vd")
+mesh = SubResource("QuadMesh_fijqq")
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
