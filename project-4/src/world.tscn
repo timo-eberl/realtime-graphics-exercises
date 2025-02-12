@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=3 uid="uid://b0dugdwvenvtn"]
+[gd_scene load_steps=84 format=3 uid="uid://b0dugdwvenvtn"]
 
 [ext_resource type="Script" path="res://character_controller.gd" id="1_j0nyi"]
 [ext_resource type="Script" path="res://button_checker.gd" id="2_3cecl"]
@@ -8,7 +8,7 @@
 [ext_resource type="Script" path="res://rotate.gd" id="3_tq28i"]
 [ext_resource type="Script" path="res://button_sdf.gd" id="5_16rrw"]
 [ext_resource type="Shader" path="res://lenticular.gdshader" id="7_0yukn"]
-[ext_resource type="Texture2D" uid="uid://c5bsikj4vcxhq" path="res://screenshot.png" id="10_48vgb"]
+[ext_resource type="Texture2D" uid="uid://bl46uqey3f0c1" path="res://interlaced_crown_and_raytracing.jpg" id="9_x0gjk"]
 [ext_resource type="Shader" path="res://interlaced.gdshader" id="12_e6wl7"]
 [ext_resource type="Texture2D" uid="uid://c1iuubjgcudf0" path="res://animation_frames_crown/15.png" id="13_3gh4w"]
 [ext_resource type="Texture2D" uid="uid://3kb3im6bkwed" path="res://animation_frames_crown/0.png" id="13_n1gei"]
@@ -28,6 +28,22 @@
 [ext_resource type="Texture2D" uid="uid://c286i00sl4aqb" path="res://animation_frames_crown/12.png" id="22_uq3bb"]
 [ext_resource type="Texture2D" uid="uid://uh88ktml284w" path="res://animation_frames_crown/8.png" id="23_j1yij"]
 [ext_resource type="Texture2D" uid="uid://ys2j21xh8wt2" path="res://animation_frames_crown/9.png" id="24_m17i3"]
+[ext_resource type="Texture2D" uid="uid://mmqppl732ir3" path="res://animation_frames_raytracing/0.png" id="28_2vvho"]
+[ext_resource type="Texture2D" uid="uid://xds7fnuxso81" path="res://animation_frames_raytracing/1.png" id="29_urqax"]
+[ext_resource type="Texture2D" uid="uid://dw3lyuugsdhkc" path="res://animation_frames_raytracing/10.png" id="30_agbuq"]
+[ext_resource type="Texture2D" uid="uid://dpbdy4dphsomd" path="res://animation_frames_raytracing/11.png" id="31_cwxwt"]
+[ext_resource type="Texture2D" uid="uid://cnq8glll87uwg" path="res://animation_frames_raytracing/12.png" id="32_7sxl0"]
+[ext_resource type="Texture2D" uid="uid://d1v7yik6pln2v" path="res://animation_frames_raytracing/13.png" id="33_51wmf"]
+[ext_resource type="Texture2D" uid="uid://2jq4rl0df7dx" path="res://animation_frames_raytracing/14.png" id="34_tt183"]
+[ext_resource type="Texture2D" uid="uid://caaqhonkygb1n" path="res://animation_frames_raytracing/15.png" id="35_wj0hl"]
+[ext_resource type="Texture2D" uid="uid://bqtyuadu0y6mh" path="res://animation_frames_raytracing/2.png" id="36_wdpla"]
+[ext_resource type="Texture2D" uid="uid://djulieg41y14g" path="res://animation_frames_raytracing/3.png" id="37_6np21"]
+[ext_resource type="Texture2D" uid="uid://dasi8stnwavk6" path="res://animation_frames_raytracing/4.png" id="38_egpvh"]
+[ext_resource type="Texture2D" uid="uid://bhkqj1u4bor87" path="res://animation_frames_raytracing/5.png" id="39_jsyfv"]
+[ext_resource type="Texture2D" uid="uid://b1arqtp0oixu6" path="res://animation_frames_raytracing/6.png" id="40_308ra"]
+[ext_resource type="Texture2D" uid="uid://bm1nwg1wktmls" path="res://animation_frames_raytracing/7.png" id="41_igdji"]
+[ext_resource type="Texture2D" uid="uid://col5xymi2aj1r" path="res://animation_frames_raytracing/8.png" id="42_ap08f"]
+[ext_resource type="Texture2D" uid="uid://dgwfm7y3ooxd6" path="res://animation_frames_raytracing/9.png" id="43_gyjis"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_at7ed"]
 
@@ -190,7 +206,7 @@ shader_parameter/intended_max_angle = 1.0
 shader_parameter/roughness = 0.325
 shader_parameter/specular = 0.249
 shader_parameter/normal_scale = 0.0500008
-shader_parameter/sliced_image = ExtResource("10_48vgb")
+shader_parameter/sliced_image = ExtResource("9_x0gjk")
 shader_parameter/texture_normal = SubResource("NoiseTexture2D_pb2k8")
 
 [sub_resource type="QuadMesh" id="QuadMesh_fijqq"]
@@ -224,6 +240,28 @@ shader_parameter/image_14 = ExtResource("14_qe14h")
 shader_parameter/image_15 = ExtResource("13_3gh4w")
 
 [sub_resource type="QuadMesh" id="QuadMesh_ndkph"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3ug1y"]
+render_priority = 0
+shader = ExtResource("12_e6wl7")
+shader_parameter/images = 16
+shader_parameter/slices = 200
+shader_parameter/image_0 = ExtResource("28_2vvho")
+shader_parameter/image_1 = ExtResource("29_urqax")
+shader_parameter/image_2 = ExtResource("36_wdpla")
+shader_parameter/image_3 = ExtResource("37_6np21")
+shader_parameter/image_4 = ExtResource("38_egpvh")
+shader_parameter/image_5 = ExtResource("39_jsyfv")
+shader_parameter/image_6 = ExtResource("40_308ra")
+shader_parameter/image_7 = ExtResource("41_igdji")
+shader_parameter/image_8 = ExtResource("42_ap08f")
+shader_parameter/image_9 = ExtResource("43_gyjis")
+shader_parameter/image_10 = ExtResource("30_agbuq")
+shader_parameter/image_11 = ExtResource("31_cwxwt")
+shader_parameter/image_12 = ExtResource("32_7sxl0")
+shader_parameter/image_13 = ExtResource("33_51wmf")
+shader_parameter/image_14 = ExtResource("34_tt183")
+shader_parameter/image_15 = ExtResource("35_wj0hl")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_0rerh"]
 size = Vector3(0.73, 0.04, 0.54)
@@ -386,7 +424,7 @@ skeleton = NodePath("../../ExhibitSDF")
 [node name="Label3D" type="Label3D" parent="ExhibitLenticular/Sign2"]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0.002)
 pixel_size = 0.0152
-text = "Lenticular Print"
+text = "Lenticular Card"
 font_size = 64
 outline_size = 0
 
@@ -396,7 +434,15 @@ visible = false
 material_override = SubResource("ShaderMaterial_3i6ba")
 mesh = SubResource("QuadMesh_ndkph")
 script = ExtResource("13_xfiin")
-resolution = Vector2i(16384, 1024)
+resolution = Vector2i(16384, 682)
+
+[node name="RenderInterlaced2" type="MeshInstance3D" parent="ExhibitLenticular"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.70672, -0.248544)
+visible = false
+material_override = SubResource("ShaderMaterial_3ug1y")
+mesh = SubResource("QuadMesh_ndkph")
+script = ExtResource("13_xfiin")
+resolution = Vector2i(16384, 682)
 
 [node name="OmniLight3D" type="OmniLight3D" parent="ExhibitLenticular"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.23615, 1.33752, 1.61358)

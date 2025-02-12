@@ -55,7 +55,19 @@ void fragment() {
 	float final_u = mix(outer_u_from, outer_u_to, inner_u);
 
 	vec2 uv = vec2(final_u, UV.y);
-	uv.y += sin(TIME) * 0.5 + 0.5;
+	float f = fract(TIME/(TAU*2.0));
+	// scroll between images like on an advertising panel
+	if (f < 0.25) {
+		uv.y += cos(TIME) * 0.5 + 0.5;
+	}
+	else if (f > 0.5 && f < 0.75) {
+		uv.y += cos(TIME+PI) * 0.5 + 0.5;
+	}
+	else if (f > 0.75) { // f between 0.75 and 1
+		uv.y += 1.0;
+	}
+	uv.y *= 0.5;
+
 	ALBEDO.xyz = texture(sliced_image, uv).xyz;
 
 	//ALBEDO.xyz = texture(sliced_image, UV).xyz;

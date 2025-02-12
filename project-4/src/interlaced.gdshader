@@ -49,7 +49,7 @@ vec4 interlaced_texture(vec2 uv) {
 	vec4 sample_13 = texture(image_13, vec2(n, uv.y));
 	vec4 sample_14 = texture(image_14, vec2(n, uv.y));
 	vec4 sample_15 = texture(image_15, vec2(n, uv.y));
-	
+
 	if (slice_u < 1.0/float(images)) { return sample_0; }
 	else if (slice_u < 2.0/float(images)) { return sample_1; }
 	else if (slice_u < 3.0/float(images)) { return sample_2; }
