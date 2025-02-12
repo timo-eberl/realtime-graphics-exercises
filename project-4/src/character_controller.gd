@@ -1,3 +1,4 @@
+class_name CharacterController
 extends CharacterBody3D
 
 # First person camera controller
@@ -8,6 +9,8 @@ extends CharacterBody3D
 @export var speed := 5.0
 @export var jump_velocity := 5.0
 
+var enabled := true
+
 @onready var camera : Node3D = %Camera
 @onready var initial_position : Vector3 = self.global_position
 
@@ -16,23 +19,29 @@ extends CharacterBody3D
 
 # look with mouse
 func _unhandled_input(event: InputEvent) -> void:
+	if !enabled:
+		return
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		self.rotation_degrees.y -= look_speed * event.relative.x;
 		camera.rotation_degrees.x -= look_speed * event.relative.y;
 		camera.rotation_degrees.x = clampf(camera.rotation_degrees.x, -rotation_limit_upwards, rotation_limit_downwards)
 
 func _process(delta: float) -> void:
-	var input_dir := Input.get_vector("look_left", "look_right", "look_up", "look_down")
-	self.rotation_degrees.y -= look_speed * input_dir.x * delta * 500.0;
-	camera.rotation_degrees.x -= look_speed * input_dir.y * delta * 500.0;
-	camera.rotation_degrees.x = clampf(camera.rotation_degrees.x, -rotation_limit_upwards, rotation_limit_downwards)
-	
 	if Input.is_action_just_pressed("ui_cancel"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	if Input.is_action_just_pressed("mouse_click"):
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	
+	if !enabled:
+		return
+	var input_dir := Input.get_vector("look_left", "look_right", "look_up", "look_down")
+	self.rotation_degrees.y -= look_speed * input_dir.x * delta * 500.0;
+	camera.rotation_degrees.x -= look_speed * input_dir.y * delta * 500.0;
+	camera.rotation_degrees.x = clampf(camera.rotation_degrees.x, -rotation_limit_upwards, rotation_limit_downwards)
 
 func _physics_process(delta: float) -> void:
+	if !enabled:
+		return
 	# Add the gravity.
 	if not is_on_floor():
 		self.velocity += get_gravity() * delta

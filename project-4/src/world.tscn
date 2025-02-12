@@ -1,18 +1,19 @@
-[gd_scene load_steps=50 format=3 uid="uid://b0dugdwvenvtn"]
+[gd_scene load_steps=52 format=3 uid="uid://b0dugdwvenvtn"]
 
 [ext_resource type="Script" path="res://character_controller.gd" id="1_j0nyi"]
 [ext_resource type="Script" path="res://button_checker.gd" id="2_3cecl"]
 [ext_resource type="Shader" path="res://sdf.gdshader" id="2_3u7ph"]
 [ext_resource type="Script" path="res://sdf.gd" id="3_4qshk"]
+[ext_resource type="Material" uid="uid://bx42rrknqgvk2" path="res://sign_material.tres" id="3_jxaj7"]
 [ext_resource type="Script" path="res://rotate.gd" id="3_tq28i"]
 [ext_resource type="Script" path="res://button_sdf.gd" id="5_16rrw"]
 [ext_resource type="Shader" path="res://lenticular.gdshader" id="7_0yukn"]
 [ext_resource type="Texture2D" uid="uid://dfnuy1jk4730d" path="res://butterfly_0.jpg" id="8_o16xl"]
 [ext_resource type="Texture2D" uid="uid://c5bsikj4vcxhq" path="res://screenshot.png" id="10_48vgb"]
 [ext_resource type="Texture2D" uid="uid://l3npb4fnbdtw" path="res://butterfly_2.jpg" id="10_50dqs"]
-[ext_resource type="Script" path="res://lenticular_card.gd" id="11_24hc7"]
 [ext_resource type="Shader" path="res://interlaced.gdshader" id="12_e6wl7"]
 [ext_resource type="Script" path="res://render_interlaced.gd" id="13_xfiin"]
+[ext_resource type="Script" path="res://pick_up.gd" id="15_m78xb"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_at7ed"]
 
@@ -46,10 +47,6 @@ size = Vector3(1.5, 1, 1.5)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_sdnfr"]
 size = Vector3(1.5, 5, 1.5)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fwnfx"]
-cull_mode = 2
-albedo_color = Color(0.266575, 0.266575, 0.266575, 1)
 
 [sub_resource type="QuadMesh" id="QuadMesh_h1meo"]
 size = Vector2(1, 0.36)
@@ -186,6 +183,9 @@ shader_parameter/texture_normal = SubResource("NoiseTexture2D_pb2k8")
 
 [sub_resource type="QuadMesh" id="QuadMesh_fijqq"]
 
+[sub_resource type="QuadMesh" id="QuadMesh_xgi7u"]
+size = Vector2(1, 0.27)
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3i6ba"]
 render_priority = 0
 shader = ExtResource("12_e6wl7")
@@ -196,6 +196,9 @@ shader_parameter/image_1 = ExtResource("8_o16xl")
 shader_parameter/image_2 = ExtResource("10_50dqs")
 
 [sub_resource type="QuadMesh" id="QuadMesh_ndkph"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0rerh"]
+size = Vector3(0.73, 0.04, 0.54)
 
 [node name="World" type="Node3D"]
 
@@ -209,30 +212,32 @@ mesh = SubResource("PlaneMesh_x3507")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 shape = SubResource("BoxShape3D_i18xe")
 
-[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+[node name="Character" type="CharacterBody3D" parent="."]
+unique_name_in_owner = true
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 1, 0)
 script = ExtResource("1_j0nyi")
 speed = 3.0
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Character"]
 shape = SubResource("CapsuleShape3D_w4kr8")
 
-[node name="Head" type="Node3D" parent="CharacterBody3D"]
+[node name="Head" type="Node3D" parent="Character"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
 
-[node name="Camera" type="Camera3D" parent="CharacterBody3D/Head"]
+[node name="Camera" type="Camera3D" parent="Character/Head"]
 unique_name_in_owner = true
 fov = 45.0
 
-[node name="ButtonChecker" type="Node3D" parent="CharacterBody3D/Head"]
+[node name="ButtonChecker" type="Node3D" parent="Character/Head"]
+unique_name_in_owner = true
 script = ExtResource("2_3cecl")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Character"]
 mesh = SubResource("CapsuleMesh_nc6uu")
 
 [node name="Sun" type="DirectionalLight3D" parent="."]
 unique_name_in_owner = true
-transform = Transform3D(-0.786002, 0.252447, 0.564332, 0.608871, 0.157921, 0.777391, 0.107131, 0.954637, -0.277834, 0, 0, 0)
+transform = Transform3D(-0.934172, 0.000985633, -0.356824, -0.340363, 0.297771, 0.8919, 0.107131, 0.954637, -0.277834, 0, 0, 0)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_6mosr")
@@ -252,7 +257,7 @@ shape = SubResource("BoxShape3D_sdnfr")
 
 [node name="Sign" type="MeshInstance3D" parent="ExhibitSDF"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1.0024, 0.541862)
-material_override = SubResource("StandardMaterial3D_fwnfx")
+material_override = ExtResource("3_jxaj7")
 mesh = SubResource("QuadMesh_h1meo")
 
 [node name="Label3D" type="Label3D" parent="ExhibitSDF/Sign"]
@@ -275,7 +280,7 @@ transform = Transform3D(0.37, 0, 0, 0, 0.37, 0, 0, 0, 0.37, 0, 0.05, 0)
 layers = 524288
 material_override = SubResource("ShaderMaterial_1rqpr")
 mesh = SubResource("BoxMesh_xx5lw")
-skeleton = NodePath("../../../CharacterBody3D/Head/Camera")
+skeleton = NodePath("../../../Character/Head/Camera")
 script = ExtResource("3_4qshk")
 
 [node name="ReferenceMesh" type="MeshInstance3D" parent="ExhibitSDF/Plate"]
@@ -296,6 +301,7 @@ transform = Transform3D(1, 0, 0, 0, 1, -3.55271e-15, 0, 3.55271e-15, 1, 0, 1.002
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("5_16rrw")
+ui_text = "Press"
 
 [node name="Sphere" type="MeshInstance3D" parent="ExhibitSDF/Button"]
 material_override = SubResource("StandardMaterial3D_rlhwv")
@@ -321,12 +327,33 @@ mesh = SubResource("BoxMesh_l4ped")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 shape = SubResource("BoxShape3D_6tjjx")
 
-[node name="Card" type="MeshInstance3D" parent="ExhibitLenticular"]
-transform = Transform3D(0.62, 0, 0, 0, 0.445, 0, 0, 0, 1, 0, 1.72553, 0)
+[node name="CardRestingPlace" type="Node3D" parent="ExhibitLenticular"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1.01197, 0)
+
+[node name="LenticularCard" type="Node3D" parent="ExhibitLenticular/CardRestingPlace"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, -8.35188e-23, 0, 8.35188e-23, 1, 0, 0, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="ExhibitLenticular/CardRestingPlace/LenticularCard"]
+transform = Transform3D(0.47, -9.80909e-45, -3.41546e-22, 0, 0.345, -8.35188e-23, 1.60526e-22, 2.8814e-23, 1, 0, 0, 0)
 material_override = SubResource("ShaderMaterial_4s0vd")
 extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_fijqq")
-script = ExtResource("11_24hc7")
+skeleton = NodePath("../../..")
+
+[node name="Sign2" type="MeshInstance3D" parent="ExhibitLenticular"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1.002, 0.540565)
+material_override = ExtResource("3_jxaj7")
+mesh = SubResource("QuadMesh_xgi7u")
+skeleton = NodePath("../../ExhibitSDF")
+
+[node name="Label3D" type="Label3D" parent="ExhibitLenticular/Sign2"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0.002)
+pixel_size = 0.0152
+text = "Lenticular Print"
+font_size = 64
+outline_size = 0
 
 [node name="RenderInterlaced" type="MeshInstance3D" parent="ExhibitLenticular"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.70672, -0.248544)
@@ -337,12 +364,19 @@ script = ExtResource("13_xfiin")
 resolution = Vector2i(3072, 1024)
 
 [node name="OmniLight3D" type="OmniLight3D" parent="ExhibitLenticular"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.915303, 1.73361, 1.13957)
-light_energy = 0.25
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.23615, 1.33752, 1.61358)
+light_energy = 0.8
 
 [node name="OmniLight3D2" type="OmniLight3D" parent="ExhibitLenticular"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.412182, 1.50943, 1.13957)
-light_energy = 0.25
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.12009, 1.11334, 1.61358)
+light_energy = 0.8
+
+[node name="PickUpArea" type="Area3D" parent="ExhibitLenticular"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("15_m78xb")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ExhibitLenticular/PickUpArea"]
+shape = SubResource("BoxShape3D_0rerh")
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
@@ -355,7 +389,7 @@ mouse_filter = 1
 
 [node name="PressPopup" type="ColorRect" parent="UI"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(150, 50)
+custom_minimum_size = Vector2(170, 50)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -379,6 +413,37 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 24
-text = "E - Press"
+text = "Text"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LeavePopup" type="ColorRect" parent="UI"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(170, 50)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -180.0
+offset_top = -80.0
+offset_right = -30.0
+offset_bottom = -30.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 1
+color = Color(0, 0, 0, 0.333333)
+
+[node name="Label" type="Label" parent="UI/LeavePopup"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 24
+text = "E - Leave"
 horizontal_alignment = 1
 vertical_alignment = 1
