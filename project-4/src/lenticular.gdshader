@@ -6,7 +6,7 @@ uniform int slices = 10;
 // if <0 one lenticular lens shows only a portion of a strip
 uniform float lenticular_magnification : hint_range(0.0, 2.0, 0.01) = 1.0;
 uniform float intended_max_angle : hint_range(0.0, 1.0) = 1.0;
-uniform sampler2D sliced_image : source_color, filter_linear, repeat_disable;
+uniform sampler2D sliced_image : source_color, filter_linear, repeat_enable;
 
 uniform float roughness : hint_range(0.0, 1.0);
 uniform float specular : hint_range(0.0, 1.0);
@@ -55,6 +55,7 @@ void fragment() {
 	float final_u = mix(outer_u_from, outer_u_to, inner_u);
 
 	vec2 uv = vec2(final_u, UV.y);
+	uv.y += sin(TIME) * 0.5 + 0.5;
 	ALBEDO.xyz = texture(sliced_image, uv).xyz;
 
 	//ALBEDO.xyz = texture(sliced_image, UV).xyz;
