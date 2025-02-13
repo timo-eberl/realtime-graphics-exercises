@@ -1,4 +1,4 @@
-[gd_scene load_steps=90 format=3 uid="uid://b0dugdwvenvtn"]
+[gd_scene load_steps=94 format=3 uid="uid://b0dugdwvenvtn"]
 
 [ext_resource type="Script" path="res://character_controller.gd" id="1_j0nyi"]
 [ext_resource type="Material" uid="uid://b84vbwo7oamr1" path="res://materials/wood071_material.tres" id="1_o322l"]
@@ -9,6 +9,7 @@
 [ext_resource type="Material" uid="uid://bx42rrknqgvk2" path="res://materials/metal030_material.tres" id="3_jxaj7"]
 [ext_resource type="Script" path="res://rotate.gd" id="3_tq28i"]
 [ext_resource type="Material" uid="uid://btwxy6cmkf67u" path="res://materials/marble017_material.tres" id="4_1nahh"]
+[ext_resource type="Shader" path="res://crepuscular_rays_pp.gdshader" id="4_5axfh"]
 [ext_resource type="Material" uid="uid://c61p34ymt5t1x" path="res://materials/wood003_material.tres" id="4_wfswc"]
 [ext_resource type="Script" path="res://button_sdf.gd" id="5_16rrw"]
 [ext_resource type="Shader" path="res://lenticular.gdshader" id="7_0yukn"]
@@ -48,6 +49,7 @@
 [ext_resource type="Texture2D" uid="uid://bm1nwg1wktmls" path="res://animation_frames_raytracing/7.png" id="41_igdji"]
 [ext_resource type="Texture2D" uid="uid://col5xymi2aj1r" path="res://animation_frames_raytracing/8.png" id="42_ap08f"]
 [ext_resource type="Texture2D" uid="uid://dgwfm7y3ooxd6" path="res://animation_frames_raytracing/9.png" id="43_gyjis"]
+[ext_resource type="PackedScene" uid="uid://bwd3nf44wi46q" path="res://light.tscn" id="49_bd78c"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_idn88"]
 
@@ -70,7 +72,6 @@ sdfgi_enabled = true
 sdfgi_use_occlusion = true
 sdfgi_energy = 0.5
 glow_enabled = true
-adjustment_enabled = true
 
 [sub_resource type="BoxMesh" id="BoxMesh_xl0xi"]
 size = Vector3(21, 21, 1)
@@ -97,6 +98,7 @@ bottom_radius = 0.01
 height = 15.0
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_w4kr8"]
+radius = 0.35
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_nc6uu"]
 radius = 0.35
@@ -299,6 +301,14 @@ shader_parameter/image_15 = ExtResource("35_wj0hl")
 [sub_resource type="BoxShape3D" id="BoxShape3D_0rerh"]
 size = Vector3(0.73, 0.04, 0.54)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4ne7w"]
+render_priority = 0
+shader = ExtResource("4_5axfh")
+
+[sub_resource type="QuadMesh" id="QuadMesh_fcu71"]
+flip_faces = true
+size = Vector2(2, 2)
+
 [node name="World" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -373,10 +383,36 @@ shape = SubResource("BoxShape3D_i18xe")
 
 [node name="Lights" type="Node3D" parent="."]
 
+[node name="Sun" type="DirectionalLight3D" parent="Lights"]
+unique_name_in_owner = true
+transform = Transform3D(-0.744197, 0.2623, 0.614304, 0.659313, 0.140952, 0.738538, 0.107131, 0.954637, -0.277834, 0, 0, 0)
+visible = false
+shadow_enabled = true
+
+[node name="WindowsCenter" type="Node3D" parent="Lights"]
+transform = Transform3D(0.295258, 0, 0.955418, 0, 1, 0, -0.955418, 0, 0.295258, 9.98329, 5.2528, 0.437834)
+
+[node name="FakeSun" type="SpotLight3D" parent="Lights/WindowsCenter"]
+transform = Transform3D(1, 0.000397921, -0.000636339, -2.31758e-08, 0.847872, 0.5302, 0.000750512, -0.5302, 0.847872, 0.108529, 4.39831, 7.11343)
+light_energy = 8.0
+light_size = 0.275
+light_specular = 0.071
+shadow_enabled = true
+spot_range = 32.677
+spot_attenuation = 0.0
+spot_angle = 11.91
+
+[node name="FakeDiffuseBounce" type="OmniLight3D" parent="Lights/WindowsCenter"]
+transform = Transform3D(-0.401948, 0, -0.915663, 0, 1, 0, 0.915663, 0, -0.401948, -0.109061, -2.92747, -9.49084)
+light_energy = 3.0
+light_specular = 0.0
+omni_range = 20.0
+
 [node name="Center" type="OmniLight3D" parent="Lights"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.14018, 0)
 light_energy = 4.0
 shadow_enabled = true
+shadow_blur = 3.0
 omni_range = 20.0
 
 [node name="modern_ceiling_lamp_01_1k" parent="Lights/Center" instance=ExtResource("2_ykdra")]
@@ -412,33 +448,8 @@ fov = 50.0
 unique_name_in_owner = true
 script = ExtResource("2_3cecl")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Character"]
+[node name="CapsuleMesh" type="MeshInstance3D" parent="Character"]
 mesh = SubResource("CapsuleMesh_nc6uu")
-
-[node name="Sun" type="DirectionalLight3D" parent="."]
-unique_name_in_owner = true
-transform = Transform3D(-0.744197, 0.262299, 0.614303, 0.659313, 0.140953, 0.738539, 0.107131, 0.954637, -0.277834, 0, 0, 0)
-visible = false
-shadow_enabled = true
-
-[node name="WindowsCenter" type="Node3D" parent="."]
-transform = Transform3D(0.295258, 0, 0.955418, 0, 1, 0, -0.955418, 0, 0.295258, 9.98329, 5.2528, 0.437834)
-
-[node name="FakeSun" type="SpotLight3D" parent="WindowsCenter"]
-transform = Transform3D(1, 0.000397921, -0.000636339, -2.31758e-08, 0.847872, 0.5302, 0.000750512, -0.5302, 0.847872, 0.108529, 4.39831, 7.11343)
-light_energy = 8.0
-light_size = 0.275
-light_specular = 0.071
-shadow_enabled = true
-spot_range = 32.677
-spot_attenuation = 0.0
-spot_angle = 11.91
-
-[node name="FakeDiffuseBounce" type="OmniLight3D" parent="WindowsCenter"]
-transform = Transform3D(-0.401948, 0, -0.915663, 0, 1, 0, 0.915663, 0, -0.401948, -0.109061, -2.92747, -9.49084)
-light_energy = 3.0
-light_specular = 0.0
-omni_range = 20.0
 
 [node name="ExhibitSDF" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -7)
@@ -518,6 +529,18 @@ mesh = SubResource("TorusMesh_3nae3")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ExhibitSDF/Button"]
 shape = SubResource("SphereShape3D_85llm")
 
+[node name="Light" parent="ExhibitSDF" instance=ExtResource("49_bd78c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0, 1.5)
+
+[node name="Light2" parent="ExhibitSDF" instance=ExtResource("49_bd78c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 1.2)
+
+[node name="Light3" parent="ExhibitSDF" instance=ExtResource("49_bd78c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, -1.2)
+
+[node name="Light4" parent="ExhibitSDF" instance=ExtResource("49_bd78c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, -1.2)
+
 [node name="ExhibitLenticular" type="Node3D" parent="."]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -7, 0, 0)
 
@@ -583,20 +606,24 @@ mesh = SubResource("QuadMesh_ndkph")
 script = ExtResource("13_xfiin")
 resolution = Vector2i(16384, 682)
 
-[node name="OmniLight3D" type="OmniLight3D" parent="ExhibitLenticular"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.23615, 1.33752, 1.61358)
-light_energy = 0.8
-
-[node name="OmniLight3D2" type="OmniLight3D" parent="ExhibitLenticular"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.12009, 1.11334, 1.61358)
-light_energy = 0.8
-
 [node name="PickUpArea" type="Area3D" parent="ExhibitLenticular"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("15_m78xb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ExhibitLenticular/PickUpArea"]
 shape = SubResource("BoxShape3D_0rerh")
+
+[node name="Light" parent="ExhibitLenticular" instance=ExtResource("49_bd78c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0, 1.5)
+
+[node name="Light2" parent="ExhibitLenticular" instance=ExtResource("49_bd78c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 1.2)
+
+[node name="Light3" parent="ExhibitLenticular" instance=ExtResource("49_bd78c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, -1.2)
+
+[node name="Light4" parent="ExhibitLenticular" instance=ExtResource("49_bd78c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, -1.2)
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
@@ -667,5 +694,15 @@ theme_override_font_sizes/font_size = 24
 text = "E - Leave"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="ExhibitCrepuscularRays" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 0)
+
+[node name="PostProcessingQuad" type="MeshInstance3D" parent="ExhibitCrepuscularRays"]
+visible = false
+material_override = SubResource("ShaderMaterial_4ne7w")
+extra_cull_margin = 16384.0
+mesh = SubResource("QuadMesh_fcu71")
+skeleton = NodePath("../../Character/Head/Camera")
 
 [editable path="Lights/Center/modern_ceiling_lamp_01_1k"]

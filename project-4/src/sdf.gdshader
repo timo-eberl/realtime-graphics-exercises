@@ -1,8 +1,10 @@
 shader_type spatial;
-// Disable culling (render face front and back side), because we use our mesh essentially
+// front face culling, because we use our mesh essentially
 // as a bounding volume and want to render the SDF also when inside the bounding volume.
+// disabling culling is no option, because there would be visible seams if an omnilight is
+// present, as the distance from the face to the light is taken into account
 // Disable Depth testing, because we do that manually.
-render_mode cull_disabled, depth_test_disabled, shadows_disabled;
+render_mode cull_front, depth_test_disabled, shadows_disabled;
 
 uniform float morph_progress : hint_range(0.0, 1.0, 0.01) = 0.0;
 uniform float roughness : hint_range(0.0, 1.0);

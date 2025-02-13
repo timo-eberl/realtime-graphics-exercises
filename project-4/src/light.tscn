@@ -1,0 +1,40 @@
+[gd_scene load_steps=6 format=3 uid="uid://bwd3nf44wi46q"]
+
+[ext_resource type="Material" uid="uid://bx42rrknqgvk2" path="res://materials/metal030_material.tres" id="1_sghuw"]
+[ext_resource type="Material" uid="uid://hu68gh68sx16" path="res://materials/bulb_material.tres" id="2_3u227"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_4xyo2"]
+radius = 0.038
+
+[sub_resource type="SphereMesh" id="SphereMesh_iofsm"]
+radial_segments = 32
+rings = 16
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jtu7h"]
+radius = 0.038
+
+[node name="Light" type="Node3D"]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.32631, 0)
+light_energy = 0.4
+shadow_enabled = true
+shadow_blur = 2.0
+omni_range = 10.0
+
+[node name="Stand" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+material_override = ExtResource("1_sghuw")
+mesh = SubResource("CapsuleMesh_4xyo2")
+
+[node name="Bulb" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.107, 0, 0, 0, 0.107, 0, 0, 0, 0.107, 0, 1.99541, 0)
+material_override = ExtResource("2_3u227")
+cast_shadow = 0
+mesh = SubResource("SphereMesh_iofsm")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("CapsuleShape3D_jtu7h")
