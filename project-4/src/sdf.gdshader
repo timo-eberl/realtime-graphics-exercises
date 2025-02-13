@@ -2,7 +2,7 @@ shader_type spatial;
 // Disable culling (render face front and back side), because we use our mesh essentially
 // as a bounding volume and want to render the SDF also when inside the bounding volume.
 // Disable Depth testing, because we do that manually.
-render_mode cull_disabled, depth_test_disabled;
+render_mode cull_disabled, depth_test_disabled, shadows_disabled;
 
 uniform float morph_progress : hint_range(0.0, 1.0, 0.01) = 0.0;
 uniform float roughness : hint_range(0.0, 1.0);
@@ -19,11 +19,12 @@ struct Ray { vec3 p; vec3 dir; };
 #include "res://inc/sdf_primitives.gdshaderinc"
 
 uniform sampler2D depth_texture : source_color, hint_depth_texture;
+uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_linear_mipmap;
 
 float sdf_mug(vec3 p, float radius, float height, float thickness, float handle_radius, float handle_thickness) {
     float half_height = height * 0.5;
     float half_thickness = thickness * 0.5;
-	
+
 	// the "sides" of the mug - an elongated torus
 	float body_side = sdTorus(
 		opElongatePos(p - vec3(0,half_height,0), vec3(0,half_height-half_thickness,0)), // elongation
@@ -32,13 +33,13 @@ float sdf_mug(vec3 p, float radius, float height, float thickness, float handle_
 	// the bottom of the mug - just a cylinder
 	float body_bottom = sdCappedCylinder(p - vec3(0,half_thickness,0), half_thickness, (radius - half_thickness));
     float mug_body = opUnion(body_side, body_bottom);
-    
+
 	vec3 handle_pos = p - vec3(radius + 0.15, half_height * 1.15, 0.0); // translate
 	handle_pos.y *= 0.7; // scale
     float handle_ring = sdTorusZ(handle_pos, vec2(handle_radius, handle_thickness));
 	float inner_cylinder = sdCylinder(p, vec3(0,0,radius-half_thickness));
     float handle = opSubtraction(inner_cylinder, handle_ring);
-    
+
 	return opSmoothUnion(mug_body, handle, 0.07);
 }
 
@@ -46,13 +47,13 @@ float sdf(vec3 p) {
 	// adjust interpolation
 	float t = smoothstep(0,1,morph_progress);
 	t = pow(t, 0.5);
-	
+
 	float mug = sdf_mug(p, 1.0, 2.0, 0.12, 0.45, 0.08);
-	
+
 	// move torus to the position of the handle during interpolation, so the transition looks nicer
 	vec3 torus_pos = mix(vec3(0,1,0), vec3(1.8,1.2,0), pow(t, 0.7));
 	float torus = sdTorusZ(p - torus_pos, vec2(0.6, 0.4));
-	
+
 	// morph between the two SDFs
 	return mix(torus, mug, t);
 }
@@ -61,10 +62,10 @@ vec3 gradient(vec3 p) {
 	const vec3 dx = vec3(GRADIENT_DT, 0.0, 0.0);
 	const vec3 dy = vec3(0.0, GRADIENT_DT, 0.0);
 	const vec3 dz = vec3(0.0, 0.0, GRADIENT_DT);
-	
-	return vec3( (sdf(p + dx) - sdf(p - dx)) 
+
+	return vec3( (sdf(p + dx) - sdf(p - dx))
 				/ (2.0 * GRADIENT_DT),
-				 (sdf(p + dy) - sdf(p - dy)) 
+				 (sdf(p + dy) - sdf(p - dy))
 				/ (2.0 * GRADIENT_DT),
 		 		 (sdf(p + dz) - sdf(p - dz))
 				/ (2.0 * GRADIENT_DT)
@@ -104,20 +105,23 @@ void fragment() {
 	//vec3 ndc = vec3(SCREEN_UV, depth) * 2.0 - 1.0;
 	vec4 world = INV_VIEW_MATRIX * INV_PROJECTION_MATRIX * vec4(ndc, 1.0);
 	vec3 world_position = world.xyz / world.w;
-	
+
 	mat4 inv_model_matrix = inverse(MODEL_MATRIX);
 	vec3 local = (inv_model_matrix * vec4(world_position, 1.0)).xyz;
 	vec3 local_cam_pos = (inv_model_matrix * vec4(CAMERA_POSITION_WORLD, 1.0)).xyz;
 	Ray ray = Ray(local_cam_pos, normalize(local - local_cam_pos));
-	
+
 	vec3 normal;
 	bool hit = sphere_trace_ray(ray, local, normal);
 	if (!hit) { discard; }
-	
+
 	vec3 world_normal = normalize(mat3(MODEL_MATRIX) * normal);
 	NORMAL = mat3(VIEW_MATRIX) * world_normal;
-	
+
 	ALBEDO.xyz = vec3(1,0,0);
 	ROUGHNESS = roughness;
 	SPECULAR = specular;
+
+	vec4 screen = textureLod(screen_texture, SCREEN_UV, 0.0);
+	//ALBEDO.xyz = vec3(float(screen.w < 1.0));
 }

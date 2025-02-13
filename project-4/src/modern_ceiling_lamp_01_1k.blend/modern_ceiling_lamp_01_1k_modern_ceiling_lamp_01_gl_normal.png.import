@@ -1,0 +1,38 @@
+[remap]
+
+importer="texture"
+type="CompressedTexture2D"
+uid="uid://cqs3yufkwqyqc"
+path.s3tc="res://.godot/imported/modern_ceiling_lamp_01_1k_modern_ceiling_lamp_01_gl_normal.png-9983a071c96bf19c749e8081db27dadb.s3tc.ctex"
+metadata={
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
+}
+generator_parameters={
+"md5": "bef23897a9ca39a440249faa547c896d"
+}
+
+[deps]
+
+source_file="res://modern_ceiling_lamp_01_1k.blend/modern_ceiling_lamp_01_1k_modern_ceiling_lamp_01_gl_normal.png"
+dest_files=["res://.godot/imported/modern_ceiling_lamp_01_1k_modern_ceiling_lamp_01_gl_normal.png-9983a071c96bf19c749e8081db27dadb.s3tc.ctex"]
+
+[params]
+
+compress/mode=2
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/normal_map=1
+compress/channel_pack=0
+mipmaps/generate=true
+mipmaps/limit=-1
+roughness/mode=1
+roughness/src_normal="res://modern_ceiling_lamp_01_1k.blend/modern_ceiling_lamp_01_1k_modern_ceiling_lamp_01_gl_normal.png"
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/normal_map_invert_y=false
+process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
+process/size_limit=0
+detect_3d/compress_to=0

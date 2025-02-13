@@ -21,7 +21,7 @@ func press() -> void:
 	self.looking_at_card = true
 	leave_popup.visible = true
 	
-	var target_transform := camera.global_transform.translated_local(Vector3(0,0,-0.8))
+	var target_transform := camera.global_transform.translated_local(Vector3(0,0,-0.7))
 	var tween := create_tween()
 	tween.tween_property(card, "global_transform", target_transform, 0.5)
 
