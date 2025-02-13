@@ -434,6 +434,7 @@ mesh = SubResource("CylinderMesh_3ucrx")
 unique_name_in_owner = true
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 1, 0)
 script = ExtResource("1_j0nyi")
+look_speed = 0.15
 speed = 3.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Character"]
