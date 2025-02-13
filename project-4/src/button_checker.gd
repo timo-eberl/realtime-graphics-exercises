@@ -8,7 +8,7 @@ extends Node3D
 @onready var press_popup : Control = %PressPopup
 
 var enabled := true
-var interactible : Interactible
+var interactible : Interactible = null
 
 func _physics_process(_delta: float) -> void:
 	if !enabled:
@@ -30,6 +30,7 @@ func _physics_process(_delta: float) -> void:
 		%PressPopup/Label.text = "E - " + interactible.ui_text
 	else:
 		press_popup.visible = false
+		interactible = null
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("interact") and enabled and interactible:
