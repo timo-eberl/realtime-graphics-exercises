@@ -1,7 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://bwd3nf44wi46q"]
+[gd_scene load_steps=6 format=3 uid="uid://4fvxbxof278b"]
 
 [ext_resource type="Material" uid="uid://bx42rrknqgvk2" path="res://materials/metal030_material.tres" id="1_sghuw"]
-[ext_resource type="Material" uid="uid://hu68gh68sx16" path="res://materials/bulb_material.tres" id="2_3u227"]
+[ext_resource type="Material" path="res://materials/bulb_material.tres" id="2_3u227"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_4xyo2"]
 radius = 0.038

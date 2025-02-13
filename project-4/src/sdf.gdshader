@@ -21,7 +21,6 @@ struct Ray { vec3 p; vec3 dir; };
 #include "res://inc/sdf_primitives.gdshaderinc"
 
 uniform sampler2D depth_texture : source_color, hint_depth_texture;
-uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_linear_mipmap;
 
 float sdf_mug(vec3 p, float radius, float height, float thickness, float handle_radius, float handle_thickness) {
     float half_height = height * 0.5;
@@ -120,10 +119,7 @@ void fragment() {
 	vec3 world_normal = normalize(mat3(MODEL_MATRIX) * normal);
 	NORMAL = mat3(VIEW_MATRIX) * world_normal;
 
-	ALBEDO.xyz = vec3(1,0,0);
+	ALBEDO.xyz = vec3(0,0,0.02);
 	ROUGHNESS = roughness;
 	SPECULAR = specular;
-
-	vec4 screen = textureLod(screen_texture, SCREEN_UV, 0.0);
-	//ALBEDO.xyz = vec3(float(screen.w < 1.0));
 }

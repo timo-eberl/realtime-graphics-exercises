@@ -16,7 +16,7 @@ func press() -> void:
 		morph_progress_target = 0.0
 	
 	var tween := create_tween()
-	tween.tween_property(self, "morph_progress", morph_progress_target, morph_time)
+	tween.tween_property(self, "morph_progress", morph_progress_target, morph_time).set_trans(Tween.TRANS_SINE)
 
 func _process(_delta: float) -> void:
 	sdf.morph_progress = self.morph_progress

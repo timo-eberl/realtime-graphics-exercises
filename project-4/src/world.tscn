@@ -1,4 +1,4 @@
-[gd_scene load_steps=94 format=3 uid="uid://b0dugdwvenvtn"]
+[gd_scene load_steps=101 format=3 uid="uid://b0dugdwvenvtn"]
 
 [ext_resource type="Script" path="res://character_controller.gd" id="1_j0nyi"]
 [ext_resource type="Material" uid="uid://b84vbwo7oamr1" path="res://materials/wood071_material.tres" id="1_o322l"]
@@ -49,7 +49,9 @@
 [ext_resource type="Texture2D" uid="uid://bm1nwg1wktmls" path="res://animation_frames_raytracing/7.png" id="41_igdji"]
 [ext_resource type="Texture2D" uid="uid://col5xymi2aj1r" path="res://animation_frames_raytracing/8.png" id="42_ap08f"]
 [ext_resource type="Texture2D" uid="uid://dgwfm7y3ooxd6" path="res://animation_frames_raytracing/9.png" id="43_gyjis"]
-[ext_resource type="PackedScene" uid="uid://bwd3nf44wi46q" path="res://light.tscn" id="49_bd78c"]
+[ext_resource type="PackedScene" uid="uid://4fvxbxof278b" path="res://light.tscn" id="49_bd78c"]
+[ext_resource type="Script" path="res://button_rotate.gd" id="50_4uau3"]
+[ext_resource type="Script" path="res://crepuscular_rays.gd" id="51_nwgfx"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_idn88"]
 
@@ -63,7 +65,6 @@ background_energy_multiplier = 1.5
 sky = SubResource("Sky_de08i")
 ambient_light_source = 1
 tonemap_mode = 2
-ssr_enabled = true
 ssao_enabled = true
 ssao_radius = 1.26
 ssao_intensity = 2.79
@@ -72,21 +73,23 @@ sdfgi_enabled = true
 sdfgi_use_occlusion = true
 sdfgi_energy = 0.5
 glow_enabled = true
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.0
 
 [sub_resource type="BoxMesh" id="BoxMesh_xl0xi"]
-size = Vector3(21, 21, 1)
+size = Vector3(37.95, 21, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_cncw1"]
-size = Vector3(20, 20, 0.3)
+size = Vector3(40, 40, 0.3)
 
 [sub_resource type="BoxMesh" id="BoxMesh_iip6i"]
-size = Vector3(21, 21, 3)
+size = Vector3(40, 40, 3)
 
 [sub_resource type="BoxMesh" id="BoxMesh_ko3l2"]
-size = Vector3(20, 1, 20)
+size = Vector3(40, 1, 40)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_i18xe"]
-size = Vector3(20, 1, 20)
+size = Vector3(40, 1, 40)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bat5v"]
 albedo_color = Color(0.712129, 0.712129, 0.712129, 1)
@@ -135,7 +138,7 @@ height = 0.1
 render_priority = 0
 shader = ExtResource("2_3u7ph")
 shader_parameter/morph_progress = 0.0
-shader_parameter/roughness = 0.05
+shader_parameter/roughness = 0.2
 shader_parameter/specular = 1.0
 
 [sub_resource type="BoxMesh" id="BoxMesh_xx5lw"]
@@ -301,13 +304,35 @@ shader_parameter/image_15 = ExtResource("35_wj0hl")
 [sub_resource type="BoxShape3D" id="BoxShape3D_0rerh"]
 size = Vector3(0.73, 0.04, 0.54)
 
+[sub_resource type="QuadMesh" id="QuadMesh_dxd0h"]
+size = Vector2(1.35, 0.36)
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4ne7w"]
 render_priority = 0
 shader = ExtResource("4_5axfh")
+shader_parameter/light_position_world = Vector3(22.5794, 8.42138, -0.0145199)
+shader_parameter/decay = 0.95
+shader_parameter/weight = 0.016
 
 [sub_resource type="QuadMesh" id="QuadMesh_fcu71"]
 flip_faces = true
 size = Vector2(2, 2)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_8j5bu"]
+frequency = 0.0055
+offset = Vector3(1000, 0, 0)
+
+[sub_resource type="NoiseTexture3D" id="NoiseTexture3D_ayqo1"]
+noise = SubResource("FastNoiseLite_8j5bu")
+
+[sub_resource type="FogMaterial" id="FogMaterial_a4syw"]
+density = 0.2187
+height_falloff = 0.163841
+edge_fade = 3.19998
+density_texture = SubResource("NoiseTexture3D_ayqo1")
+
+[sub_resource type="QuadMesh" id="QuadMesh_umppr"]
+size = Vector2(3.835, 0.87)
 
 [node name="World" type="Node3D"]
 
@@ -343,33 +368,9 @@ mesh = SubResource("BoxMesh_xl0xi")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/MeshInstance3D3/StaticBody3D3"]
 shape = SubResource("BoxShape3D_cncw1")
 
-[node name="MeshInstance3D4" type="MeshInstance3D" parent="Walls"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 10.5, 18.659, 0)
-mesh = SubResource("BoxMesh_xl0xi")
-
 [node name="Roof" type="MeshInstance3D" parent="Walls"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 20, 0)
 mesh = SubResource("BoxMesh_iip6i")
-
-[node name="CSGBox3D" type="CSGBox3D" parent="Walls"]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 10, 10, 0)
-size = Vector3(21, 21, 0.3)
-
-[node name="CSGCombiner3D" type="CSGCombiner3D" parent="Walls/CSGBox3D"]
-operation = 2
-
-[node name="CSGBox3D" type="CSGBox3D" parent="Walls/CSGBox3D/CSGCombiner3D"]
-transform = Transform3D(1, 0, 3.55271e-15, 0, 1, 0, -3.55271e-15, 0, 1, -0.00574299, -4.75798, 0)
-size = Vector3(0.7, 1, 2)
-
-[node name="CSGBox3D2" type="CSGBox3D" parent="Walls/CSGBox3D/CSGCombiner3D"]
-transform = Transform3D(1, 0, 3.55271e-15, 0, 1, 0, -3.55271e-15, 0, 1, 0.921888, -4.758, 0)
-size = Vector3(0.7, 1, 2)
-
-[node name="StaticBody3D4" type="StaticBody3D" parent="Walls/CSGBox3D"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/CSGBox3D/StaticBody3D4"]
-shape = SubResource("BoxShape3D_cncw1")
 
 [node name="Ground" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
@@ -389,31 +390,12 @@ transform = Transform3D(-0.744197, 0.2623, 0.614304, 0.659313, 0.140952, 0.73853
 visible = false
 shadow_enabled = true
 
-[node name="WindowsCenter" type="Node3D" parent="Lights"]
-transform = Transform3D(0.295258, 0, 0.955418, 0, 1, 0, -0.955418, 0, 0.295258, 9.98329, 5.2528, 0.437834)
-
-[node name="FakeSun" type="SpotLight3D" parent="Lights/WindowsCenter"]
-transform = Transform3D(1, 0.000397921, -0.000636339, -2.31758e-08, 0.847872, 0.5302, 0.000750512, -0.5302, 0.847872, 0.108529, 4.39831, 7.11343)
-light_energy = 8.0
-light_size = 0.275
-light_specular = 0.071
-shadow_enabled = true
-spot_range = 32.677
-spot_attenuation = 0.0
-spot_angle = 11.91
-
-[node name="FakeDiffuseBounce" type="OmniLight3D" parent="Lights/WindowsCenter"]
-transform = Transform3D(-0.401948, 0, -0.915663, 0, 1, 0, 0.915663, 0, -0.401948, -0.109061, -2.92747, -9.49084)
-light_energy = 3.0
-light_specular = 0.0
-omni_range = 20.0
-
 [node name="Center" type="OmniLight3D" parent="Lights"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.14018, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 11.1007, 0)
 light_energy = 4.0
 shadow_enabled = true
 shadow_blur = 3.0
-omni_range = 20.0
+omni_range = 21.0
 
 [node name="modern_ceiling_lamp_01_1k" parent="Lights/Center" instance=ExtResource("2_ykdra")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.329507, 0)
@@ -423,6 +405,26 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.711837, 0)
 cast_shadow = 0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Lights/Center/modern_ceiling_lamp_01_1k"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.844, 0)
+material_override = SubResource("StandardMaterial3D_bat5v")
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_3ucrx")
+
+[node name="Center2" type="OmniLight3D" parent="Lights"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.69887, 11.1007, 0)
+light_energy = 4.0
+shadow_enabled = true
+shadow_blur = 3.0
+omni_range = 21.0
+
+[node name="modern_ceiling_lamp_01_1k" parent="Lights/Center2" instance=ExtResource("2_ykdra")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.329507, 0)
+
+[node name="modern_ceiling_lamp_01" parent="Lights/Center2/modern_ceiling_lamp_01_1k" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.711837, 0)
+cast_shadow = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Lights/Center2/modern_ceiling_lamp_01_1k"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.844, 0)
 material_override = SubResource("StandardMaterial3D_bat5v")
 cast_shadow = 0
@@ -438,11 +440,11 @@ speed = 3.0
 shape = SubResource("CapsuleShape3D_w4kr8")
 
 [node name="Head" type="Node3D" parent="Character"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
 
 [node name="Camera" type="Camera3D" parent="Character/Head"]
 unique_name_in_owner = true
-fov = 50.0
+fov = 60.0
 
 [node name="ButtonChecker" type="Node3D" parent="Character/Head"]
 unique_name_in_owner = true
@@ -487,7 +489,7 @@ speed = 0.0
 
 [node name="SDF" type="MeshInstance3D" parent="ExhibitSDF/Plate"]
 unique_name_in_owner = true
-transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0.05, 0)
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0.05, 0)
 layers = 524288
 material_override = SubResource("ShaderMaterial_1rqpr")
 cast_shadow = 0
@@ -496,7 +498,7 @@ skeleton = NodePath("../../../Character/Head/Camera")
 script = ExtResource("3_4qshk")
 
 [node name="ReferenceMesh" type="MeshInstance3D" parent="ExhibitSDF/Plate"]
-transform = Transform3D(0.3, 0, 0, 0, -1.31134e-08, -0.3, 0, 0.3, -1.31134e-08, 0, 0.35, 0)
+transform = Transform3D(0.2, 0, 0, 0, -8.74228e-09, -0.2, 0, 0.2, -8.74228e-09, 0, 0.25, 0)
 visible = false
 layers = 524288
 material_override = SubResource("ShaderMaterial_wi57p")
@@ -504,7 +506,7 @@ mesh = SubResource("TorusMesh_4ygf2")
 skeleton = NodePath("../../..")
 
 [node name="ReflectionProbe" type="ReflectionProbe" parent="ExhibitSDF/Plate"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.390662, 0)
 update_mode = 1
 size = Vector3(40, 40, 40)
 interior = true
@@ -516,6 +518,7 @@ transform = Transform3D(1, 0, 0, 0, 1, -3.55271e-15, 0, 3.55271e-15, 1, 0, 1.002
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("5_16rrw")
+morph_time = 3.0
 ui_text = "Press"
 
 [node name="Sphere" type="MeshInstance3D" parent="ExhibitSDF/Button"]
@@ -698,11 +701,160 @@ vertical_alignment = 1
 [node name="ExhibitCrepuscularRays" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 0)
 
-[node name="PostProcessingQuad" type="MeshInstance3D" parent="ExhibitCrepuscularRays"]
-visible = false
+[node name="Button" type="Area3D" parent="ExhibitCrepuscularRays"]
+transform = Transform3D(1, 0, 0, 0, 1, -3.55271e-15, 0, 3.55271e-15, 1, -0.410984, 1.0024, -0.519927)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("50_4uau3")
+morph_time = 5.0
+rotation_target = 60
+
+[node name="Sphere" type="MeshInstance3D" parent="ExhibitCrepuscularRays/Button"]
+material_override = SubResource("StandardMaterial3D_rlhwv")
+mesh = SubResource("SphereMesh_wuqxb")
+skeleton = NodePath("../..")
+
+[node name="Torus" type="MeshInstance3D" parent="ExhibitCrepuscularRays/Button"]
+mesh = SubResource("TorusMesh_3nae3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ExhibitCrepuscularRays/Button"]
+shape = SubResource("SphereShape3D_85llm")
+
+[node name="Button2" type="Area3D" parent="ExhibitCrepuscularRays"]
+transform = Transform3D(1, 0, 0, 0, 1, -3.55271e-15, 0, 3.55271e-15, 1, -0.411, 1.002, 0.52)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("50_4uau3")
+morph_time = 5.0
+rotation_target = 120
+
+[node name="Sphere" type="MeshInstance3D" parent="ExhibitCrepuscularRays/Button2"]
+material_override = SubResource("StandardMaterial3D_rlhwv")
+mesh = SubResource("SphereMesh_wuqxb")
+skeleton = NodePath("../..")
+
+[node name="Torus" type="MeshInstance3D" parent="ExhibitCrepuscularRays/Button2"]
+mesh = SubResource("TorusMesh_3nae3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ExhibitCrepuscularRays/Button2"]
+shape = SubResource("SphereShape3D_85llm")
+
+[node name="Sign" type="MeshInstance3D" parent="ExhibitCrepuscularRays"]
+transform = Transform3D(-4.37114e-08, 1, 4.37114e-08, 0, -4.37114e-08, 1, 1, 4.37114e-08, 1.91069e-15, -0.440957, 1.0024, -1.92748e-08)
+material_override = ExtResource("3_jxaj7")
+mesh = SubResource("QuadMesh_dxd0h")
+
+[node name="Label3D" type="Label3D" parent="ExhibitCrepuscularRays/Sign"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 8.35187e-24, 0, 8.35187e-24, 0.1, 2.84217e-14, -0.0675626, 0.00172555)
+pixel_size = 0.0153
+text = "Time travel"
+font_size = 64
+outline_size = 0
+vertical_alignment = 2
+
+[node name="Label3D2" type="Label3D" parent="ExhibitCrepuscularRays/Sign"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, -0.203163, 0.00172555)
+pixel_size = 0.0188
+text = "←                              →"
+font_size = 64
+outline_size = 0
+vertical_alignment = 2
+
+[node name="Table" type="MeshInstance3D" parent="ExhibitCrepuscularRays"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+material_override = ExtResource("4_1nahh")
+mesh = SubResource("BoxMesh_l4ped")
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="ExhibitCrepuscularRays/Table"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ExhibitCrepuscularRays/Table/StaticBody3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("BoxShape3D_6tjjx")
+
+[node name="Stuff" type="Node3D" parent="ExhibitCrepuscularRays"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.47312, 0, 0)
+
+[node name="PostProcessingQuad" type="MeshInstance3D" parent="ExhibitCrepuscularRays/Stuff"]
 material_override = SubResource("ShaderMaterial_4ne7w")
 extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_fcu71")
-skeleton = NodePath("../../Character/Head/Camera")
+skeleton = NodePath("../../../Character/Head/Camera")
+script = ExtResource("51_nwgfx")
+
+[node name="FogVolume" type="FogVolume" parent="ExhibitCrepuscularRays/Stuff"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.252774, 8.78168, 0)
+size = Vector3(20.9288, 33.4102, 52.95)
+material = SubResource("FogMaterial_a4syw")
+
+[node name="Sign2" type="MeshInstance3D" parent="ExhibitCrepuscularRays/Stuff"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 2.795, 5.07858, 0)
+material_override = ExtResource("3_jxaj7")
+mesh = SubResource("QuadMesh_umppr")
+skeleton = NodePath("../../../ExhibitSDF")
+
+[node name="Label3D" type="Label3D" parent="ExhibitCrepuscularRays/Stuff/Sign2"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0.002)
+pixel_size = 0.0493
+text = "Crepuscular Rays"
+font_size = 64
+outline_size = 0
+
+[node name="WindowCenter" type="Node3D" parent="ExhibitCrepuscularRays/Stuff"]
+unique_name_in_owner = true
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.98329, 3.81338, -0.0145196)
+
+[node name="FakeSun" type="SpotLight3D" parent="ExhibitCrepuscularRays/Stuff/WindowCenter"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0.000397941, -0.000636326, -2.31758e-08, 0.847872, 0.5302, 0.000750512, -0.5302, 0.847872, 0, 4.608, 7.123)
+light_energy = 8.0
+light_volumetric_fog_energy = 0.0
+light_size = 0.275
+light_specular = 0.071
+shadow_enabled = true
+spot_range = 32.677
+spot_attenuation = 0.0
+spot_angle = 11.91
+
+[node name="FakeDiffuseBounce" type="OmniLight3D" parent="ExhibitCrepuscularRays/Stuff/WindowCenter"]
+transform = Transform3D(-0.401948, 0, -0.915662, 0, 1, 0, 0.915662, 0, -0.401948, -0.109061, -1.34254, -6.72425)
+light_energy = 5.0
+light_specular = 0.0
+omni_range = 25.0
+
+[node name="CSGBox3D" type="CSGBox3D" parent="ExhibitCrepuscularRays/Stuff"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 3, 8.56058, 0)
+size = Vector3(21, 21, 0.3)
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="ExhibitCrepuscularRays/Stuff/CSGBox3D"]
+operation = 2
+
+[node name="CSGBox3D" type="CSGBox3D" parent="ExhibitCrepuscularRays/Stuff/CSGBox3D/CSGCombiner3D"]
+transform = Transform3D(1, 0, 3.55271e-15, 0, 1, 0, -3.55271e-15, 0, 1, 0, -4.716, 0)
+size = Vector3(1.205, 1.425, 2)
+
+[node name="StaticBody3D4" type="StaticBody3D" parent="ExhibitCrepuscularRays/Stuff/CSGBox3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ExhibitCrepuscularRays/Stuff/CSGBox3D/StaticBody3D4"]
+shape = SubResource("BoxShape3D_cncw1")
+
+[node name="CSGCombiner3D2" type="CSGCombiner3D" parent="ExhibitCrepuscularRays/Stuff/CSGBox3D"]
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="ExhibitCrepuscularRays/Stuff/CSGBox3D/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.97, 0.1)
+size = Vector3(0.085, 3.505, 0.1)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="ExhibitCrepuscularRays/Stuff/CSGBox3D/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.96985, 0.1)
+size = Vector3(2.305, 0.085, 0.1)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="ExhibitCrepuscularRays/Stuff/CSGBox3D/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.48095, 0.1)
+size = Vector3(2.305, 0.085, 0.1)
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="ExhibitCrepuscularRays/Stuff"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 3.5, 18.659, 0)
+mesh = SubResource("BoxMesh_xl0xi")
+skeleton = NodePath("../../../Walls")
 
 [editable path="Lights/Center/modern_ceiling_lamp_01_1k"]
+[editable path="Lights/Center2/modern_ceiling_lamp_01_1k"]
