@@ -1,12 +1,15 @@
 [gd_scene load_steps=84 format=3 uid="uid://b0dugdwvenvtn"]
 
 [ext_resource type="Script" path="res://character_controller.gd" id="1_j0nyi"]
+[ext_resource type="Material" uid="uid://dwlp4473xw1xb" path="res://materials/tiles131_material.tres" id="1_w8b0x"]
 [ext_resource type="Script" path="res://button_checker.gd" id="2_3cecl"]
 [ext_resource type="Shader" path="res://sdf.gdshader" id="2_3u7ph"]
 [ext_resource type="Script" path="res://sdf.gd" id="3_4qshk"]
-[ext_resource type="Material" uid="uid://bx42rrknqgvk2" path="res://sign_material.tres" id="3_jxaj7"]
+[ext_resource type="Material" uid="uid://bx42rrknqgvk2" path="res://materials/metal030_material.tres" id="3_jxaj7"]
 [ext_resource type="Script" path="res://rotate.gd" id="3_tq28i"]
+[ext_resource type="Material" uid="uid://c61p34ymt5t1x" path="res://materials/wood003_material.tres" id="4_wfswc"]
 [ext_resource type="Script" path="res://button_sdf.gd" id="5_16rrw"]
+[ext_resource type="Material" uid="uid://c2q6474bfsp12" path="res://materials/wood052_material.tres" id="6_tmsb4"]
 [ext_resource type="Shader" path="res://lenticular.gdshader" id="7_0yukn"]
 [ext_resource type="Texture2D" uid="uid://bl46uqey3f0c1" path="res://interlaced_crown_and_raytracing.jpg" id="9_x0gjk"]
 [ext_resource type="Shader" path="res://interlaced.gdshader" id="12_e6wl7"]
@@ -44,14 +47,6 @@
 [ext_resource type="Texture2D" uid="uid://bm1nwg1wktmls" path="res://animation_frames_raytracing/7.png" id="41_igdji"]
 [ext_resource type="Texture2D" uid="uid://col5xymi2aj1r" path="res://animation_frames_raytracing/8.png" id="42_ap08f"]
 [ext_resource type="Texture2D" uid="uid://dgwfm7y3ooxd6" path="res://animation_frames_raytracing/9.png" id="43_gyjis"]
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_at7ed"]
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_jbxg8"]
-noise = SubResource("FastNoiseLite_at7ed")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2dfyt"]
-albedo_texture = SubResource("NoiseTexture2D_jbxg8")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_x3507"]
 size = Vector2(20, 20)
@@ -167,6 +162,8 @@ shader_parameter/uv2_offset = Vector3(0, 0, 0)
 
 [sub_resource type="TorusMesh" id="TorusMesh_4ygf2"]
 inner_radius = 0.2
+rings = 32
+ring_segments = 16
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rlhwv"]
 albedo_color = Color(1, 0.25, 0.25, 1)
@@ -269,7 +266,7 @@ size = Vector3(0.73, 0.04, 0.54)
 [node name="World" type="Node3D"]
 
 [node name="Ground" type="MeshInstance3D" parent="."]
-material_override = SubResource("StandardMaterial3D_2dfyt")
+material_override = ExtResource("1_w8b0x")
 mesh = SubResource("PlaneMesh_x3507")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Ground"]
@@ -313,6 +310,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -7)
 
 [node name="Table" type="MeshInstance3D" parent="ExhibitSDF"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+material_override = ExtResource("6_tmsb4")
 mesh = SubResource("BoxMesh_aqhr3")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="ExhibitSDF/Table"]
@@ -336,13 +334,14 @@ vertical_alignment = 2
 
 [node name="Plate" type="MeshInstance3D" parent="ExhibitSDF"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.181876)
+material_override = ExtResource("4_wfswc")
 mesh = SubResource("CylinderMesh_p8ax5")
 script = ExtResource("3_tq28i")
 speed = 0.0
 
 [node name="SDF" type="MeshInstance3D" parent="ExhibitSDF/Plate"]
 unique_name_in_owner = true
-transform = Transform3D(0.37, 0, 0, 0, 0.37, 0, 0, 0, 0.37, 0, 0.05, 0)
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0.05, 0)
 layers = 524288
 material_override = SubResource("ShaderMaterial_1rqpr")
 mesh = SubResource("BoxMesh_xx5lw")
@@ -350,7 +349,7 @@ skeleton = NodePath("../../../Character/Head/Camera")
 script = ExtResource("3_4qshk")
 
 [node name="ReferenceMesh" type="MeshInstance3D" parent="ExhibitSDF/Plate"]
-transform = Transform3D(0.37, 0, 0, 0, -1.61732e-08, -0.37, 0, 0.37, -1.61732e-08, 0, 0.42, 0)
+transform = Transform3D(0.3, 0, 0, 0, -1.31134e-08, -0.3, 0, 0.3, -1.31134e-08, 0, 0.35, 0)
 visible = false
 layers = 524288
 material_override = SubResource("ShaderMaterial_wi57p")
@@ -385,6 +384,7 @@ transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -7, 0,
 
 [node name="Table" type="MeshInstance3D" parent="ExhibitLenticular"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+material_override = ExtResource("6_tmsb4")
 mesh = SubResource("BoxMesh_l4ped")
 
 [node name="StaticBody3D2" type="StaticBody3D" parent="ExhibitLenticular/Table"]
