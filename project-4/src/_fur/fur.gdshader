@@ -5,11 +5,17 @@ render_mode unshaded; // for testing
 // shells
 uniform int u_shell_index;
 uniform int u_shell_count;
+// fur
+uniform float u_length;
+uniform float u_distance_density_attenuation; // controls density distribution of shells. <1 -> greater density outside
+
+varying float v_height_normalized;
 
 void vertex() {
-	float height_normalized = float(u_shell_index) / float(u_shell_count); // [0;1]
+	v_height_normalized = float(u_shell_index) / float(u_shell_count); // [0;1] linear
+	v_height_normalized = pow(v_height_normalized, u_distance_density_attenuation); // [0;1]
 	
-	vec3 height_offset = height_normalized * NORMAL;
+	vec3 height_offset = v_height_normalized * u_length * NORMAL;
 	
 	VERTEX += height_offset;
 	
@@ -20,6 +26,5 @@ void vertex() {
 }
 
 void fragment() {
-	float height_normalized = float(u_shell_index) / float(u_shell_count-1); // [0;1]
-	ALBEDO.xyz = vec3(height_normalized);
+	ALBEDO.xyz = vec3(v_height_normalized);
 }
