@@ -6,6 +6,7 @@ render_mode unshaded, fog_disabled, blend_add;
 // https://developer.nvidia.com/gpugems/gpugems3/part-ii-light-and-shadows/chapter-13-volumetric-light-scattering-post-process
 
 uniform sampler2D screen_texture : hint_screen_texture, repeat_enable, filter_linear;
+uniform sampler2D depth_texture : source_color, hint_depth_texture, filter_linear;
 uniform vec3 light_position_world;
 uniform float decay : hint_range(0.0, 1.0) = 0.5;
 uniform float weight : hint_range(0.0, 1.0) = 0.1;
@@ -31,10 +32,14 @@ void fragment() {
 
 	float current_decay = 1.0;
 	for (int i = 0; i < NUM_SAMPLES; i++) {
-		// the screen_textures alpha channel is 0 where no objects are drawn (background)
+		// the screen_textures alpha channel is 0 where no objects were drawn (background)
 		// (for this to work SSR must be disabled)
-		vec4 sample = texture(screen_texture, uv);
-		float light = 1.0 - sample.a;
+		//float light = 1.0 - texture(screen_texture, uv).a;
+		
+		// alternative: if the depth is 0.0, we can assume no objects were drawn
+		// (works with SSR enabled)
+		float light = float(texture(depth_texture, uv).r <= 0.0);
+		
 		light *= current_decay * weight;
 		acc_light += light;
 		current_decay *= decay;
@@ -47,6 +52,4 @@ void fragment() {
 
 	float d = distance(light_position_screen, SCREEN_UV);
 	ALBEDO.xyz = vec3(acc_light);
-	//ALBEDO.xyz = vec3(FRAGCOORD.xy / VIEWPORT_SIZE, 0.0);
-	//ALBEDO.xyz = vec3(light_position_screen, 0.0);
 }
