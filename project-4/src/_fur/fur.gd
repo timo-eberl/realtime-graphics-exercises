@@ -24,8 +24,12 @@ extends MeshInstance3D
 @export_category("Physics")
 @export_range(0, 1) var displacement_strength: float = 0.1
 @export_range(0, 10) var curvature: float = 1
-@export var displacement_vector := Vector3.ZERO
+@export var max_displacement := 3.0
+@export var inertia := 1.0
 @export var rotation_displacement := Vector3.ZERO
+@export var displacement_vector := Vector3.ZERO
+
+@onready var old_pos: Vector3 = self.global_position
 
 func setup() -> void:
 	# generate mesh that has one surface for every shell
@@ -79,3 +83,19 @@ func update_materials() -> void:
 
 func _process(_delta: float) -> void:
 	update_materials()
+
+func _physics_process(delta: float) -> void:
+	var global_scale := self.global_transform.basis.get_scale()
+	var global_scale_avg := (global_scale.x + global_scale.y + global_scale.z) / 3.0
+	
+	var pos_change = self.global_position - old_pos
+	old_pos = self.global_position
+	# add force resulting from translation
+	displacement_vector -= pos_change * (5 / inertia)
+	# add force resulting from gravity
+	var gravity := Vector3(0,-10,0)
+	displacement_vector = lerp(displacement_vector, gravity, delta * global_scale_avg / inertia)
+	
+	if (displacement_vector.length() > (max_displacement * global_scale_avg)):
+		displacement_vector = displacement_vector.normalized() * (max_displacement * global_scale_avg)
+	

@@ -18,8 +18,8 @@ uniform float u_occlusion_attenuation;
 // physics
 uniform float u_displacement_strength;
 uniform float u_curvature;
-uniform vec3 u_displacement_vector; // updated on CPU to match movement
-uniform mat3 u_rotation_displacement; // updated on CPU to match movement
+uniform vec3 u_displacement_vector; // world space - updated on CPU to match movement
+uniform mat3 u_rotation_displacement; // local space - updated on CPU to match movement
 
 varying float v_height_normalized;
 varying float v_ambient_occlusion;
@@ -44,17 +44,20 @@ void vertex() {
 	vec3 height_offset = v_height_normalized * u_length * NORMAL;
 	VERTEX += height_offset;
 	
-	VERTEX = (MODELVIEW_MATRIX * vec4(VERTEX, 1.0)).xyz;
-	NORMAL = normalize((MODELVIEW_MATRIX * vec4(NORMAL, 0.0)).xyz);
-	BINORMAL = normalize((MODELVIEW_MATRIX * vec4(BINORMAL, 0.0)).xyz);
-	TANGENT = normalize((MODELVIEW_MATRIX * vec4(TANGENT, 0.0)).xyz);
+	VERTEX = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
+	NORMAL = normalize((MODEL_MATRIX * vec4(NORMAL, 0.0)).xyz);
 	
 	// if strands are facing the displacement direction - displace less
 	float n_dot_disp = max( dot(NORMAL, normalize(u_displacement_vector)), 0.0);
-	float displacement_strength = u_displacement_strength * mix(1.0, 0.25, n_dot_disp);
+	float displacement_strength = u_displacement_strength * mix(1.0, 0.5, n_dot_disp);
 	
 	vec3 physics_translation_offset = k * displacement_strength * u_displacement_vector;
 	VERTEX += physics_translation_offset;
+	
+	VERTEX = (VIEW_MATRIX * vec4(VERTEX, 1.0)).xyz;
+	NORMAL = normalize((VIEW_MATRIX * vec4(NORMAL, 0.0)).xyz);
+	BINORMAL = normalize((MODELVIEW_MATRIX * vec4(BINORMAL, 0.0)).xyz);
+	TANGENT = normalize((MODELVIEW_MATRIX * vec4(TANGENT, 0.0)).xyz);
 }
 
 void fragment() {
