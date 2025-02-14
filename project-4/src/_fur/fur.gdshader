@@ -19,6 +19,7 @@ uniform float u_occlusion_attenuation;
 uniform float u_displacement_strength;
 uniform float u_curvature;
 uniform vec3 u_displacement_vector; // updated on CPU to match movement
+uniform mat3 u_rotation_displacement; // updated on CPU to match movement
 
 varying float v_height_normalized;
 varying float v_ambient_occlusion;
@@ -32,6 +33,14 @@ void vertex() {
 	
 	v_ambient_occlusion = pow(v_height_normalized, u_occlusion_attenuation);
 	
+	// hair stiffness
+	float k = pow(v_height_normalized, 1.0 + u_curvature);
+	// physics rotation displacement
+	// it would be more correct to take a quaternion instead of a matrix and interpolate it
+	// instead of interpolating between original and rotated position. but this also works fine
+	vec3 rot_vert = u_rotation_displacement * VERTEX;
+	VERTEX = mix(VERTEX, rot_vert, k);
+	
 	vec3 height_offset = v_height_normalized * u_length * NORMAL;
 	VERTEX += height_offset;
 	
@@ -44,9 +53,8 @@ void vertex() {
 	float n_dot_disp = max( dot(NORMAL, normalize(u_displacement_vector)), 0.0);
 	float displacement_strength = u_displacement_strength * mix(1.0, 0.25, n_dot_disp);
 	
-	vec3 physics_offset = pow(v_height_normalized, 1.0 + u_curvature)
-		* displacement_strength * u_displacement_vector;
-	VERTEX += physics_offset;
+	vec3 physics_translation_offset = k * displacement_strength * u_displacement_vector;
+	VERTEX += physics_translation_offset;
 }
 
 void fragment() {

@@ -24,7 +24,8 @@ extends MeshInstance3D
 @export_category("Physics")
 @export_range(0, 1) var displacement_strength: float = 0.1
 @export_range(0, 10) var curvature: float = 1
-@export var displacement_vector: Vector3 = Vector3.ZERO
+@export var displacement_vector := Vector3.ZERO
+@export var rotation_displacement := Vector3.ZERO
 
 func setup() -> void:
 	# generate mesh that has one surface for every shell
@@ -72,6 +73,9 @@ func update_materials() -> void:
 		mat.set_shader_parameter("u_displacement_strength", displacement_strength)
 		mat.set_shader_parameter("u_curvature", curvature)
 		mat.set_shader_parameter("u_displacement_vector", displacement_vector)
+		
+		var rot_disp := Basis(Vector3.UP, rotation_displacement.y)
+		mat.set_shader_parameter("u_rotation_displacement", rot_disp)
 
 func _process(_delta: float) -> void:
 	update_materials()
