@@ -9,6 +9,7 @@ uniform int u_shell_count;
 uniform float u_length;
 uniform float u_distance_density_attenuation; // controls density distribution of shells. <1 -> greater density outside
 uniform float u_density;
+uniform float u_thickness;
 
 varying float v_height_normalized;
 
@@ -37,6 +38,13 @@ void fragment() {
 	
 	uvec2 strand_id = uvec2(scaled_uv);
 	float rand = hash(strand_id); // [0;1]
+	
+	vec2 local_uv_centered = fract(scaled_uv) * 2.0 - 1.0;
+	float local_center_distance = length(local_uv_centered);
+	bool clip = local_center_distance > u_thickness * (rand - v_height_normalized);
+
+	// always draw the inner shell
+	if (clip && u_shell_index > 0) discard;
 	
 	ALBEDO.xyz = vec3(rand);
 }

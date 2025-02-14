@@ -4,7 +4,7 @@ extends MeshInstance3D
 @export_group("Setup")
 @export var shell_mesh: Mesh
 @export var shell_material: ShaderMaterial
-@export var shell_count: int = 16
+@export_range(1, 256) var shell_count: int = 16
 @export var setup_button: bool:
 	set(value):
 		setup()
@@ -15,6 +15,7 @@ extends MeshInstance3D
 @export_range(0, 1) var length: float = 0.15
 @export_range(0, 3) var distance_density_attenuation: float = 1
 @export_range(1, 1000) var density: float = 100
+@export_range(0, 10) var thickness: float = 5
 
 func setup() -> void:
 	# generate mesh that has one surface for every shell
@@ -54,6 +55,7 @@ func update_materials() -> void:
 		mat.set_shader_parameter("u_length", length)
 		mat.set_shader_parameter("u_distance_density_attenuation", distance_density_attenuation)
 		mat.set_shader_parameter("u_density", density)
+		mat.set_shader_parameter("u_thickness", thickness)
 
 func _process(_delta: float) -> void:
 	update_materials()
