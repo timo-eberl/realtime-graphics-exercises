@@ -37,7 +37,6 @@ ssao_intensity = 2.79
 ssil_enabled = true
 sdfgi_enabled = true
 sdfgi_use_occlusion = true
-sdfgi_energy = 0.5
 glow_enabled = true
 volumetric_fog_enabled = true
 volumetric_fog_density = 0.0
@@ -650,9 +649,9 @@ spot_angle = 11.91
 
 [node name="FakeDiffuseBounce" type="OmniLight3D" parent="ExhibitCrepuscularRays/Stuff/WindowCenter"]
 transform = Transform3D(-0.401948, 0, -0.915662, 0, 1, 0, 0.915662, 0, -0.401948, -0.109061, -1.34254, -6.72425)
-light_energy = 5.0
+light_energy = 3.0
 light_specular = 0.0
-omni_range = 25.0
+omni_range = 11.01
 
 [node name="CSGBox3D" type="CSGBox3D" parent="ExhibitCrepuscularRays/Stuff"]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 3, 8.56058, 0)
