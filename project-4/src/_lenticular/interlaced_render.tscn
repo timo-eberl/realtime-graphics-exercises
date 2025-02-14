@@ -1,0 +1,102 @@
+[gd_scene load_steps=39 format=3 uid="uid://c63irdere06g3"]
+
+[ext_resource type="Shader" path="res://_lenticular/interlaced.gdshader" id="1_agu0e"]
+[ext_resource type="Texture2D" uid="uid://3kb3im6bkwed" path="res://_lenticular/animation_frames_crown/0.png" id="2_6skl5"]
+[ext_resource type="Texture2D" uid="uid://ctpf6ogtjo3ml" path="res://_lenticular/animation_frames_crown/1.png" id="3_qsyvy"]
+[ext_resource type="Texture2D" uid="uid://c0tlps50l7usr" path="res://_lenticular/animation_frames_crown/10.png" id="4_yfpnh"]
+[ext_resource type="Texture2D" uid="uid://coggwg31ys38x" path="res://_lenticular/animation_frames_crown/11.png" id="5_5e522"]
+[ext_resource type="Texture2D" uid="uid://c286i00sl4aqb" path="res://_lenticular/animation_frames_crown/12.png" id="6_7aiso"]
+[ext_resource type="Texture2D" uid="uid://c1edgmv5dfm30" path="res://_lenticular/animation_frames_crown/13.png" id="7_ggg0c"]
+[ext_resource type="Texture2D" uid="uid://bnrqa3cd5oe2y" path="res://_lenticular/animation_frames_crown/14.png" id="8_cmjy0"]
+[ext_resource type="Texture2D" uid="uid://c1iuubjgcudf0" path="res://_lenticular/animation_frames_crown/15.png" id="9_dqu11"]
+[ext_resource type="Texture2D" uid="uid://cem7itypim44f" path="res://_lenticular/animation_frames_crown/2.png" id="10_07lsw"]
+[ext_resource type="Texture2D" uid="uid://dcc15j31d8am" path="res://_lenticular/animation_frames_crown/3.png" id="11_dkjux"]
+[ext_resource type="Texture2D" uid="uid://bcc33pcussbhu" path="res://_lenticular/animation_frames_crown/4.png" id="12_77168"]
+[ext_resource type="Texture2D" uid="uid://bj2xfoupmnx0q" path="res://_lenticular/animation_frames_crown/5.png" id="13_m4efx"]
+[ext_resource type="Texture2D" uid="uid://e0mwnb3341lu" path="res://_lenticular/animation_frames_crown/6.png" id="14_0vs67"]
+[ext_resource type="Texture2D" uid="uid://mwysghqydu0n" path="res://_lenticular/animation_frames_crown/7.png" id="15_wht8l"]
+[ext_resource type="Texture2D" uid="uid://uh88ktml284w" path="res://_lenticular/animation_frames_crown/8.png" id="16_1erw8"]
+[ext_resource type="Texture2D" uid="uid://ys2j21xh8wt2" path="res://_lenticular/animation_frames_crown/9.png" id="17_f7ab7"]
+[ext_resource type="Script" path="res://_lenticular/render_interlaced.gd" id="18_vgc6q"]
+[ext_resource type="Texture2D" uid="uid://mmqppl732ir3" path="res://_lenticular/animation_frames_raytracing/0.png" id="19_vo0sl"]
+[ext_resource type="Texture2D" uid="uid://xds7fnuxso81" path="res://_lenticular/animation_frames_raytracing/1.png" id="20_433xj"]
+[ext_resource type="Texture2D" uid="uid://dw3lyuugsdhkc" path="res://_lenticular/animation_frames_raytracing/10.png" id="21_ogphp"]
+[ext_resource type="Texture2D" uid="uid://dpbdy4dphsomd" path="res://_lenticular/animation_frames_raytracing/11.png" id="22_prskq"]
+[ext_resource type="Texture2D" uid="uid://cnq8glll87uwg" path="res://_lenticular/animation_frames_raytracing/12.png" id="23_sc445"]
+[ext_resource type="Texture2D" uid="uid://d1v7yik6pln2v" path="res://_lenticular/animation_frames_raytracing/13.png" id="24_voxqc"]
+[ext_resource type="Texture2D" uid="uid://2jq4rl0df7dx" path="res://_lenticular/animation_frames_raytracing/14.png" id="25_15324"]
+[ext_resource type="Texture2D" uid="uid://caaqhonkygb1n" path="res://_lenticular/animation_frames_raytracing/15.png" id="26_tkg7x"]
+[ext_resource type="Texture2D" uid="uid://bqtyuadu0y6mh" path="res://_lenticular/animation_frames_raytracing/2.png" id="27_x12n8"]
+[ext_resource type="Texture2D" uid="uid://djulieg41y14g" path="res://_lenticular/animation_frames_raytracing/3.png" id="28_x20th"]
+[ext_resource type="Texture2D" uid="uid://dasi8stnwavk6" path="res://_lenticular/animation_frames_raytracing/4.png" id="29_jidbv"]
+[ext_resource type="Texture2D" uid="uid://bhkqj1u4bor87" path="res://_lenticular/animation_frames_raytracing/5.png" id="30_iyh8y"]
+[ext_resource type="Texture2D" uid="uid://b1arqtp0oixu6" path="res://_lenticular/animation_frames_raytracing/6.png" id="31_ryklk"]
+[ext_resource type="Texture2D" uid="uid://bm1nwg1wktmls" path="res://_lenticular/animation_frames_raytracing/7.png" id="32_rt7kt"]
+[ext_resource type="Texture2D" uid="uid://col5xymi2aj1r" path="res://_lenticular/animation_frames_raytracing/8.png" id="33_4w278"]
+[ext_resource type="Texture2D" uid="uid://dgwfm7y3ooxd6" path="res://_lenticular/animation_frames_raytracing/9.png" id="34_f7a7q"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0osnv"]
+render_priority = 0
+shader = ExtResource("1_agu0e")
+shader_parameter/slices = 200
+shader_parameter/image_0 = ExtResource("2_6skl5")
+shader_parameter/image_1 = ExtResource("3_qsyvy")
+shader_parameter/image_2 = ExtResource("10_07lsw")
+shader_parameter/image_3 = ExtResource("11_dkjux")
+shader_parameter/image_4 = ExtResource("12_77168")
+shader_parameter/image_5 = ExtResource("13_m4efx")
+shader_parameter/image_6 = ExtResource("14_0vs67")
+shader_parameter/image_7 = ExtResource("15_wht8l")
+shader_parameter/image_8 = ExtResource("16_1erw8")
+shader_parameter/image_9 = ExtResource("17_f7ab7")
+shader_parameter/image_10 = ExtResource("4_yfpnh")
+shader_parameter/image_11 = ExtResource("5_5e522")
+shader_parameter/image_12 = ExtResource("6_7aiso")
+shader_parameter/image_13 = ExtResource("7_ggg0c")
+shader_parameter/image_14 = ExtResource("8_cmjy0")
+shader_parameter/image_15 = ExtResource("9_dqu11")
+
+[sub_resource type="QuadMesh" id="QuadMesh_yu27v"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_75k6m"]
+render_priority = 0
+shader = ExtResource("1_agu0e")
+shader_parameter/slices = 200
+shader_parameter/image_0 = ExtResource("19_vo0sl")
+shader_parameter/image_1 = ExtResource("20_433xj")
+shader_parameter/image_2 = ExtResource("27_x12n8")
+shader_parameter/image_3 = ExtResource("28_x20th")
+shader_parameter/image_4 = ExtResource("29_jidbv")
+shader_parameter/image_5 = ExtResource("30_iyh8y")
+shader_parameter/image_6 = ExtResource("31_ryklk")
+shader_parameter/image_7 = ExtResource("32_rt7kt")
+shader_parameter/image_8 = ExtResource("33_4w278")
+shader_parameter/image_9 = ExtResource("34_f7a7q")
+shader_parameter/image_10 = ExtResource("21_ogphp")
+shader_parameter/image_11 = ExtResource("22_prskq")
+shader_parameter/image_12 = ExtResource("23_sc445")
+shader_parameter/image_13 = ExtResource("24_voxqc")
+shader_parameter/image_14 = ExtResource("25_15324")
+shader_parameter/image_15 = ExtResource("26_tkg7x")
+
+[sub_resource type="QuadMesh" id="QuadMesh_8iqpw"]
+
+[node name="InterlacedRender" type="Node3D"]
+
+[node name="RenderInterlacedCrown" type="MeshInstance3D" parent="."]
+material_override = SubResource("ShaderMaterial_0osnv")
+extra_cull_margin = 16384.0
+mesh = SubResource("QuadMesh_yu27v")
+script = ExtResource("18_vgc6q")
+enable = true
+resolution = Vector2i(16384, 682)
+
+[node name="RenderInterlacedRayTracing" type="MeshInstance3D" parent="."]
+visible = false
+material_override = SubResource("ShaderMaterial_75k6m")
+extra_cull_margin = 16384.0
+mesh = SubResource("QuadMesh_8iqpw")
+script = ExtResource("18_vgc6q")
+resolution = Vector2i(16384, 682)
+
+[node name="Camera3D" type="Camera3D" parent="."]

@@ -1,57 +1,23 @@
-[gd_scene load_steps=101 format=3 uid="uid://b0dugdwvenvtn"]
+[gd_scene load_steps=64 format=3 uid="uid://b0dugdwvenvtn"]
 
 [ext_resource type="Script" path="res://character_controller.gd" id="1_j0nyi"]
 [ext_resource type="Material" uid="uid://b84vbwo7oamr1" path="res://materials/wood071_material.tres" id="1_o322l"]
 [ext_resource type="Script" path="res://button_checker.gd" id="2_3cecl"]
-[ext_resource type="Shader" path="res://sdf.gdshader" id="2_3u7ph"]
+[ext_resource type="Shader" path="res://_sdf/sdf.gdshader" id="2_3u7ph"]
 [ext_resource type="PackedScene" uid="uid://cxyg87lb2ssw1" path="res://modern_ceiling_lamp_01_1k.blend/modern_ceiling_lamp_01_1k.glb" id="2_ykdra"]
-[ext_resource type="Script" path="res://sdf.gd" id="3_4qshk"]
+[ext_resource type="Script" path="res://_sdf/sdf.gd" id="3_4qshk"]
 [ext_resource type="Material" uid="uid://bx42rrknqgvk2" path="res://materials/metal030_material.tres" id="3_jxaj7"]
 [ext_resource type="Script" path="res://rotate.gd" id="3_tq28i"]
 [ext_resource type="Material" uid="uid://btwxy6cmkf67u" path="res://materials/marble017_material.tres" id="4_1nahh"]
-[ext_resource type="Shader" path="res://crepuscular_rays_pp.gdshader" id="4_5axfh"]
+[ext_resource type="Shader" path="res://_crepuscular_rays/crepuscular_rays_pp.gdshader" id="4_5axfh"]
 [ext_resource type="Material" uid="uid://c61p34ymt5t1x" path="res://materials/wood003_material.tres" id="4_wfswc"]
-[ext_resource type="Script" path="res://button_sdf.gd" id="5_16rrw"]
-[ext_resource type="Shader" path="res://lenticular.gdshader" id="7_0yukn"]
-[ext_resource type="Texture2D" uid="uid://bl46uqey3f0c1" path="res://interlaced_crown_and_raytracing.jpg" id="9_x0gjk"]
-[ext_resource type="Shader" path="res://interlaced.gdshader" id="12_e6wl7"]
-[ext_resource type="Texture2D" uid="uid://c1iuubjgcudf0" path="res://animation_frames_crown/15.png" id="13_3gh4w"]
-[ext_resource type="Texture2D" uid="uid://3kb3im6bkwed" path="res://animation_frames_crown/0.png" id="13_n1gei"]
-[ext_resource type="Script" path="res://render_interlaced.gd" id="13_xfiin"]
-[ext_resource type="Texture2D" uid="uid://bnrqa3cd5oe2y" path="res://animation_frames_crown/14.png" id="14_qe14h"]
-[ext_resource type="Texture2D" uid="uid://ctpf6ogtjo3ml" path="res://animation_frames_crown/1.png" id="14_swa43"]
-[ext_resource type="Script" path="res://pick_up.gd" id="15_m78xb"]
-[ext_resource type="Texture2D" uid="uid://c0tlps50l7usr" path="res://animation_frames_crown/10.png" id="15_ogpeu"]
-[ext_resource type="Texture2D" uid="uid://coggwg31ys38x" path="res://animation_frames_crown/11.png" id="16_bwgu1"]
-[ext_resource type="Texture2D" uid="uid://cem7itypim44f" path="res://animation_frames_crown/2.png" id="17_p1bir"]
-[ext_resource type="Texture2D" uid="uid://dcc15j31d8am" path="res://animation_frames_crown/3.png" id="18_sgf5c"]
-[ext_resource type="Texture2D" uid="uid://bcc33pcussbhu" path="res://animation_frames_crown/4.png" id="19_v7eiw"]
-[ext_resource type="Texture2D" uid="uid://bj2xfoupmnx0q" path="res://animation_frames_crown/5.png" id="20_0gtt6"]
-[ext_resource type="Texture2D" uid="uid://e0mwnb3341lu" path="res://animation_frames_crown/6.png" id="21_agpfq"]
-[ext_resource type="Texture2D" uid="uid://c1edgmv5dfm30" path="res://animation_frames_crown/13.png" id="21_x3eup"]
-[ext_resource type="Texture2D" uid="uid://mwysghqydu0n" path="res://animation_frames_crown/7.png" id="22_coj7p"]
-[ext_resource type="Texture2D" uid="uid://c286i00sl4aqb" path="res://animation_frames_crown/12.png" id="22_uq3bb"]
-[ext_resource type="Texture2D" uid="uid://uh88ktml284w" path="res://animation_frames_crown/8.png" id="23_j1yij"]
-[ext_resource type="Texture2D" uid="uid://ys2j21xh8wt2" path="res://animation_frames_crown/9.png" id="24_m17i3"]
-[ext_resource type="Texture2D" uid="uid://mmqppl732ir3" path="res://animation_frames_raytracing/0.png" id="28_2vvho"]
-[ext_resource type="Texture2D" uid="uid://xds7fnuxso81" path="res://animation_frames_raytracing/1.png" id="29_urqax"]
-[ext_resource type="Texture2D" uid="uid://dw3lyuugsdhkc" path="res://animation_frames_raytracing/10.png" id="30_agbuq"]
-[ext_resource type="Texture2D" uid="uid://dpbdy4dphsomd" path="res://animation_frames_raytracing/11.png" id="31_cwxwt"]
-[ext_resource type="Texture2D" uid="uid://cnq8glll87uwg" path="res://animation_frames_raytracing/12.png" id="32_7sxl0"]
-[ext_resource type="Texture2D" uid="uid://d1v7yik6pln2v" path="res://animation_frames_raytracing/13.png" id="33_51wmf"]
-[ext_resource type="Texture2D" uid="uid://2jq4rl0df7dx" path="res://animation_frames_raytracing/14.png" id="34_tt183"]
-[ext_resource type="Texture2D" uid="uid://caaqhonkygb1n" path="res://animation_frames_raytracing/15.png" id="35_wj0hl"]
-[ext_resource type="Texture2D" uid="uid://bqtyuadu0y6mh" path="res://animation_frames_raytracing/2.png" id="36_wdpla"]
-[ext_resource type="Texture2D" uid="uid://djulieg41y14g" path="res://animation_frames_raytracing/3.png" id="37_6np21"]
-[ext_resource type="Texture2D" uid="uid://dasi8stnwavk6" path="res://animation_frames_raytracing/4.png" id="38_egpvh"]
-[ext_resource type="Texture2D" uid="uid://bhkqj1u4bor87" path="res://animation_frames_raytracing/5.png" id="39_jsyfv"]
-[ext_resource type="Texture2D" uid="uid://b1arqtp0oixu6" path="res://animation_frames_raytracing/6.png" id="40_308ra"]
-[ext_resource type="Texture2D" uid="uid://bm1nwg1wktmls" path="res://animation_frames_raytracing/7.png" id="41_igdji"]
-[ext_resource type="Texture2D" uid="uid://col5xymi2aj1r" path="res://animation_frames_raytracing/8.png" id="42_ap08f"]
-[ext_resource type="Texture2D" uid="uid://dgwfm7y3ooxd6" path="res://animation_frames_raytracing/9.png" id="43_gyjis"]
+[ext_resource type="Script" path="res://_sdf/button_sdf.gd" id="5_16rrw"]
+[ext_resource type="Shader" path="res://_lenticular/lenticular.gdshader" id="7_0yukn"]
+[ext_resource type="Texture2D" uid="uid://bl46uqey3f0c1" path="res://_lenticular/interlaced_crown_and_raytracing.jpg" id="9_x0gjk"]
+[ext_resource type="Script" path="res://_lenticular/pick_up.gd" id="15_m78xb"]
 [ext_resource type="PackedScene" uid="uid://4fvxbxof278b" path="res://light.tscn" id="49_bd78c"]
 [ext_resource type="Script" path="res://button_rotate.gd" id="50_4uau3"]
-[ext_resource type="Script" path="res://crepuscular_rays.gd" id="51_nwgfx"]
+[ext_resource type="Script" path="res://_crepuscular_rays/crepuscular_rays.gd" id="51_nwgfx"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_idn88"]
 
@@ -254,52 +220,6 @@ albedo_color = Color(0.288518, 0.288518, 0.288518, 1)
 
 [sub_resource type="QuadMesh" id="QuadMesh_xgi7u"]
 size = Vector2(1, 0.27)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_3i6ba"]
-render_priority = 0
-shader = ExtResource("12_e6wl7")
-shader_parameter/images = 16
-shader_parameter/slices = 200
-shader_parameter/image_0 = ExtResource("13_n1gei")
-shader_parameter/image_1 = ExtResource("14_swa43")
-shader_parameter/image_2 = ExtResource("17_p1bir")
-shader_parameter/image_3 = ExtResource("18_sgf5c")
-shader_parameter/image_4 = ExtResource("19_v7eiw")
-shader_parameter/image_5 = ExtResource("20_0gtt6")
-shader_parameter/image_6 = ExtResource("21_agpfq")
-shader_parameter/image_7 = ExtResource("22_coj7p")
-shader_parameter/image_8 = ExtResource("23_j1yij")
-shader_parameter/image_9 = ExtResource("24_m17i3")
-shader_parameter/image_10 = ExtResource("15_ogpeu")
-shader_parameter/image_11 = ExtResource("16_bwgu1")
-shader_parameter/image_12 = ExtResource("22_uq3bb")
-shader_parameter/image_13 = ExtResource("21_x3eup")
-shader_parameter/image_14 = ExtResource("14_qe14h")
-shader_parameter/image_15 = ExtResource("13_3gh4w")
-
-[sub_resource type="QuadMesh" id="QuadMesh_ndkph"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_3ug1y"]
-render_priority = 0
-shader = ExtResource("12_e6wl7")
-shader_parameter/images = 16
-shader_parameter/slices = 200
-shader_parameter/image_0 = ExtResource("28_2vvho")
-shader_parameter/image_1 = ExtResource("29_urqax")
-shader_parameter/image_2 = ExtResource("36_wdpla")
-shader_parameter/image_3 = ExtResource("37_6np21")
-shader_parameter/image_4 = ExtResource("38_egpvh")
-shader_parameter/image_5 = ExtResource("39_jsyfv")
-shader_parameter/image_6 = ExtResource("40_308ra")
-shader_parameter/image_7 = ExtResource("41_igdji")
-shader_parameter/image_8 = ExtResource("42_ap08f")
-shader_parameter/image_9 = ExtResource("43_gyjis")
-shader_parameter/image_10 = ExtResource("30_agbuq")
-shader_parameter/image_11 = ExtResource("31_cwxwt")
-shader_parameter/image_12 = ExtResource("32_7sxl0")
-shader_parameter/image_13 = ExtResource("33_51wmf")
-shader_parameter/image_14 = ExtResource("34_tt183")
-shader_parameter/image_15 = ExtResource("35_wj0hl")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_0rerh"]
 size = Vector3(0.73, 0.04, 0.54)
@@ -570,14 +490,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 8.35188e-23, 0, 8.35188e-23, 1, 0, 0, 0)
 [node name="Front" type="MeshInstance3D" parent="ExhibitLenticular/CardRestingPlace/LenticularCard"]
 transform = Transform3D(0.47, 0, -3.41546e-22, 0, 0.345, -8.35188e-23, 1.60526e-22, 2.8814e-23, 1, 0, 0, 0)
 material_override = SubResource("ShaderMaterial_4s0vd")
-extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_fijqq")
 skeleton = NodePath("../../..")
 
 [node name="Back" type="MeshInstance3D" parent="ExhibitLenticular/CardRestingPlace/LenticularCard"]
 transform = Transform3D(0.47, 0, 3.41545e-22, 0, 0.345, 8.35188e-23, 1.60526e-22, 2.8814e-23, -1, 0, 0, 0)
 material_override = SubResource("StandardMaterial3D_0qnkv")
-extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_fijqq")
 skeleton = NodePath("../../..")
 
@@ -593,22 +511,6 @@ pixel_size = 0.0152
 text = "Lenticular Card"
 font_size = 64
 outline_size = 0
-
-[node name="RenderInterlaced" type="MeshInstance3D" parent="ExhibitLenticular"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.70672, -0.248544)
-visible = false
-material_override = SubResource("ShaderMaterial_3i6ba")
-mesh = SubResource("QuadMesh_ndkph")
-script = ExtResource("13_xfiin")
-resolution = Vector2i(16384, 682)
-
-[node name="RenderInterlaced2" type="MeshInstance3D" parent="ExhibitLenticular"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.70672, -0.248544)
-visible = false
-material_override = SubResource("ShaderMaterial_3ug1y")
-mesh = SubResource("QuadMesh_ndkph")
-script = ExtResource("13_xfiin")
-resolution = Vector2i(16384, 682)
 
 [node name="PickUpArea" type="Area3D" parent="ExhibitLenticular"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -628,76 +530,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, -1.2)
 
 [node name="Light4" parent="ExhibitLenticular" instance=ExtResource("49_bd78c")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, -1.2)
-
-[node name="UI" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 1
-
-[node name="PressPopup" type="ColorRect" parent="UI"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(170, 50)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -75.0
-offset_top = -25.0
-offset_right = 75.0
-offset_bottom = 25.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 1
-color = Color(0, 0, 0, 0.333333)
-
-[node name="Label" type="Label" parent="UI/PressPopup"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 24
-text = "Text"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="LeavePopup" type="ColorRect" parent="UI"]
-unique_name_in_owner = true
-visible = false
-custom_minimum_size = Vector2(170, 50)
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -180.0
-offset_top = -80.0
-offset_right = -30.0
-offset_bottom = -30.0
-grow_horizontal = 0
-grow_vertical = 0
-mouse_filter = 1
-color = Color(0, 0, 0, 0.333333)
-
-[node name="Label" type="Label" parent="UI/LeavePopup"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 24
-text = "E - Leave"
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="ExhibitCrepuscularRays" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 0)
@@ -856,6 +688,76 @@ size = Vector3(2.305, 0.085, 0.1)
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 3.5, 18.659, 0)
 mesh = SubResource("BoxMesh_xl0xi")
 skeleton = NodePath("../../../Walls")
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="PressPopup" type="ColorRect" parent="UI"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(170, 50)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -75.0
+offset_top = -25.0
+offset_right = 75.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+color = Color(0, 0, 0, 0.333333)
+
+[node name="Label" type="Label" parent="UI/PressPopup"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 24
+text = "Text"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LeavePopup" type="ColorRect" parent="UI"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(170, 50)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -180.0
+offset_top = -80.0
+offset_right = -30.0
+offset_bottom = -30.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 1
+color = Color(0, 0, 0, 0.333333)
+
+[node name="Label" type="Label" parent="UI/LeavePopup"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 24
+text = "E - Leave"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [editable path="Lights/Center/modern_ceiling_lamp_01_1k"]
 [editable path="Lights/Center2/modern_ceiling_lamp_01_1k"]
