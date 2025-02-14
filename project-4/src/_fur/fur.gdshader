@@ -15,9 +15,14 @@ uniform float u_strand_roundness;
 // shading
 uniform vec3 u_color;
 uniform float u_occlusion_attenuation;
+// physics
+uniform float u_displacement_strength;
+uniform float u_curvature;
+uniform vec3 u_displacement_vector; // updated on CPU to match movement
 
 varying float v_height_normalized;
 varying float v_ambient_occlusion;
+varying vec3 v_debug;
 
 #include "res://inc/hash.gdshaderinc"
 
@@ -25,8 +30,9 @@ void vertex() {
 	v_height_normalized = float(u_shell_index) / float(u_shell_count); // [0;1] linear
 	v_height_normalized = pow(v_height_normalized, u_distance_shell_density_attenuation); // [0;1]
 	
-	vec3 height_offset = v_height_normalized * u_length * NORMAL;
+	v_ambient_occlusion = pow(v_height_normalized, u_occlusion_attenuation);
 	
+	vec3 height_offset = v_height_normalized * u_length * NORMAL;
 	VERTEX += height_offset;
 	
 	VERTEX = (MODELVIEW_MATRIX * vec4(VERTEX, 1.0)).xyz;
@@ -34,7 +40,13 @@ void vertex() {
 	BINORMAL = normalize((MODELVIEW_MATRIX * vec4(BINORMAL, 0.0)).xyz);
 	TANGENT = normalize((MODELVIEW_MATRIX * vec4(TANGENT, 0.0)).xyz);
 	
-	v_ambient_occlusion = pow(v_height_normalized, u_occlusion_attenuation);
+	// if strands are facing the displacement direction - displace less
+	float n_dot_disp = max( dot(NORMAL, normalize(u_displacement_vector)), 0.0);
+	float displacement_strength = u_displacement_strength * mix(1.0, 0.25, n_dot_disp);
+	
+	vec3 physics_offset = pow(v_height_normalized, 1.0 + u_curvature)
+		* displacement_strength * u_displacement_vector;
+	VERTEX += physics_offset;
 }
 
 void fragment() {

@@ -14,13 +14,17 @@ extends MeshInstance3D
 @export_category("Fur")
 @export_range(0, 1) var length: float = 0.15
 @export_range(0, 1) var length_uniformity: float = 0.0
-@export_range(0, 3) var distance_shell_density_attenuation: float = 1
+@export_range(0.01, 3) var distance_shell_density_attenuation: float = 1
 @export_range(1, 1000) var density: float = 100
 @export_range(0, 10) var thickness: float = 5
 @export_range(0, 0.999) var strand_roundness: float = 0
 @export_category("Shading")
 @export_color_no_alpha var color: Color
 @export_range(0, 5) var occlusion_attenuation: float = 1
+@export_category("Physics")
+@export_range(0, 1) var displacement_strength: float = 0.1
+@export_range(0, 10) var curvature: float = 1
+@export var displacement_vector: Vector3 = Vector3.ZERO
 
 func setup() -> void:
 	# generate mesh that has one surface for every shell
@@ -65,6 +69,9 @@ func update_materials() -> void:
 		mat.set_shader_parameter("u_strand_roundness", strand_roundness)
 		mat.set_shader_parameter("u_color", color)
 		mat.set_shader_parameter("u_occlusion_attenuation", occlusion_attenuation)
+		mat.set_shader_parameter("u_displacement_strength", displacement_strength)
+		mat.set_shader_parameter("u_curvature", curvature)
+		mat.set_shader_parameter("u_displacement_vector", displacement_vector)
 
 func _process(_delta: float) -> void:
 	update_materials()
