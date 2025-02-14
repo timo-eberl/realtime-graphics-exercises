@@ -8,8 +8,11 @@ uniform int u_shell_count;
 // fur
 uniform float u_length;
 uniform float u_distance_density_attenuation; // controls density distribution of shells. <1 -> greater density outside
+uniform float u_density;
 
 varying float v_height_normalized;
+
+#include "res://inc/hash.gdshaderinc"
 
 void vertex() {
 	v_height_normalized = float(u_shell_index) / float(u_shell_count); // [0;1] linear
@@ -26,5 +29,14 @@ void vertex() {
 }
 
 void fragment() {
-	ALBEDO.xyz = vec3(v_height_normalized);
+	// The UVs should have a relatively uniform rate of change (no stretching).
+	// seams are not an issue.
+	// blenders smart projection provides good UVs for this usecase.
+	
+	vec2 scaled_uv = UV * u_density;
+	
+	uvec2 strand_id = uvec2(scaled_uv);
+	float rand = hash(strand_id); // [0;1]
+	
+	ALBEDO.xyz = vec3(rand);
 }

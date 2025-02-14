@@ -14,6 +14,7 @@ extends MeshInstance3D
 @export_category("Fur")
 @export_range(0, 1) var length: float = 0.15
 @export_range(0, 3) var distance_density_attenuation: float = 1
+@export_range(1, 1000) var density: float = 100
 
 func setup() -> void:
 	# generate mesh that has one surface for every shell
@@ -52,6 +53,7 @@ func update_materials() -> void:
 		mat.set_shader_parameter("u_shell_count", shell_count)
 		mat.set_shader_parameter("u_length", length)
 		mat.set_shader_parameter("u_distance_density_attenuation", distance_density_attenuation)
+		mat.set_shader_parameter("u_density", density)
 
 func _process(_delta: float) -> void:
 	update_materials()
