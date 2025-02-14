@@ -229,7 +229,7 @@ size = Vector3(0.73, 0.04, 0.54)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a6vkx"]
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_vlwbp"]
+[sub_resource type="ArrayMesh" id="ArrayMesh_bhfmd"]
 _surfaces = [{
 "aabb": AABB(-0.980784, -1, -1, 1.98078, 2, 1.19509),
 "attribute_data": PackedByteArray("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"),
@@ -1640,7 +1640,7 @@ _surfaces = [{
 "vertex_data": PackedByteArray("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")
 }]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_1jeft"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_was0i"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 0
@@ -1654,11 +1654,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_w3dcc"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g7eqc"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 1
@@ -1672,11 +1672,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_f0xr2"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yasbj"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 2
@@ -1690,11 +1690,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_0ityq"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dqrtq"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 3
@@ -1708,11 +1708,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_i50qc"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lh6td"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 4
@@ -1726,11 +1726,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_6k2fj"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_s0on6"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 5
@@ -1744,11 +1744,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_7f0yg"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_11pas"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 6
@@ -1762,11 +1762,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_5k8js"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_omwe4"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 7
@@ -1780,11 +1780,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_uyegr"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_14vgq"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 8
@@ -1798,11 +1798,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_paxsy"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_70cgk"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 9
@@ -1816,11 +1816,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_hq4bq"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oyl72"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 10
@@ -1834,11 +1834,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_2c00b"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_37eer"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 11
@@ -1852,11 +1852,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_e2rmn"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xusb6"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 12
@@ -1870,11 +1870,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_3h841"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_prhrp"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 13
@@ -1888,11 +1888,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_1mcal"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_s1k8l"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 14
@@ -1906,11 +1906,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_753xi"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_s5id5"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 15
@@ -1924,11 +1924,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_kas3x"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xwstf"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 16
@@ -1942,11 +1942,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_kv0yf"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_aimxp"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 17
@@ -1960,11 +1960,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_xdm7g"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cfog3"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 18
@@ -1978,11 +1978,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_h0u6g"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xgevh"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 19
@@ -1996,11 +1996,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_583gn"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_855bv"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 20
@@ -2014,11 +2014,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_7ucv6"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7djkv"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 21
@@ -2032,11 +2032,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_yqmvf"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4hgpu"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 22
@@ -2050,11 +2050,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_i3fd4"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gebot"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 23
@@ -2068,11 +2068,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_0rbfj"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ph8y8"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 24
@@ -2086,11 +2086,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_m2v5p"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_35cn6"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 25
@@ -2104,11 +2104,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_48w61"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xumqs"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 26
@@ -2122,11 +2122,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_wrujl"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_l72pk"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 27
@@ -2140,11 +2140,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_hkflf"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_p6f11"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 28
@@ -2158,11 +2158,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_1fymf"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5ldfp"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 29
@@ -2176,11 +2176,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_4pqvb"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vrgf3"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 30
@@ -2194,11 +2194,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_v2kmu"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6bgcv"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 31
@@ -2212,11 +2212,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_27ndt"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hr8ir"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 32
@@ -2230,11 +2230,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_pc4t7"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wruc3"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 33
@@ -2248,11 +2248,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_t3m8x"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3ma7j"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 34
@@ -2266,11 +2266,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_2xwhb"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kofur"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 35
@@ -2284,11 +2284,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_amo7y"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6fjf0"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 36
@@ -2302,11 +2302,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_06kxg"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h2ftj"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 37
@@ -2320,11 +2320,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_a3phm"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a871x"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 38
@@ -2338,11 +2338,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_dodyy"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3a7pm"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 39
@@ -2356,11 +2356,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_vkejn"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6qta2"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 40
@@ -2374,11 +2374,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_uhn1d"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_752n6"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 41
@@ -2392,11 +2392,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_4fn7b"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xpgr1"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 42
@@ -2410,11 +2410,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_lqwnh"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_klslo"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 43
@@ -2428,11 +2428,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_adfkp"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u85br"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 44
@@ -2446,11 +2446,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_6273p"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_i5w0k"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 45
@@ -2464,11 +2464,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_7w5gn"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3m7ju"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 46
@@ -2482,11 +2482,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_rpmly"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4h0fx"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 47
@@ -2500,11 +2500,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_kb3ui"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_aaguu"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 48
@@ -2518,11 +2518,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_vclry"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mb3mg"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 49
@@ -2536,11 +2536,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_rxvkb"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lj6pf"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 50
@@ -2554,11 +2554,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_1m5k8"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d2ecq"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 51
@@ -2572,11 +2572,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_14mmd"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ulg80"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 52
@@ -2590,11 +2590,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_x7007"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jolcm"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 53
@@ -2608,11 +2608,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_duplv"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fh512"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 54
@@ -2626,11 +2626,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_bwi7y"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cesd6"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 55
@@ -2644,11 +2644,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_oojyc"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8522x"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 56
@@ -2662,11 +2662,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_cxmhy"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4idoq"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 57
@@ -2680,11 +2680,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_yc28y"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pl5q5"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 58
@@ -2698,11 +2698,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_21s5m"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b7end"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 59
@@ -2716,11 +2716,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_usy4l"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ivrv0"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 60
@@ -2734,11 +2734,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_quope"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2rm1p"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 61
@@ -2752,11 +2752,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_0ciab"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hv6m8"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 62
@@ -2770,11 +2770,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_mnfnb"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_x65dj"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 63
@@ -2788,11 +2788,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_qahec"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_s343v"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 64
@@ -2806,11 +2806,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_diecq"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_puldr"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 65
@@ -2824,11 +2824,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_k4um8"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c1rrx"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 66
@@ -2842,11 +2842,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_0a2cl"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_07c1r"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 67
@@ -2860,11 +2860,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_lprct"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u7o7i"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 68
@@ -2878,11 +2878,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_psdio"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0jj2d"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 69
@@ -2896,11 +2896,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_alew6"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_j4gm3"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 70
@@ -2914,11 +2914,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ape4o"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hsmr5"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 71
@@ -2932,11 +2932,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_tbkd0"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7dyqc"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 72
@@ -2950,11 +2950,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_u3w2x"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_urlqp"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 73
@@ -2968,11 +2968,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_itmtw"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_s1dks"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 74
@@ -2986,11 +2986,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_eiuqy"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7mwkj"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 75
@@ -3004,11 +3004,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_aoa24"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6cjoe"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 76
@@ -3022,11 +3022,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_nhb2t"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7ojrh"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 77
@@ -3040,11 +3040,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_s4t6k"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_asxpf"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 78
@@ -3058,11 +3058,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_kskis"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sn22b"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 79
@@ -3076,11 +3076,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_mx0xg"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7y1ni"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 80
@@ -3094,11 +3094,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_7qhb0"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g6ymh"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 81
@@ -3112,11 +3112,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_dh423"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_i55u2"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 82
@@ -3130,11 +3130,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_p7bu8"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3qadb"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 83
@@ -3148,11 +3148,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_v200p"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oirno"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 84
@@ -3166,11 +3166,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_rjnkk"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_prxr0"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 85
@@ -3184,11 +3184,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_d52lk"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0cg5i"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 86
@@ -3202,11 +3202,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_hju8c"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_naqsw"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 87
@@ -3220,11 +3220,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_chdpc"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uugnp"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 88
@@ -3238,11 +3238,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_4u7nr"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sfxct"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 89
@@ -3256,11 +3256,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_i76di"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hsedp"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 90
@@ -3274,11 +3274,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_3l6u5"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fwfcu"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 91
@@ -3292,11 +3292,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_6qsd0"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_urt1x"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 92
@@ -3310,11 +3310,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_s7h3d"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gayrj"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 93
@@ -3328,11 +3328,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_j1gsm"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tervp"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 94
@@ -3346,11 +3346,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_wl7g4"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hpnjw"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 95
@@ -3364,11 +3364,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_7oa6t"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jkaso"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 96
@@ -3382,11 +3382,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_rpr3b"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4l474"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 97
@@ -3400,11 +3400,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_8gt21"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ugmd2"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 98
@@ -3418,11 +3418,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_svjjt"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_khsgu"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 99
@@ -3436,11 +3436,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_djksq"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_88yld"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 100
@@ -3454,11 +3454,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_cq6ds"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4q8nq"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 101
@@ -3472,11 +3472,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ydw1e"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4v57j"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 102
@@ -3490,11 +3490,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_p4pwl"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o2l4c"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 103
@@ -3508,11 +3508,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ddpa0"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_47fdi"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 104
@@ -3526,11 +3526,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_27bbl"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rhlmk"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 105
@@ -3544,11 +3544,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_teyc1"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7y8xp"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 106
@@ -3562,11 +3562,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_o1ryg"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xvr7r"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 107
@@ -3580,11 +3580,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_5va4s"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mgbu5"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 108
@@ -3598,11 +3598,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_p3ae1"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fxhnf"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 109
@@ -3616,11 +3616,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_kqlxo"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1r2am"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 110
@@ -3634,11 +3634,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_5y70p"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_f30cn"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 111
@@ -3652,11 +3652,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_5y757"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1wowy"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 112
@@ -3670,11 +3670,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_fvvcq"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gohdg"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 113
@@ -3688,11 +3688,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_km563"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7moc5"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 114
@@ -3706,11 +3706,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_drl3o"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fevii"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 115
@@ -3724,11 +3724,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_4ne3i"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dcnn8"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 116
@@ -3742,11 +3742,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_juwsr"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_outi8"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 117
@@ -3760,11 +3760,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_fg1nc"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lyxn8"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 118
@@ -3778,11 +3778,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_odwnf"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wqkil"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 119
@@ -3796,11 +3796,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_i3jb6"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ptcb6"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 120
@@ -3814,11 +3814,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_cgsme"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_svrqa"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 121
@@ -3832,11 +3832,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_qnlt4"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xxa6v"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 122
@@ -3850,11 +3850,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_nar5e"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_afwd5"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 123
@@ -3868,11 +3868,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_fathn"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_csi73"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 124
@@ -3886,11 +3886,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_jjxfe"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_y2i5g"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 125
@@ -3904,11 +3904,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_7vvga"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h5mce"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 126
@@ -3922,11 +3922,11 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ba3xr"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7oqe8"]
 render_priority = 0
 shader = ExtResource("17_44nxk")
 shader_parameter/u_shell_index = 127
@@ -3940,9 +3940,9 @@ shader_parameter/u_strand_roundness = 0.33
 shader_parameter/u_color = null
 shader_parameter/u_occlusion_attenuation = 3.147
 shader_parameter/u_displacement_strength = 0.1
-shader_parameter/u_curvature = 1.0
-shader_parameter/u_displacement_vector = Vector3(1.09918e-18, -1.5, 0)
-shader_parameter/u_rotation_displacement = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/u_curvature = 1.5
+shader_parameter/u_displacement_vector = Vector3(0, -1.5, 0)
+shader_parameter/u_rotation_displacement = Basis(0.999532, -0.0284371, 0.0112995, 0.0284941, 0.999582, -0.00491393, -0.0111551, 0.0052336, 0.999924)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qrwky"]
 render_priority = 0
@@ -4000,6 +4000,7 @@ environment = SubResource("Environment_6mosr")
 [node name="Walls" type="Node3D" parent="."]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, -10)
 mesh = SubResource("BoxMesh_xl0xi")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Walls/MeshInstance3D"]
@@ -4268,142 +4269,140 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, -0.05, -1.2)
 [node name="Light4" parent="ExhibitLenticular" instance=ExtResource("49_bd78c")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, -0.05, -1.2)
 
-[node name="ExhibitFur" type="Node3D" parent="."]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 7)
-
-[node name="Fur" type="MeshInstance3D" parent="ExhibitFur"]
-transform = Transform3D(0.499445, 0, 0.0235532, 0, 0.5, 0, -0.0235532, 0, 0.499445, 0.925959, 2.87889, 0.978076)
+[node name="Fur" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.334878, -0.361885, 0.0830441, 0.362171, 0.293742, -0.180411, 0.0817887, 0.180983, 0.458863, -1.09342, 2.75557, 6.13307)
 cast_shadow = 0
 extra_cull_margin = 2.0
-mesh = SubResource("ArrayMesh_vlwbp")
-surface_material_override/0 = SubResource("ShaderMaterial_1jeft")
-surface_material_override/1 = SubResource("ShaderMaterial_w3dcc")
-surface_material_override/2 = SubResource("ShaderMaterial_f0xr2")
-surface_material_override/3 = SubResource("ShaderMaterial_0ityq")
-surface_material_override/4 = SubResource("ShaderMaterial_i50qc")
-surface_material_override/5 = SubResource("ShaderMaterial_6k2fj")
-surface_material_override/6 = SubResource("ShaderMaterial_7f0yg")
-surface_material_override/7 = SubResource("ShaderMaterial_5k8js")
-surface_material_override/8 = SubResource("ShaderMaterial_uyegr")
-surface_material_override/9 = SubResource("ShaderMaterial_paxsy")
-surface_material_override/10 = SubResource("ShaderMaterial_hq4bq")
-surface_material_override/11 = SubResource("ShaderMaterial_2c00b")
-surface_material_override/12 = SubResource("ShaderMaterial_e2rmn")
-surface_material_override/13 = SubResource("ShaderMaterial_3h841")
-surface_material_override/14 = SubResource("ShaderMaterial_1mcal")
-surface_material_override/15 = SubResource("ShaderMaterial_753xi")
-surface_material_override/16 = SubResource("ShaderMaterial_kas3x")
-surface_material_override/17 = SubResource("ShaderMaterial_kv0yf")
-surface_material_override/18 = SubResource("ShaderMaterial_xdm7g")
-surface_material_override/19 = SubResource("ShaderMaterial_h0u6g")
-surface_material_override/20 = SubResource("ShaderMaterial_583gn")
-surface_material_override/21 = SubResource("ShaderMaterial_7ucv6")
-surface_material_override/22 = SubResource("ShaderMaterial_yqmvf")
-surface_material_override/23 = SubResource("ShaderMaterial_i3fd4")
-surface_material_override/24 = SubResource("ShaderMaterial_0rbfj")
-surface_material_override/25 = SubResource("ShaderMaterial_m2v5p")
-surface_material_override/26 = SubResource("ShaderMaterial_48w61")
-surface_material_override/27 = SubResource("ShaderMaterial_wrujl")
-surface_material_override/28 = SubResource("ShaderMaterial_hkflf")
-surface_material_override/29 = SubResource("ShaderMaterial_1fymf")
-surface_material_override/30 = SubResource("ShaderMaterial_4pqvb")
-surface_material_override/31 = SubResource("ShaderMaterial_v2kmu")
-surface_material_override/32 = SubResource("ShaderMaterial_27ndt")
-surface_material_override/33 = SubResource("ShaderMaterial_pc4t7")
-surface_material_override/34 = SubResource("ShaderMaterial_t3m8x")
-surface_material_override/35 = SubResource("ShaderMaterial_2xwhb")
-surface_material_override/36 = SubResource("ShaderMaterial_amo7y")
-surface_material_override/37 = SubResource("ShaderMaterial_06kxg")
-surface_material_override/38 = SubResource("ShaderMaterial_a3phm")
-surface_material_override/39 = SubResource("ShaderMaterial_dodyy")
-surface_material_override/40 = SubResource("ShaderMaterial_vkejn")
-surface_material_override/41 = SubResource("ShaderMaterial_uhn1d")
-surface_material_override/42 = SubResource("ShaderMaterial_4fn7b")
-surface_material_override/43 = SubResource("ShaderMaterial_lqwnh")
-surface_material_override/44 = SubResource("ShaderMaterial_adfkp")
-surface_material_override/45 = SubResource("ShaderMaterial_6273p")
-surface_material_override/46 = SubResource("ShaderMaterial_7w5gn")
-surface_material_override/47 = SubResource("ShaderMaterial_rpmly")
-surface_material_override/48 = SubResource("ShaderMaterial_kb3ui")
-surface_material_override/49 = SubResource("ShaderMaterial_vclry")
-surface_material_override/50 = SubResource("ShaderMaterial_rxvkb")
-surface_material_override/51 = SubResource("ShaderMaterial_1m5k8")
-surface_material_override/52 = SubResource("ShaderMaterial_14mmd")
-surface_material_override/53 = SubResource("ShaderMaterial_x7007")
-surface_material_override/54 = SubResource("ShaderMaterial_duplv")
-surface_material_override/55 = SubResource("ShaderMaterial_bwi7y")
-surface_material_override/56 = SubResource("ShaderMaterial_oojyc")
-surface_material_override/57 = SubResource("ShaderMaterial_cxmhy")
-surface_material_override/58 = SubResource("ShaderMaterial_yc28y")
-surface_material_override/59 = SubResource("ShaderMaterial_21s5m")
-surface_material_override/60 = SubResource("ShaderMaterial_usy4l")
-surface_material_override/61 = SubResource("ShaderMaterial_quope")
-surface_material_override/62 = SubResource("ShaderMaterial_0ciab")
-surface_material_override/63 = SubResource("ShaderMaterial_mnfnb")
-surface_material_override/64 = SubResource("ShaderMaterial_qahec")
-surface_material_override/65 = SubResource("ShaderMaterial_diecq")
-surface_material_override/66 = SubResource("ShaderMaterial_k4um8")
-surface_material_override/67 = SubResource("ShaderMaterial_0a2cl")
-surface_material_override/68 = SubResource("ShaderMaterial_lprct")
-surface_material_override/69 = SubResource("ShaderMaterial_psdio")
-surface_material_override/70 = SubResource("ShaderMaterial_alew6")
-surface_material_override/71 = SubResource("ShaderMaterial_ape4o")
-surface_material_override/72 = SubResource("ShaderMaterial_tbkd0")
-surface_material_override/73 = SubResource("ShaderMaterial_u3w2x")
-surface_material_override/74 = SubResource("ShaderMaterial_itmtw")
-surface_material_override/75 = SubResource("ShaderMaterial_eiuqy")
-surface_material_override/76 = SubResource("ShaderMaterial_aoa24")
-surface_material_override/77 = SubResource("ShaderMaterial_nhb2t")
-surface_material_override/78 = SubResource("ShaderMaterial_s4t6k")
-surface_material_override/79 = SubResource("ShaderMaterial_kskis")
-surface_material_override/80 = SubResource("ShaderMaterial_mx0xg")
-surface_material_override/81 = SubResource("ShaderMaterial_7qhb0")
-surface_material_override/82 = SubResource("ShaderMaterial_dh423")
-surface_material_override/83 = SubResource("ShaderMaterial_p7bu8")
-surface_material_override/84 = SubResource("ShaderMaterial_v200p")
-surface_material_override/85 = SubResource("ShaderMaterial_rjnkk")
-surface_material_override/86 = SubResource("ShaderMaterial_d52lk")
-surface_material_override/87 = SubResource("ShaderMaterial_hju8c")
-surface_material_override/88 = SubResource("ShaderMaterial_chdpc")
-surface_material_override/89 = SubResource("ShaderMaterial_4u7nr")
-surface_material_override/90 = SubResource("ShaderMaterial_i76di")
-surface_material_override/91 = SubResource("ShaderMaterial_3l6u5")
-surface_material_override/92 = SubResource("ShaderMaterial_6qsd0")
-surface_material_override/93 = SubResource("ShaderMaterial_s7h3d")
-surface_material_override/94 = SubResource("ShaderMaterial_j1gsm")
-surface_material_override/95 = SubResource("ShaderMaterial_wl7g4")
-surface_material_override/96 = SubResource("ShaderMaterial_7oa6t")
-surface_material_override/97 = SubResource("ShaderMaterial_rpr3b")
-surface_material_override/98 = SubResource("ShaderMaterial_8gt21")
-surface_material_override/99 = SubResource("ShaderMaterial_svjjt")
-surface_material_override/100 = SubResource("ShaderMaterial_djksq")
-surface_material_override/101 = SubResource("ShaderMaterial_cq6ds")
-surface_material_override/102 = SubResource("ShaderMaterial_ydw1e")
-surface_material_override/103 = SubResource("ShaderMaterial_p4pwl")
-surface_material_override/104 = SubResource("ShaderMaterial_ddpa0")
-surface_material_override/105 = SubResource("ShaderMaterial_27bbl")
-surface_material_override/106 = SubResource("ShaderMaterial_teyc1")
-surface_material_override/107 = SubResource("ShaderMaterial_o1ryg")
-surface_material_override/108 = SubResource("ShaderMaterial_5va4s")
-surface_material_override/109 = SubResource("ShaderMaterial_p3ae1")
-surface_material_override/110 = SubResource("ShaderMaterial_kqlxo")
-surface_material_override/111 = SubResource("ShaderMaterial_5y70p")
-surface_material_override/112 = SubResource("ShaderMaterial_5y757")
-surface_material_override/113 = SubResource("ShaderMaterial_fvvcq")
-surface_material_override/114 = SubResource("ShaderMaterial_km563")
-surface_material_override/115 = SubResource("ShaderMaterial_drl3o")
-surface_material_override/116 = SubResource("ShaderMaterial_4ne3i")
-surface_material_override/117 = SubResource("ShaderMaterial_juwsr")
-surface_material_override/118 = SubResource("ShaderMaterial_fg1nc")
-surface_material_override/119 = SubResource("ShaderMaterial_odwnf")
-surface_material_override/120 = SubResource("ShaderMaterial_i3jb6")
-surface_material_override/121 = SubResource("ShaderMaterial_cgsme")
-surface_material_override/122 = SubResource("ShaderMaterial_qnlt4")
-surface_material_override/123 = SubResource("ShaderMaterial_nar5e")
-surface_material_override/124 = SubResource("ShaderMaterial_fathn")
-surface_material_override/125 = SubResource("ShaderMaterial_jjxfe")
-surface_material_override/126 = SubResource("ShaderMaterial_7vvga")
-surface_material_override/127 = SubResource("ShaderMaterial_ba3xr")
+mesh = SubResource("ArrayMesh_bhfmd")
+skeleton = NodePath("../ExhibitFur")
+surface_material_override/0 = SubResource("ShaderMaterial_was0i")
+surface_material_override/1 = SubResource("ShaderMaterial_g7eqc")
+surface_material_override/2 = SubResource("ShaderMaterial_yasbj")
+surface_material_override/3 = SubResource("ShaderMaterial_dqrtq")
+surface_material_override/4 = SubResource("ShaderMaterial_lh6td")
+surface_material_override/5 = SubResource("ShaderMaterial_s0on6")
+surface_material_override/6 = SubResource("ShaderMaterial_11pas")
+surface_material_override/7 = SubResource("ShaderMaterial_omwe4")
+surface_material_override/8 = SubResource("ShaderMaterial_14vgq")
+surface_material_override/9 = SubResource("ShaderMaterial_70cgk")
+surface_material_override/10 = SubResource("ShaderMaterial_oyl72")
+surface_material_override/11 = SubResource("ShaderMaterial_37eer")
+surface_material_override/12 = SubResource("ShaderMaterial_xusb6")
+surface_material_override/13 = SubResource("ShaderMaterial_prhrp")
+surface_material_override/14 = SubResource("ShaderMaterial_s1k8l")
+surface_material_override/15 = SubResource("ShaderMaterial_s5id5")
+surface_material_override/16 = SubResource("ShaderMaterial_xwstf")
+surface_material_override/17 = SubResource("ShaderMaterial_aimxp")
+surface_material_override/18 = SubResource("ShaderMaterial_cfog3")
+surface_material_override/19 = SubResource("ShaderMaterial_xgevh")
+surface_material_override/20 = SubResource("ShaderMaterial_855bv")
+surface_material_override/21 = SubResource("ShaderMaterial_7djkv")
+surface_material_override/22 = SubResource("ShaderMaterial_4hgpu")
+surface_material_override/23 = SubResource("ShaderMaterial_gebot")
+surface_material_override/24 = SubResource("ShaderMaterial_ph8y8")
+surface_material_override/25 = SubResource("ShaderMaterial_35cn6")
+surface_material_override/26 = SubResource("ShaderMaterial_xumqs")
+surface_material_override/27 = SubResource("ShaderMaterial_l72pk")
+surface_material_override/28 = SubResource("ShaderMaterial_p6f11")
+surface_material_override/29 = SubResource("ShaderMaterial_5ldfp")
+surface_material_override/30 = SubResource("ShaderMaterial_vrgf3")
+surface_material_override/31 = SubResource("ShaderMaterial_6bgcv")
+surface_material_override/32 = SubResource("ShaderMaterial_hr8ir")
+surface_material_override/33 = SubResource("ShaderMaterial_wruc3")
+surface_material_override/34 = SubResource("ShaderMaterial_3ma7j")
+surface_material_override/35 = SubResource("ShaderMaterial_kofur")
+surface_material_override/36 = SubResource("ShaderMaterial_6fjf0")
+surface_material_override/37 = SubResource("ShaderMaterial_h2ftj")
+surface_material_override/38 = SubResource("ShaderMaterial_a871x")
+surface_material_override/39 = SubResource("ShaderMaterial_3a7pm")
+surface_material_override/40 = SubResource("ShaderMaterial_6qta2")
+surface_material_override/41 = SubResource("ShaderMaterial_752n6")
+surface_material_override/42 = SubResource("ShaderMaterial_xpgr1")
+surface_material_override/43 = SubResource("ShaderMaterial_klslo")
+surface_material_override/44 = SubResource("ShaderMaterial_u85br")
+surface_material_override/45 = SubResource("ShaderMaterial_i5w0k")
+surface_material_override/46 = SubResource("ShaderMaterial_3m7ju")
+surface_material_override/47 = SubResource("ShaderMaterial_4h0fx")
+surface_material_override/48 = SubResource("ShaderMaterial_aaguu")
+surface_material_override/49 = SubResource("ShaderMaterial_mb3mg")
+surface_material_override/50 = SubResource("ShaderMaterial_lj6pf")
+surface_material_override/51 = SubResource("ShaderMaterial_d2ecq")
+surface_material_override/52 = SubResource("ShaderMaterial_ulg80")
+surface_material_override/53 = SubResource("ShaderMaterial_jolcm")
+surface_material_override/54 = SubResource("ShaderMaterial_fh512")
+surface_material_override/55 = SubResource("ShaderMaterial_cesd6")
+surface_material_override/56 = SubResource("ShaderMaterial_8522x")
+surface_material_override/57 = SubResource("ShaderMaterial_4idoq")
+surface_material_override/58 = SubResource("ShaderMaterial_pl5q5")
+surface_material_override/59 = SubResource("ShaderMaterial_b7end")
+surface_material_override/60 = SubResource("ShaderMaterial_ivrv0")
+surface_material_override/61 = SubResource("ShaderMaterial_2rm1p")
+surface_material_override/62 = SubResource("ShaderMaterial_hv6m8")
+surface_material_override/63 = SubResource("ShaderMaterial_x65dj")
+surface_material_override/64 = SubResource("ShaderMaterial_s343v")
+surface_material_override/65 = SubResource("ShaderMaterial_puldr")
+surface_material_override/66 = SubResource("ShaderMaterial_c1rrx")
+surface_material_override/67 = SubResource("ShaderMaterial_07c1r")
+surface_material_override/68 = SubResource("ShaderMaterial_u7o7i")
+surface_material_override/69 = SubResource("ShaderMaterial_0jj2d")
+surface_material_override/70 = SubResource("ShaderMaterial_j4gm3")
+surface_material_override/71 = SubResource("ShaderMaterial_hsmr5")
+surface_material_override/72 = SubResource("ShaderMaterial_7dyqc")
+surface_material_override/73 = SubResource("ShaderMaterial_urlqp")
+surface_material_override/74 = SubResource("ShaderMaterial_s1dks")
+surface_material_override/75 = SubResource("ShaderMaterial_7mwkj")
+surface_material_override/76 = SubResource("ShaderMaterial_6cjoe")
+surface_material_override/77 = SubResource("ShaderMaterial_7ojrh")
+surface_material_override/78 = SubResource("ShaderMaterial_asxpf")
+surface_material_override/79 = SubResource("ShaderMaterial_sn22b")
+surface_material_override/80 = SubResource("ShaderMaterial_7y1ni")
+surface_material_override/81 = SubResource("ShaderMaterial_g6ymh")
+surface_material_override/82 = SubResource("ShaderMaterial_i55u2")
+surface_material_override/83 = SubResource("ShaderMaterial_3qadb")
+surface_material_override/84 = SubResource("ShaderMaterial_oirno")
+surface_material_override/85 = SubResource("ShaderMaterial_prxr0")
+surface_material_override/86 = SubResource("ShaderMaterial_0cg5i")
+surface_material_override/87 = SubResource("ShaderMaterial_naqsw")
+surface_material_override/88 = SubResource("ShaderMaterial_uugnp")
+surface_material_override/89 = SubResource("ShaderMaterial_sfxct")
+surface_material_override/90 = SubResource("ShaderMaterial_hsedp")
+surface_material_override/91 = SubResource("ShaderMaterial_fwfcu")
+surface_material_override/92 = SubResource("ShaderMaterial_urt1x")
+surface_material_override/93 = SubResource("ShaderMaterial_gayrj")
+surface_material_override/94 = SubResource("ShaderMaterial_tervp")
+surface_material_override/95 = SubResource("ShaderMaterial_hpnjw")
+surface_material_override/96 = SubResource("ShaderMaterial_jkaso")
+surface_material_override/97 = SubResource("ShaderMaterial_4l474")
+surface_material_override/98 = SubResource("ShaderMaterial_ugmd2")
+surface_material_override/99 = SubResource("ShaderMaterial_khsgu")
+surface_material_override/100 = SubResource("ShaderMaterial_88yld")
+surface_material_override/101 = SubResource("ShaderMaterial_4q8nq")
+surface_material_override/102 = SubResource("ShaderMaterial_4v57j")
+surface_material_override/103 = SubResource("ShaderMaterial_o2l4c")
+surface_material_override/104 = SubResource("ShaderMaterial_47fdi")
+surface_material_override/105 = SubResource("ShaderMaterial_rhlmk")
+surface_material_override/106 = SubResource("ShaderMaterial_7y8xp")
+surface_material_override/107 = SubResource("ShaderMaterial_xvr7r")
+surface_material_override/108 = SubResource("ShaderMaterial_mgbu5")
+surface_material_override/109 = SubResource("ShaderMaterial_fxhnf")
+surface_material_override/110 = SubResource("ShaderMaterial_1r2am")
+surface_material_override/111 = SubResource("ShaderMaterial_f30cn")
+surface_material_override/112 = SubResource("ShaderMaterial_1wowy")
+surface_material_override/113 = SubResource("ShaderMaterial_gohdg")
+surface_material_override/114 = SubResource("ShaderMaterial_7moc5")
+surface_material_override/115 = SubResource("ShaderMaterial_fevii")
+surface_material_override/116 = SubResource("ShaderMaterial_dcnn8")
+surface_material_override/117 = SubResource("ShaderMaterial_outi8")
+surface_material_override/118 = SubResource("ShaderMaterial_lyxn8")
+surface_material_override/119 = SubResource("ShaderMaterial_wqkil")
+surface_material_override/120 = SubResource("ShaderMaterial_ptcb6")
+surface_material_override/121 = SubResource("ShaderMaterial_svrqa")
+surface_material_override/122 = SubResource("ShaderMaterial_xxa6v")
+surface_material_override/123 = SubResource("ShaderMaterial_afwd5")
+surface_material_override/124 = SubResource("ShaderMaterial_csi73")
+surface_material_override/125 = SubResource("ShaderMaterial_y2i5g")
+surface_material_override/126 = SubResource("ShaderMaterial_h5mce")
+surface_material_override/127 = SubResource("ShaderMaterial_7oqe8")
 script = ExtResource("16_5dvky")
 shell_mesh = ExtResource("18_80umk")
 shell_material = SubResource("ShaderMaterial_qrwky")
@@ -4415,7 +4414,14 @@ thickness = 4.15
 strand_roundness = 0.33
 color = Color(0.721791, 0.468163, 0.307005, 1)
 occlusion_attenuation = 3.147
-displacement_vector = Vector3(1.09918e-18, -1.5, 0)
+curvature = 1.5
+max_rotation_displacement_degrees = 45
+displacement_vector = Vector3(0, -1.5, 0)
+rotation_displacement_global = Quaternion(0.202785, 0.00385034, 0.420122, 0.884512)
+rotation_displacement_local = Quaternion(0.00253719, 0.00561433, 0.0142345, 0.99988)
+
+[node name="ExhibitFur" type="Node3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 7)
 
 [node name="Table" type="MeshInstance3D" parent="ExhibitFur"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)

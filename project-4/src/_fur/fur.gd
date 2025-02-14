@@ -25,11 +25,14 @@ extends MeshInstance3D
 @export_range(0, 1) var displacement_strength: float = 0.1
 @export_range(0, 10) var curvature: float = 1
 @export var max_displacement := 3.0
+@export var max_rotation_displacement_degrees := 30
 @export var inertia := 1.0
-@export var rotation_displacement := Vector3.ZERO
 @export var displacement_vector := Vector3.ZERO
+@export var rotation_displacement_global := Quaternion.IDENTITY
+@export var rotation_displacement_local := Quaternion.IDENTITY
 
 @onready var old_pos: Vector3 = self.global_position
+@onready var old_rot: Quaternion = Quaternion(self.global_basis.orthonormalized())
 
 func setup() -> void:
 	# generate mesh that has one surface for every shell
@@ -77,16 +80,14 @@ func update_materials() -> void:
 		mat.set_shader_parameter("u_displacement_strength", displacement_strength)
 		mat.set_shader_parameter("u_curvature", curvature)
 		mat.set_shader_parameter("u_displacement_vector", displacement_vector)
-		
-		var rot_disp := Basis(Vector3.UP, rotation_displacement.y)
-		mat.set_shader_parameter("u_rotation_displacement", rot_disp)
+		mat.set_shader_parameter("u_rotation_displacement", Basis(rotation_displacement_local))
 
 func _process(_delta: float) -> void:
 	update_materials()
 
 func _physics_process(delta: float) -> void:
-	var global_scale := self.global_transform.basis.get_scale()
-	var global_scale_avg := (global_scale.x + global_scale.y + global_scale.z) / 3.0
+	var global_scale_vec := self.global_transform.basis.get_scale()
+	var global_scale_avg := (global_scale_vec.x + global_scale_vec.y + global_scale_vec.z) / 3.0
 	
 	var pos_change = self.global_position - old_pos
 	old_pos = self.global_position
@@ -94,8 +95,32 @@ func _physics_process(delta: float) -> void:
 	displacement_vector -= pos_change * (5 / inertia)
 	# add force resulting from gravity
 	var gravity := Vector3(0,-10,0)
+	# we lerp so it looks more smooth
 	displacement_vector = lerp(displacement_vector, gravity, delta * global_scale_avg / inertia)
 	
+	# limit displacement to avoid clipping
 	if (displacement_vector.length() > (max_displacement * global_scale_avg)):
 		displacement_vector = displacement_vector.normalized() * (max_displacement * global_scale_avg)
+	
+	var curr_rot := Quaternion(self.global_basis.orthonormalized())
+	# calculate the difference in rotation
+	var rot_change = curr_rot * old_rot.inverse()
+	old_rot = curr_rot
+	
+	# "subtract" the rotation change
+	rotation_displacement_global = rot_change.inverse() * rotation_displacement_global
+	var rotation_neutral_global := curr_rot * Quaternion.IDENTITY
+	
+	rotation_displacement_global = rotation_displacement_global.slerp(rotation_neutral_global, delta * 6.0 / inertia)
+	# convert to local space
+	rotation_displacement_local = curr_rot.inverse() * rotation_displacement_global
+	
+	# limit displacement to avoid clipping
+	var angle := rotation_displacement_local.get_angle()
+	var angle_amount = abs(angle - TAU if angle > PI else angle)
+	var angle_max := max_rotation_displacement_degrees * (PI/180)
+	if angle_amount > angle_max:
+		var scale_factor = angle_max / angle_amount
+		rotation_displacement_local = Quaternion(rotation_displacement_local.get_axis(), angle * scale_factor)
+		rotation_displacement_global = curr_rot * rotation_displacement_local
 	
