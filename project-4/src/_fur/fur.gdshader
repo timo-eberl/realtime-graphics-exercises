@@ -2,6 +2,9 @@ shader_type spatial;
 render_mode cull_disabled, skip_vertex_transform;
 //render_mode unshaded; // for testing
 
+// inspired by Acerolas shell texturing:
+// https://youtu.be/9dr-tRQzij4
+
 // shells
 uniform int u_shell_index;
 uniform int u_shell_count;
