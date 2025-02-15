@@ -34,6 +34,9 @@ extends MeshInstance3D
 @onready var old_pos: Vector3 = self.global_position
 @onready var old_rot: Quaternion = Quaternion(self.global_basis.orthonormalized())
 
+func _ready() -> void:
+	setup()
+
 func setup() -> void:
 	# generate mesh that has one surface for every shell
 	var mdt := MeshDataTool.new()
