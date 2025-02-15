@@ -23,6 +23,10 @@ uniform float u_displacement_strength;
 uniform float u_curvature;
 uniform vec3 u_displacement_vector; // world space - updated on CPU to match movement
 uniform mat3 u_rotation_displacement; // local space - updated on CPU to match movement
+// time based offset
+uniform float u_time;
+uniform float u_time_offset;
+uniform float u_time_scale;
 
 varying float v_height_normalized;
 varying float v_ambient_occlusion;
@@ -46,6 +50,9 @@ void vertex() {
 	
 	vec3 height_offset = v_height_normalized * u_length * NORMAL;
 	VERTEX += height_offset;
+	
+	// time based height offset
+	VERTEX += NORMAL * 0.1 * sin(u_time * u_time_scale + u_time_offset);
 	
 	VERTEX = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 	NORMAL = normalize((MODEL_MATRIX * vec4(NORMAL, 0.0)).xyz);

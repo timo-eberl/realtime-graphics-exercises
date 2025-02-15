@@ -30,6 +30,9 @@ extends MeshInstance3D
 @export var displacement_vector := Vector3.ZERO
 @export var rotation_displacement_global := Quaternion.IDENTITY
 @export var rotation_displacement_local := Quaternion.IDENTITY
+@export_category("Time")
+@export var time_offset = 0.0
+@export var time_scale = 0.0
 
 @onready var old_pos: Vector3 = self.global_position
 @onready var old_rot: Quaternion = Quaternion(self.global_basis.orthonormalized())
@@ -84,6 +87,9 @@ func update_materials() -> void:
 		mat.set_shader_parameter("u_curvature", curvature)
 		mat.set_shader_parameter("u_displacement_vector", displacement_vector)
 		mat.set_shader_parameter("u_rotation_displacement", Basis(rotation_displacement_local))
+		mat.set_shader_parameter("u_time", Time.get_ticks_msec() / 1000.0)
+		mat.set_shader_parameter("u_time_offset", time_offset)
+		mat.set_shader_parameter("u_time_scale", time_scale)
 
 func _process(_delta: float) -> void:
 	update_materials()
