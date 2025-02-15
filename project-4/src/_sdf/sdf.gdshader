@@ -1,8 +1,6 @@
 shader_type spatial;
-// front face culling, because we use our mesh essentially
+// render only back sides (inside), because we use our mesh essentially
 // as a bounding volume and want to render the SDF also when inside the bounding volume.
-// disabling culling is no option, because there would be visible seams if an omnilight is
-// present, as the distance from the face to the light is taken into account
 // Disable Depth testing, because we do that manually.
 render_mode cull_front, depth_test_disabled, shadows_disabled;
 
@@ -73,7 +71,7 @@ vec3 gradient(vec3 p) {
 	);
 }
 
-bool sphere_trace_ray(Ray ray, vec3 depth_map_position, out vec3 normal) {
+bool sphere_trace_ray(Ray ray, vec3 depth_map_position, out vec3 normal, out vec3 hit_pos) {
 	// step front-to-back over the ray
 	vec3 p = ray.p;
 	float d;
@@ -89,6 +87,7 @@ bool sphere_trace_ray(Ray ray, vec3 depth_map_position, out vec3 normal) {
 	}
 
 	if (d < EPSILON) {
+		hit_pos = p;
 		normal = normalize(gradient(p));
 		return true;
 	}
@@ -112,12 +111,14 @@ void fragment() {
 	vec3 local_cam_pos = (inv_model_matrix * vec4(CAMERA_POSITION_WORLD, 1.0)).xyz;
 	Ray ray = Ray(local_cam_pos, normalize(local - local_cam_pos));
 
-	vec3 normal;
-	bool hit = sphere_trace_ray(ray, local, normal);
+	vec3 normal; vec3 hit_pos;
+	bool hit = sphere_trace_ray(ray, local, normal, hit_pos);
 	if (!hit) { discard; }
 
 	vec3 world_normal = normalize(mat3(MODEL_MATRIX) * normal);
 	NORMAL = mat3(VIEW_MATRIX) * world_normal;
+	vec4 world_hit_pos = MODEL_MATRIX * vec4(hit_pos, 1.0);
+	LIGHT_VERTEX = (VIEW_MATRIX * world_hit_pos).xyz; // affects lighting
 
 	ALBEDO.xyz = vec3(0,0,0.02);
 	ROUGHNESS = roughness;
