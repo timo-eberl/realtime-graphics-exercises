@@ -1,0 +1,21 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cm8yvt23krbj7"]
+
+[ext_resource type="Shader" path="res://_fur/fur.gdshader" id="1_wvn5y"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_wvn5y")
+shader_parameter/u_shell_index = null
+shader_parameter/u_shell_count = null
+shader_parameter/u_length = null
+shader_parameter/u_length_uniformity = null
+shader_parameter/u_distance_shell_density_attenuation = null
+shader_parameter/u_density = null
+shader_parameter/u_thickness = null
+shader_parameter/u_strand_roundness = null
+shader_parameter/u_color = null
+shader_parameter/u_occlusion_attenuation = null
+shader_parameter/u_displacement_strength = null
+shader_parameter/u_curvature = null
+shader_parameter/u_displacement_vector = null
+shader_parameter/u_rotation_displacement = null
