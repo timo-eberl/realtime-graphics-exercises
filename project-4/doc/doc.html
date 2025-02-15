@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>doc.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<style>
+body {
+	max-width: 60em;
+	line-height: 150%;
+	font-family: sans-serif;
+	padding: 1em;
+	margin: 0 auto;
+}
+img, video {
+	width: 100%;
+	max-width: 512px;
+}
+iframe {
+	width: 100%;
+	height: 38em;
+}
+pre {
+	border: 1px solid black;
+	padding: 1em 2em;
+}
+/* dark mode */
+@media (prefers-color-scheme: dark) {
+	body {
+		color: #cac5be;
+		background-color: #181a1b;
+	}
+	pre {
+		border: 1px solid white;
+	}
+	h1, h2, h3, h4, h5 {
+		border-color: rgba(255, 255, 255, 0.48) !important;
+	}
+	a {
+		color: #6eb2ee;
+	}
+}
+</style>
+<h1 id="project-4---it-belongs-in-a-museum">Project 4 - It belongs in a Museum!</h1>
+<p>A museum that features four interactive exhibits, each focused on one of the following topics:</p>
+<ul>
+<li>Image-based rendering</li>
+<li>Materials (using a fragment shader)</li>
+<li>Animated geometry (using a vertex shader)</li>
+<li>Volumetric rendering</li>
+</ul>
+<blockquote>
+<p>The project was initially developed using Godots <code>Forward+</code> rendering backend. Every screenshot and recording on this page is done using this backend. Later, the rendering backend was changed to <code>Compatibility</code> to create a web export. All exhibits still work the same, but the visual quality of the scene is reduced (disabled rendering features, reduced number of lights, disabled shadows).</p>
+</blockquote>
+<h2 id="walkthrough-video">Walkthrough Video</h2>
+<p>TODO</p>
+<h2 id="binaries-forward">Binaries (<code>Forward+</code>)</h2>
+<p>TODO</p>
+<h2 id="interactive-web-version-compatibility-reduced-visual-quality">Interactive Web Version (<code>Compatibility</code>, reduced visual Quality)</h2>
+<p>TODO</p>
+<h2 id="exhibit-1-sdf-image-based-rendering">Exhibit 1: SDF (Image-based Rendering)</h2>
+<video alt="Recording of an SDF that transforms from a torus to a mug and back" autoplay loop controls>
+<source src="videos/1_sdf.webm">
+</video>
+<blockquote>
+<p>Relevant folder in the Godot project: <code>_sdf</code>.</p>
+</blockquote>
+<p>The first exhibit is an object defined by a signed distance field (SDF) and rendered using ray marching. It interacts with the rest of the scene, which is rendered using conventional methods. The presented approach can also be used to implement other ray tracing techniques.</p>
+<p>Image-based rendering describes rendering using bitmap images that encode scene content. Image-based techniques are used in two ways here:</p>
+<ul>
+<li>The depth map is read to determine occlusion by other objects.</li>
+<li>A reflection probe is used to render reflections of the surrounding scene.</li>
+</ul>
+<p>The morphing between shapes shows how a cheap effect like reflection mapping can be made to look good.</p>
+<h3 id="how-it-works">How it works</h3>
+<p>Since ray marching is used, a form of ray tracing, the shape and shading of the object is entirely defined in the fragment shader. Typically, with ray tracing, calculations happen for every pixel of the resulting image. Following this, it would be possible to implement it as a fullscreen post-processing effect. Every fragment, in which the ray does not hit the object or is behind already drawn geometry, can be discarded:</p>
+<pre class="hljs"><code><div><span class="hljs-type">vec3</span> normal; <span class="hljs-type">vec3</span> hit_pos;
+<span class="hljs-type">bool</span> hit = sphere_trace_ray(ray, local, normal, hit_pos);
+<span class="hljs-keyword">if</span> (!hit) { <span class="hljs-keyword">discard</span>; }
+</div></code></pre>
+<p>However, it is also possible to implement this in the fragment shader of a normal mesh instead of as a fullscreen effect. The only limitation is that we cannot render anything outside the mesh, so the mesh is effectively a bounding shape for the object. This has performance advantages:</p>
+<ul>
+<li>Pixels outside the mesh do not get drawn.</li>
+<li>If the mesh is outside the view of the camera, the object does not get rendered at all, thanks to Godots occlusion culling.</li>
+</ul>
+<p>The images below show the edges of the mesh in orange. On the left image, the mesh is not big enough to contain the object.</p>
+<p><img src="images/1_sdf_boundingboxes.webp" alt="good and bad bounding boxes"></p>
+<p>Note that the culling mode must be changed to front face culling, so only front faces are drawn. Otherwise, the object is not rendered when the camera is inside the mesh.</p>
+<p>For a better integration into Godot, the projection matrix, view matrix and model matrix are used for ray generation:</p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> depth = <span class="hljs-built_in">texture</span>(depth_texture, SCREEN_UV).x;
+<span class="hljs-comment">// This assumes the use of the Forward+ or Mobile renderers</span>
+<span class="hljs-type">vec3</span> ndc = <span class="hljs-type">vec3</span>(SCREEN_UV * <span class="hljs-number">2.0</span> - <span class="hljs-number">1.0</span>, depth);
+<span class="hljs-comment">// Use this for the compatibility renderer</span>
+<span class="hljs-comment">//vec3 ndc = vec3(SCREEN_UV, depth) * 2.0 - 1.0;</span>
+<span class="hljs-type">vec4</span> world = INV_VIEW_MATRIX * INV_PROJECTION_MATRIX * <span class="hljs-type">vec4</span>(ndc, <span class="hljs-number">1.0</span>);
+<span class="hljs-type">vec3</span> world_depth_map_pos = world.xyz / world.w;
+
+<span class="hljs-type">mat4</span> inv_model_matrix = <span class="hljs-built_in">inverse</span>(MODEL_MATRIX);
+<span class="hljs-type">vec3</span> local_depth_map_pos = (inv_model_matrix * <span class="hljs-type">vec4</span>(world_depth_map_pos, <span class="hljs-number">1.0</span>)).xyz;
+<span class="hljs-type">vec3</span> local_cam_pos = (inv_model_matrix * <span class="hljs-type">vec4</span>(CAMERA_POSITION_WORLD, <span class="hljs-number">1.0</span>)).xyz;
+Ray ray = Ray(local_cam_pos, <span class="hljs-built_in">normalize</span>(local_depth_map_pos - local_cam_pos));
+</div></code></pre>
+<p>This way, the object is also visible in the editor and respects the transform of the corresponding <code>MeshInstance3D</code>. Ray marching is done in its local space. Therefore, SDFs can be transformed like any other 3D objects.</p>
+<p>Godots default lighting is used. The <code>NORMAL</code> and <code>LIGHT_VERTEX</code> variables are set in <code>fragment()</code> to ensure the lighting and reflection mapping is correct:</p>
+<pre class="hljs"><code><div><span class="hljs-type">vec3</span> world_normal = <span class="hljs-built_in">normalize</span>(<span class="hljs-type">mat3</span>(MODEL_MATRIX) * local_normal);
+NORMAL = <span class="hljs-type">mat3</span>(VIEW_MATRIX) * world_normal;
+<span class="hljs-type">vec4</span> world_hit_pos = MODEL_MATRIX * <span class="hljs-type">vec4</span>(local_hit_pos, <span class="hljs-number">1.0</span>);
+LIGHT_VERTEX = (VIEW_MATRIX * world_hit_pos).xyz;
+</div></code></pre>
+<h3 id="comparison-to-rasterization">Comparison to Rasterization</h3>
+<p>Torus rendered using rasterization:</p>
+<p><img src="images/1_sdf_comparison_mesh.webp" alt="rasterized torus"></p>
+<p>Torus rendered using ray marching:</p>
+<p><img src="images/1_sdf_comparison_sdf.webp" alt="ray marched torus"></p>
+<p>In the rasterized torus, you can make out the vertices and edges of the mesh in the reflections. The ray marched torus has perfect reflections.</p>
+<h3 id="potential-extension-recursive-ray-tracing">Potential Extension: Recursive Ray Tracing</h3>
+<p>In principle, it would be possible to implement the recursive ray tracing algorithm using this approach: Whenever the ray does not hit the object anymore, the reflection map is sampled. However, this is currently difficult to implement in Godot, since Godot does not provide any way to access the reflection map of a reflection probe.</p>
+<h3 id="what-about-shadows-and-multiple-sdfs">What about Shadows and Multiple SDFs?</h3>
+<p>The final piece of the puzzle for feature parity with conventional meshes is shadows and correct rendering of multiple intersecting objects.</p>
+<p>With the current implementation, the shader reads the depth map. This means that the object is rendered after the opaque render pass and cannot write to the depth map. This is similar to the way transparent objects are handled and leads to the same limitations: If multiple objects intersect, the result is wrong and shadows are not possible.</p>
+<p>Alternatively, the SDF can be rendered as part of the opaque rendering pass by writing the correct depth to the <code>DEPTH</code> variable. This way the depth map does not need to be sampled manually and multiple SDF intersection is possible. Even though we write to the <code>DEPTH</code>, the rendering of the shadow map does not seem to take that into account. Instead, it uses the fragments position to calculate the depth, resulting in incorrect shadows. It seems this is a limitation of Godots shadow mapping implementation that cannot be overcome easily.</p>
+<h2 id="exhibit-2-lenticular-card-materials">Exhibit 2: Lenticular Card (Materials)</h2>
+<blockquote>
+<p>Relevant folder in the Godot project: <code>_lenticular</code>.</p>
+</blockquote>
+<h2 id="exhibit-3-fur-with-physics-animated-geometry">Exhibit 3: Fur with Physics (Animated Geometry)</h2>
+<blockquote>
+<p>Relevant folder in the Godot project: <code>_fur</code>.</p>
+</blockquote>
+<h2 id="exhibit-4-crepuscular-rays-volumetric-rendering">Exhibit 4: Crepuscular Rays (Volumetric Rendering)</h2>
+<blockquote>
+<p>Relevant folder in the Godot project: <code>_crepuscular_rays</code>.</p>
+</blockquote>
+
+</body>
+</html>
