@@ -56,6 +56,9 @@ func setup() -> void:
 	var multi_surface_mesh: ArrayMesh = ArrayMesh.new()
 	for i in shell_count:
 		mdt.commit_to_surface(multi_surface_mesh)
+	var shadow_mesh = ArrayMesh.new()
+	mdt.commit_to_surface(shadow_mesh)
+	multi_surface_mesh.shadow_mesh = shadow_mesh
 	self.mesh = multi_surface_mesh
 	
 	# set a different material for every shell
@@ -63,8 +66,7 @@ func setup() -> void:
 		var mat_duplicate : ShaderMaterial = shell_material.duplicate()
 		self.set_surface_override_material(i, mat_duplicate)
 	
-	# disable shadows
-	self.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	self.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 	# we move the vertices outwards in the vertex shader, so we have to increase the cull margin
 	self.extra_cull_margin = 2
 	

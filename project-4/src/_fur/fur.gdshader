@@ -1,5 +1,5 @@
 shader_type spatial;
-render_mode cull_disabled, skip_vertex_transform;
+render_mode cull_disabled, skip_vertex_transform, shadows_disabled;
 //render_mode unshaded; // for testing
 
 // inspired by Acerolas shell texturing:
