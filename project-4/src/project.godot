@@ -91,7 +91,8 @@ interact={
 
 3d/run_on_separate_thread=true
 common/physics_ticks_per_second=120
-3d/default_angular_damp=0.5
+3d/default_linear_damp=0.5
+3d/default_angular_damp=1.0
 
 [rendering]
 

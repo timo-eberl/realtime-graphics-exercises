@@ -110,11 +110,17 @@ func _physics_process(delta: float) -> void:
 	var rot_change = curr_rot * old_rot.inverse()
 	old_rot = curr_rot
 	
+	# "scale" the rotation change
+	var rot_angle := rot_change.get_angle()
+	var rot_angle_amount = abs(rot_angle - TAU if rot_angle > PI else rot_angle)
+	if rot_angle_amount > 0.01:
+		rot_change = Quaternion(rot_change.get_axis().normalized(), rot_angle * 0.5 / inertia)
+	
 	# "subtract" the rotation change
 	rotation_displacement_global = rot_change.inverse() * rotation_displacement_global
 	var rotation_neutral_global := curr_rot * Quaternion.IDENTITY
 	
-	rotation_displacement_global = rotation_displacement_global.slerp(rotation_neutral_global, delta * 6.0 / inertia)
+	rotation_displacement_global = rotation_displacement_global.slerp(rotation_neutral_global, delta * 8.0 / inertia)
 	# convert to local space
 	rotation_displacement_local = curr_rot.inverse() * rotation_displacement_global
 	
@@ -124,6 +130,6 @@ func _physics_process(delta: float) -> void:
 	var angle_max := max_rotation_displacement_degrees * (PI/180)
 	if angle_amount > angle_max:
 		var scale_factor = angle_max / angle_amount
-		rotation_displacement_local = Quaternion(rotation_displacement_local.get_axis(), angle * scale_factor)
+		rotation_displacement_local = Quaternion(rotation_displacement_local.get_axis().normalized(), angle * scale_factor)
 		rotation_displacement_global = curr_rot * rotation_displacement_local
 	
