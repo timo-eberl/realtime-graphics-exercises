@@ -521,11 +521,101 @@ LIGHT_VERTEX = (VIEW_MATRIX * world_hit_pos).xyz;
 <p>The fur is implemented using a technique called shell texturing. The fur is inspired by this video: https://youtu.be/9dr-tRQzij4</p>
 <h3 id="shell-texturing">Shell Texturing</h3>
 <p>Shell texturing creates the illusion of dense geometry from simple geometry. It can simulate dense hair or grass. Games like Dark Souls, Genshin Impact and Viva Piñata use it.</p>
-<p>Shell texturing works by layering a simple flat mesh (the &quot;shell&quot;) multiple times on top of another.</p>
+<p>Shell texturing works by layering a simple flat mesh (the &quot;shell&quot;) multiple times on top of another. More specifically, position of the meshes vertices are extrapolated in the normal direction:</p>
+<pre class="hljs"><code><div><span class="hljs-type">vec3</span> height_offset = v_height_normalized * u_length * NORMAL;
+VERTEX += height_offset;
+</div></code></pre>
+<p>This image shows how a mesh of a half sphere is layered 16 times on top of another:</p>
+<p><img src="images/fur/half_sphere_shells.webp" alt="half sphere shells"></p>
+<p>Then, a hash for all individual strands is calculated in the fragment shader. Based on this hash, fragments are discarded in a way that the illusion of individual strands is created:</p>
+<p><img src="images/fur/half_sphere_hash_strands.webp" alt="half sphere hash-based strands"></p>
+<p>After adding some more parameters to control the shape of the strands, the shading is calculated. For this a non-physically based lighting model (half lambert) is used:</p>
+<pre class="hljs"><code><div><span class="hljs-type">void</span> light() {
+	<span class="hljs-type">float</span> n_dot_l = <span class="hljs-built_in">clamp</span>(<span class="hljs-built_in">dot</span>(NORMAL, LIGHT), <span class="hljs-number">0.0</span>, <span class="hljs-number">1.0</span>);
+	<span class="hljs-comment">// this is not physically correct at all, but it looks good.</span>
+	<span class="hljs-type">float</span> lighting = n_dot_l * <span class="hljs-number">0.5</span> + <span class="hljs-number">0.5</span>;
+	lighting = lighting * lighting;
+	DIFFUSE_LIGHT += lighting * ATTENUATION * v_ambient_occlusion * LIGHT_COLOR;
+}
+</div></code></pre>
+<p>The <code>v_ambient_occlusion</code> is a fake ambient occlusion that is based on the distance to the most inner shell. Because this is constant per shell, it is calculated in the vertex shader.</p>
+<p><img src="images/fur/shading.webp" alt="shaded fur"></p>
+<h3 id="physics">Physics</h3>
+<p>The physics simulation is done as two steps: Offset based on the position change and an offset based on the rotation change.</p>
+<p>To simulate physics based on the position change, the shader takes a uniform <code>u_displacement_vector</code> that is calculated on the CPU each physics step. The shells are displaced based on their distance to the most inner shells and some parameters like hair curvature:</p>
+<pre class="hljs"><code><div><span class="hljs-comment">// VERTEX has been transformed to world space</span>
+<span class="hljs-type">float</span> k = <span class="hljs-built_in">pow</span>(v_height_normalized, <span class="hljs-number">1.0</span> + u_curvature);
+<span class="hljs-type">vec3</span> physics_translation_offset = k * displacement_strength * u_displacement_vector;
+VERTEX += physics_translation_offset;
+</div></code></pre>
+<p>A displacement vector of (0, -3, 0) results in the following:</p>
+<p><img src="images/fur/displacement_vector.webp" alt="hair displaced by (0,-3,0)"></p>
+<p>To simulate physics based on rotation, the shader takes the <code>uniform mat3 u_rotation_displacement</code> that is also calculated on the CPU each physics step. This matrix represents a rotation in local space about the center of the node. The shells are displaced based on their distance to the most inner shell:</p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> k = <span class="hljs-built_in">pow</span>(v_height_normalized, <span class="hljs-number">1.0</span> + u_curvature);
+<span class="hljs-type">vec3</span> rot_vert = u_rotation_displacement * VERTEX;
+VERTEX = <span class="hljs-built_in">mix</span>(VERTEX, rot_vert, k);
+</div></code></pre>
+<p>This approach interpolates between the position of the rotated vertex and the non-rotated vertex. This is not a correct interpolation. To correctly interpolate between rotations, a quaternion is necessary. However, the incorrect approach also works good enough.</p>
+<p>A rotation about the axis that is pointing towards the viewer looks like this:</p>
+<p><img src="images/fur/rotation_vector.webp" alt="hair displaced by rotation"></p>
+<p>The displacement vector and rotation matrix are calculated in the function <code>_physics_process</code> in the script <code>res://_fur/fur.gd</code>. After some finetuning, the hair physics look like this:</p>
+<p>The implementation of the displacement vector (but not the rotation) is similar to the before mentioned video.</p>
+<video alt="Recording of hair physics in the editor" autoplay loop controls>
+<source src="videos/fur_editor.webm">
+</video>
+<h3 id="scene-setup">Scene Setup</h3>
+<p>To create an interesting exhibit, different shapes were created, their hair materials were adjusted and physics using Godots physics cababilities were configured. Also, a time-based growing/shrinking was implemented in the vertex shader, that is only active for one of the three shapes. The physics shape of that object is adjusted to match the growing/shrinking (<code>res://_fur/collusion_time_adjust.gd</code>).</p>
 <h2 id="exhibit-4-crepuscular-rays-volumetric-rendering">Exhibit 4: Crepuscular Rays (Volumetric Rendering)</h2>
+<p><img src="images/rays/rays_endresult.webp" alt="crepuscular rays"></p>
 <blockquote>
 <p>Relevant folder in the Godot project: <code>res://_crepuscular_rays</code>.</p>
 </blockquote>
+<p>As the fourth exhibit, I implemented a post-processing technique for rendering crepuscular rays, following <a href="https://developer.nvidia.com/gpugems/gpugems3/part-ii-light-and-shadows/chapter-13-volumetric-light-scattering-post-process">this paper</a>.</p>
+<p>The fog and shadows that are seen in the image above are created using Godots built in techniques (volumetric fog and shadow mapping).</p>
+<h3 id="how-it-works">How it works</h3>
+<p>Typically, the first step is to do a occlusion pre-pass that renders all occluders as black:</p>
+<p><img src="images/rays/prepass.webp" alt="pre-pass"></p>
+<p>However, we can skip this step by using one of the following tricks:</p>
+<p>We can sample the screen textures alpha texture. It is 0 where no object was rendered. In the configured scene this is only at the window. However, this only works when screen space reflections (SSR) are disabled.</p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> light = <span class="hljs-number">1.0</span> - <span class="hljs-built_in">texture</span>(screen_texture, uv).a;
+</div></code></pre>
+<p>A more robust approach is to sample the depth map. It is &gt;0 where objects were rendered, which works also with SSR enabled.</p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> light = <span class="hljs-type">float</span>(<span class="hljs-built_in">texture</span>(depth_texture, uv).r &lt;= <span class="hljs-number">0.0</span>);
+</div></code></pre>
+<p>Now, we calculate the screen space position of the light source:</p>
+<pre class="hljs"><code><div><span class="hljs-type">vec4</span> light_pos_ndc = PROJECTION_MATRIX * VIEW_MATRIX * <span class="hljs-type">vec4</span>(light_position_world, <span class="hljs-number">1</span>);
+light_pos_ndc /= light_pos_ndc.w;
+light_position_screen = (light_pos_ndc.xy * <span class="hljs-number">0.5</span> + <span class="hljs-number">0.5</span>);
+</div></code></pre>
+<p>This is done in the vertex shader as it does not differ between fragments. It could also be done on CPU.</p>
+<p>Now we take multiple samples and sum them, starting at the screen space light position and stepping towards the screen space fragment position. Successive samples are scaled by the <code>weight</code> and <code>decay</code> constants. <code>decay</code> is reduced each sample by multiplying by itself. The complete algorithm:</p>
+<pre class="hljs"><code><div><span class="hljs-type">void</span> fragment() {
+	<span class="hljs-type">vec2</span> delta_uv = SCREEN_UV - light_position_screen;
+	delta_uv /= <span class="hljs-type">float</span>(NUM_SAMPLES);
+
+	<span class="hljs-type">vec2</span> uv = SCREEN_UV;
+	<span class="hljs-type">float</span> acc_light = <span class="hljs-number">0.0</span>;
+	<span class="hljs-type">float</span> current_decay = <span class="hljs-number">1.0</span>;
+	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; NUM_SAMPLES; i++) {
+		<span class="hljs-type">float</span> light = <span class="hljs-type">float</span>(<span class="hljs-built_in">texture</span>(depth_texture, uv).r &lt;= <span class="hljs-number">0.0</span>);
+
+		light *= current_decay * weight;
+		acc_light += light;
+		current_decay *= decay;
+
+		uv -= delta_uv;
+		<span class="hljs-keyword">if</span> (uv.x &gt; <span class="hljs-number">1.0</span> || uv.x &lt; <span class="hljs-number">0.0</span> || uv.y &gt; <span class="hljs-number">1.0</span> || uv.y &lt; <span class="hljs-number">0.0</span>) {
+			<span class="hljs-keyword">break</span>;
+		}
+	}
+
+	ALBEDO.xyz = <span class="hljs-type">vec3</span>(acc_light);
+}
+</div></code></pre>
+<p>Using a sample count of 128 we can achieve the following result:</p>
+<p><img src="images/rays/rays.webp" alt=""></p>
+<p>Finally, we add the result to our image by specifying the <code>render_mode blend_add</code> (left: default scene, right: scene with crepuscular rays):</p>
+<p><img src="images/rays/scene_and_scene_with_rays.webp" alt="default scene vs scene with rays"></p>
 
 </body>
 </html>

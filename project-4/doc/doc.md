@@ -289,6 +289,75 @@ To create an interesting exhibit, different shapes were created, their hair mate
 
 ## Exhibit 4: Crepuscular Rays (Volumetric Rendering)
 
+![crepuscular rays](images/rays/rays_endresult.webp)
+
 > Relevant folder in the Godot project: `res://_crepuscular_rays`.
 
 As the fourth exhibit, I implemented a post-processing technique for rendering crepuscular rays, following [this paper](https://developer.nvidia.com/gpugems/gpugems3/part-ii-light-and-shadows/chapter-13-volumetric-light-scattering-post-process).
+
+The fog and shadows that are seen in the image above are created using Godots built in techniques (volumetric fog and shadow mapping).
+
+### How it works
+
+Typically, the first step is to do a occlusion pre-pass that renders all occluders as black:
+
+![pre-pass](images/rays/prepass.webp)
+
+However, we can skip this step by using one of the following tricks:
+
+We can sample the screen textures alpha texture. It is 0 where no object was rendered. In the configured scene this is only at the window. However, this only works when screen space reflections (SSR) are disabled.
+
+```glsl
+float light = 1.0 - texture(screen_texture, uv).a;
+```
+
+A more robust approach is to sample the depth map. It is >0 where objects were rendered, which works also with SSR enabled.
+
+```glsl
+float light = float(texture(depth_texture, uv).r <= 0.0);
+```
+
+Now, we calculate the screen space position of the light source:
+
+```glsl
+vec4 light_pos_ndc = PROJECTION_MATRIX * VIEW_MATRIX * vec4(light_position_world, 1);
+light_pos_ndc /= light_pos_ndc.w;
+light_position_screen = (light_pos_ndc.xy * 0.5 + 0.5);
+```
+
+This is done in the vertex shader as it does not differ between fragments. It could also be done on CPU.
+
+Now we take multiple samples and sum them, starting at the screen space light position and stepping towards the screen space fragment position. Successive samples are scaled by the `weight` and `decay` constants. `decay` is reduced each sample by multiplying by itself. The complete algorithm:
+
+```glsl
+void fragment() {
+	vec2 delta_uv = SCREEN_UV - light_position_screen;
+	delta_uv /= float(NUM_SAMPLES);
+
+	vec2 uv = SCREEN_UV;
+	float acc_light = 0.0;
+	float current_decay = 1.0;
+	for (int i = 0; i < NUM_SAMPLES; i++) {
+		float light = float(texture(depth_texture, uv).r <= 0.0);
+
+		light *= current_decay * weight;
+		acc_light += light;
+		current_decay *= decay;
+
+		uv -= delta_uv;
+		if (uv.x > 1.0 || uv.x < 0.0 || uv.y > 1.0 || uv.y < 0.0) {
+			break;
+		}
+	}
+
+	ALBEDO.xyz = vec3(acc_light);
+}
+```
+
+Using a sample count of 128 we can achieve the following result:
+
+![](images/rays/rays.webp)
+
+Finally, we add the result to our image by specifying the `render_mode blend_add` (left: default scene, right: scene with crepuscular rays):
+
+![default scene vs scene with rays](images/rays/scene_and_scene_with_rays.webp)
