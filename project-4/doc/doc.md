@@ -72,6 +72,7 @@ A museum that features four interactive exhibits, each focused on one of the fol
   - `←`, `↑`, `→`, `↓`
 - Walk: `W`, `A`, `S`, `D`
 - Interact: `E`
+- Release mouse: `Esc`
 
 ## Exhibit 1: SDF (Image-based Rendering)
 
