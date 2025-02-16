@@ -31,6 +31,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	# rotate card with mouse
 	card.rotation_order = EULER_ORDER_XYZ
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+		if OS.has_feature("web"):
+			event.relative *= 5.0
 		card.rotation_degrees.y += rotation_speed * event.relative.x;
 		card.rotation_degrees.x += rotation_speed * event.relative.y;
 	

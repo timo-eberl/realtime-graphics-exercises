@@ -122,5 +122,5 @@ void fragment() {
 
 	ALBEDO.xyz = vec3(0,0,0.02);
 	ROUGHNESS = roughness;
-	SPECULAR = specular;
+	SPECULAR = specular * 1.5;
 }

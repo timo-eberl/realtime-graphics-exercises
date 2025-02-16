@@ -22,6 +22,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	if !enabled:
 		return
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+		if OS.has_feature("web"):
+			event.relative *= 5.0
 		self.rotation_degrees.y -= look_speed * event.relative.x;
 		camera.rotation_degrees.x -= look_speed * event.relative.y;
 		camera.rotation_degrees.x = clampf(camera.rotation_degrees.x, -rotation_limit_upwards, rotation_limit_downwards)

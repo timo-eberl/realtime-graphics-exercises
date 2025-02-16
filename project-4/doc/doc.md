@@ -61,7 +61,17 @@ A museum that features four interactive exhibits, each focused on one of the fol
 
 ## Interactive Web Version (`Compatibility`, reduced visual Quality)
 
-TODO
+<iframe src="../export/web/index.html">
+	Can't load iframe
+</iframe>
+
+## Controls
+
+- Look around:
+  - Move mouse or
+  - `←`, `↑`, `→`, `↓`
+- Walk: `W`, `A`, `S`, `D`
+- Interact: `E`
 
 ## Exhibit 1: SDF (Image-based Rendering)
 
