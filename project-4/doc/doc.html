@@ -511,9 +511,17 @@ LIGHT_VERTEX = (VIEW_MATRIX * world_hit_pos).xyz;
 <p>The billboard-like scrolling is implemented using an offset of the y texture coordinate following this function:</p>
 <p><img src="images/lenticular/time_offset.webp" alt="time based offset function"></p>
 <h2 id="exhibit-3-fur-with-physics-animated-geometry">Exhibit 3: Fur with Physics (Animated Geometry)</h2>
+<video alt="Recording of three shapes with different fur bouncing around" autoplay loop controls>
+<source src="videos/fur.webm">
+</video>
 <blockquote>
 <p>Relevant folder in the Godot project: <code>res://_fur</code>.</p>
 </blockquote>
+<p>This exhibit shows 3 shapes with different kinds of fur. They are physically simulated and bounce around when the red button is pressed. The fur reacts to the movement. One of the shapes changes its size over time.</p>
+<p>The fur is implemented using a technique called shell texturing. The fur is inspired by this video: https://youtu.be/9dr-tRQzij4</p>
+<h3 id="shell-texturing">Shell Texturing</h3>
+<p>Shell texturing creates the illusion of dense geometry from simple geometry. It can simulate dense hair or grass. Games like Dark Souls, Genshin Impact and Viva Piñata use it.</p>
+<p>Shell texturing works by layering a simple flat mesh (the &quot;shell&quot;) multiple times on top of another.</p>
 <h2 id="exhibit-4-crepuscular-rays-volumetric-rendering">Exhibit 4: Crepuscular Rays (Volumetric Rendering)</h2>
 <blockquote>
 <p>Relevant folder in the Godot project: <code>res://_crepuscular_rays</code>.</p>

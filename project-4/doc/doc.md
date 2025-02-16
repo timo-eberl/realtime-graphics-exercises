@@ -199,8 +199,96 @@ The billboard-like scrolling is implemented using an offset of the y texture coo
 
 ## Exhibit 3: Fur with Physics (Animated Geometry)
 
+<video alt="Recording of three shapes with different fur bouncing around" autoplay loop controls>
+<source src="videos/fur.webm">
+</video>
+
 > Relevant folder in the Godot project: `res://_fur`.
+
+This exhibit shows 3 shapes with different kinds of fur. They are physically simulated and bounce around when the red button is pressed. The fur reacts to the movement. One of the shapes changes its size over time.
+
+The fur is implemented using a technique called shell texturing. The fur is inspired by this video: https://youtu.be/9dr-tRQzij4
+
+### Shell Texturing
+
+Shell texturing creates the illusion of dense geometry from simple geometry. It can simulate dense hair or grass. Games like Dark Souls, Genshin Impact and Viva Piñata use it.
+
+Shell texturing works by layering a simple flat mesh (the "shell") multiple times on top of another. More specifically, position of the meshes vertices are extrapolated in the normal direction:
+
+```glsl
+vec3 height_offset = v_height_normalized * u_length * NORMAL;
+VERTEX += height_offset;
+```
+
+This image shows how a mesh of a half sphere is layered 16 times on top of another:
+
+![half sphere shells](images/fur/half_sphere_shells.webp)
+
+Then, a hash for all individual strands is calculated in the fragment shader. Based on this hash, fragments are discarded in a way that the illusion of individual strands is created:
+
+![half sphere hash-based strands](images/fur/half_sphere_hash_strands.webp)
+
+After adding some more parameters to control the shape of the strands, the shading is calculated. For this a non-physically based lighting model (half lambert) is used:
+
+```glsl
+void light() {
+	float n_dot_l = clamp(dot(NORMAL, LIGHT), 0.0, 1.0);
+	// this is not physically correct at all, but it looks good.
+	float lighting = n_dot_l * 0.5 + 0.5;
+	lighting = lighting * lighting;
+	DIFFUSE_LIGHT += lighting * ATTENUATION * v_ambient_occlusion * LIGHT_COLOR;
+}
+```
+
+The `v_ambient_occlusion` is a fake ambient occlusion that is based on the distance to the most inner shell. Because this is constant per shell, it is calculated in the vertex shader.
+
+![shaded fur](images/fur/shading.webp)
+
+### Physics
+
+The physics simulation is done as two steps: Offset based on the position change and an offset based on the rotation change.
+
+To simulate physics based on the position change, the shader takes a uniform `u_displacement_vector` that is calculated on the CPU each physics step. The shells are displaced based on their distance to the most inner shells and some parameters like hair curvature:
+
+```glsl
+// VERTEX has been transformed to world space
+float k = pow(v_height_normalized, 1.0 + u_curvature);
+vec3 physics_translation_offset = k * displacement_strength * u_displacement_vector;
+VERTEX += physics_translation_offset;
+```
+
+A displacement vector of (0, -3, 0) results in the following:
+
+![hair displaced by (0,-3,0)](images/fur/displacement_vector.webp)
+
+To simulate physics based on rotation, the shader takes the `uniform mat3 u_rotation_displacement` that is also calculated on the CPU each physics step. This matrix represents a rotation in local space about the center of the node. The shells are displaced based on their distance to the most inner shell:
+
+```glsl
+float k = pow(v_height_normalized, 1.0 + u_curvature);
+vec3 rot_vert = u_rotation_displacement * VERTEX;
+VERTEX = mix(VERTEX, rot_vert, k);
+```
+
+This approach interpolates between the position of the rotated vertex and the non-rotated vertex. This is not a correct interpolation. To correctly interpolate between rotations, a quaternion is necessary. However, the incorrect approach also works good enough.
+
+A rotation about the axis that is pointing towards the viewer looks like this:
+
+![hair displaced by rotation](images/fur/rotation_vector.webp)
+
+The displacement vector and rotation matrix are calculated in the function `_physics_process` in the script `res://_fur/fur.gd`. After some finetuning, the hair physics look like this:
+
+The implementation of the displacement vector (but not the rotation) is similar to the before mentioned video.
+
+<video alt="Recording of hair physics in the editor" autoplay loop controls>
+<source src="videos/fur_editor.webm">
+</video>
+
+### Scene Setup
+
+To create an interesting exhibit, different shapes were created, their hair materials were adjusted and physics using Godots physics cababilities were configured. Also, a time-based growing/shrinking was implemented in the vertex shader, that is only active for one of the three shapes. The physics shape of that object is adjusted to match the growing/shrinking (`res://_fur/collusion_time_adjust.gd`).
 
 ## Exhibit 4: Crepuscular Rays (Volumetric Rendering)
 
 > Relevant folder in the Godot project: `res://_crepuscular_rays`.
+
+As the fourth exhibit, I implemented a post-processing technique for rendering crepuscular rays, following [this paper](https://developer.nvidia.com/gpugems/gpugems3/part-ii-light-and-shadows/chapter-13-volumetric-light-scattering-post-process).
