@@ -53,7 +53,9 @@ TODO
 
 ## Binaries (`Forward+`)
 
-TODO
+[Linux](../export/linux.tar.xz)
+
+[Windows](../export/windows.7z)
 
 ## Interactive Web Version (`Compatibility`, reduced visual Quality)
 
