@@ -421,10 +421,10 @@ pre {
 <p>TODO</p>
 <h2 id="exhibit-1-sdf-image-based-rendering">Exhibit 1: SDF (Image-based Rendering)</h2>
 <video alt="Recording of an SDF that transforms from a torus to a mug and back" autoplay loop controls>
-<source src="videos/1_sdf.webm">
+<source src="videos/sdf.webm">
 </video>
 <blockquote>
-<p>Relevant folder in the Godot project: <code>_sdf</code>.</p>
+<p>Relevant folder in the Godot project: <code>res://_sdf</code>.</p>
 </blockquote>
 <p>The first exhibit is an object defined by a signed distance field (SDF) and rendered using ray marching. It interacts with the rest of the scene, which is rendered using conventional methods. The presented approach can also be used to implement other ray tracing techniques.</p>
 <p>Image-based rendering describes rendering using bitmap images that encode scene content. Image-based techniques are used in two ways here:</p>
@@ -445,7 +445,7 @@ pre {
 <li>If the mesh is outside the view of the camera, the object does not get rendered at all, thanks to Godots occlusion culling.</li>
 </ul>
 <p>The images below show the edges of the mesh in orange. On the left image, the mesh is not big enough to contain the object.</p>
-<p><img src="images/1_sdf_boundingboxes.webp" alt="good and bad bounding boxes"></p>
+<p><img src="images/sdf/boundingboxes.webp" alt="good and bad bounding boxes"></p>
 <p>Note that the culling mode must be changed to front face culling, so only front faces are drawn. Otherwise, the object is not rendered when the camera is inside the mesh.</p>
 <p>For a better integration into Godot, the projection matrix, view matrix and model matrix are used for ray generation:</p>
 <pre class="hljs"><code><div><span class="hljs-type">float</span> depth = <span class="hljs-built_in">texture</span>(depth_texture, SCREEN_UV).x;
@@ -470,27 +470,53 @@ LIGHT_VERTEX = (VIEW_MATRIX * world_hit_pos).xyz;
 </div></code></pre>
 <h3 id="comparison-to-rasterization">Comparison to Rasterization</h3>
 <p>Torus rendered using rasterization:</p>
-<p><img src="images/1_sdf_comparison_mesh.webp" alt="rasterized torus"></p>
+<p><img src="images/sdf/comparison_mesh.webp" alt="rasterized torus"></p>
 <p>Torus rendered using ray marching:</p>
-<p><img src="images/1_sdf_comparison_sdf.webp" alt="ray marched torus"></p>
+<p><img src="images/sdf/comparison_sdf.webp" alt="ray marched torus"></p>
 <p>In the rasterized torus, you can make out the vertices and edges of the mesh in the reflections. The ray marched torus has perfect reflections.</p>
 <h3 id="potential-extension-recursive-ray-tracing">Potential Extension: Recursive Ray Tracing</h3>
 <p>In principle, it would be possible to implement the recursive ray tracing algorithm using this approach: Whenever the ray does not hit the object anymore, the reflection map is sampled. However, this is currently difficult to implement in Godot, since Godot does not provide any way to access the reflection map of a reflection probe.</p>
 <h3 id="what-about-shadows-and-multiple-sdfs">What about Shadows and Multiple SDFs?</h3>
 <p>The final piece of the puzzle for feature parity with conventional meshes is shadows and correct rendering of multiple intersecting objects.</p>
 <p>With the current implementation, the shader reads the depth map. This means that the object is rendered after the opaque render pass and cannot write to the depth map. This is similar to the way transparent objects are handled and leads to the same limitations: If multiple objects intersect, the result is wrong and shadows are not possible.</p>
-<p>Alternatively, the SDF can be rendered as part of the opaque rendering pass by writing the correct depth to the <code>DEPTH</code> variable. This way the depth map does not need to be sampled manually and multiple SDF intersection is possible. Even though we write to the <code>DEPTH</code>, the rendering of the shadow map does not seem to take that into account. Instead, it uses the fragments position to calculate the depth, resulting in incorrect shadows. It seems this is a limitation of Godots shadow mapping implementation that cannot be overcome easily.</p>
+<p>Alternatively, the SDF can be rendered as part of the opaque rendering pass by writing the correct depth to the <code>DEPTH</code> variable. This way the depth map does not need to be sampled manually and multiple SDF intersection is possible. Even though we write to the <code>DEPTH</code>, the rendering of the shadow map does not seem to take that into account. Instead, it uses the fragments position to calculate the depth, resulting in incorrect shadows. It seems this is a limitation of Godots shadow mapping implementation.</p>
 <h2 id="exhibit-2-lenticular-card-materials">Exhibit 2: Lenticular Card (Materials)</h2>
+<video alt="Recording of lenticular card that switches between two images" autoplay loop controls>
+<source src="videos/lenticular_card.webm">
+</video>
 <blockquote>
-<p>Relevant folder in the Godot project: <code>_lenticular</code>.</p>
+<p>Relevant folder in the Godot project: <code>res://_lenticular</code>.</p>
 </blockquote>
+<p>The second exhibit is a lenticular print, aka &quot;wiggle picture&quot; or &quot;tilt card&quot;. It also implements a time-based scrolling between two lenticular prints, similar to a scrolling billboard.</p>
+<h3 id="lenticular-printing-materials">Lenticular Printing (Materials)</h3>
+<p>Lenticular printing is a technique in which lenticular lenses are used to produce images with the ability to change as they are viewed from different angles. This can be used to create an illusion of depth.</p>
+<p>Video showing some lenticular cards: https://youtu.be/CMOzFkbqst8</p>
+<p>To create a lenticular print, multiple steps are necessary:</p>
+<ol>
+<li>Multiple source images are collected.</li>
+<li>An interlaced image is created from the source images.</li>
+<li>A lenticular sheet is put on top of the interlaced image.</li>
+</ol>
+<p>The refraction effect of a lenticular sheet is shown in this image:</p>
+<p><img src="images/lenticular/lenticular_printing_principle.svg.webp" alt="Principle of operation of an animated or 3D lenticular print, showing repetition of views"></p>
+<p>source: https://en.wikipedia.org/wiki/Lenticular_printing#/media/File:Lenticular_printing_principle.svg; author: <a href="https://commons.wikimedia.org/wiki/User:Cmglee">Cmglee</a>; license: <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a></p>
+<h3 id="implementation">Implementation</h3>
+<p>When implementing, I followed the three steps described above.</p>
+<p>First, I collected the source images that are used for the print. I used previous projects to take screenshots. I took 16 pictures each from slightly different angles. The pictures can be found in the Godot project under <code>res://_lenticular/animation_frames_crown</code> and <code>res://_lenticular/animation_frames_raytracing</code>.</p>
+<p>After that, I implemented a shader that slices and interlaces these images, just as it is done in real life. In Godot, the images were created in the scene <code>res://_lenticular/interlaced_render.tscn</code>. There are two nodes for creating interlaced renders. One for the crown, one for the ray tracing image. If you check the <code>enable</code> option on one of those and run the scene, a <code>screenshot.png</code> will be created containing the lenticular print. This works by applying an unlit fullscreen shader (<code>res://_lenticular/interlaced.gdshader</code>), resizing the window to the desired resolution and capturing a screenshot. Note that these images could be printed and used for real life lenticular prints.</p>
+<p>Lastly, the behaviour of a lenticular sheet is imitated with a shader (<code>res://_lenticular/lenticular.gdshader</code>). The shader reproduces the refraction effect of a lenticular sheet. Depending on the viewing angle, the interlaced image is sampled at a different location. Note that any interlaced image may be used as input for this shader. The shader is configurable for any number of source images and number of slices of the interlaced image.</p>
+<h3 id="lighting">Lighting</h3>
+<p>To imitate the reflections of the lenticular sheet a normal map generated from a noise texture was used. It was stretched along the y texture coordinate to imitate the structure of a lenticular sheet.</p>
+<h3 id="time-based-offset">Time-based Offset</h3>
+<p>The billboard-like scrolling is implemented using an offset of the y texture coordinate following this function:</p>
+<p><img src="images/lenticular/time_offset.webp" alt="time based offset function"></p>
 <h2 id="exhibit-3-fur-with-physics-animated-geometry">Exhibit 3: Fur with Physics (Animated Geometry)</h2>
 <blockquote>
-<p>Relevant folder in the Godot project: <code>_fur</code>.</p>
+<p>Relevant folder in the Godot project: <code>res://_fur</code>.</p>
 </blockquote>
 <h2 id="exhibit-4-crepuscular-rays-volumetric-rendering">Exhibit 4: Crepuscular Rays (Volumetric Rendering)</h2>
 <blockquote>
-<p>Relevant folder in the Godot project: <code>_crepuscular_rays</code>.</p>
+<p>Relevant folder in the Godot project: <code>res://_crepuscular_rays</code>.</p>
 </blockquote>
 
 </body>

@@ -62,10 +62,10 @@ TODO
 ## Exhibit 1: SDF (Image-based Rendering)
 
 <video alt="Recording of an SDF that transforms from a torus to a mug and back" autoplay loop controls>
-<source src="videos/1_sdf.webm">
+<source src="videos/sdf.webm">
 </video>
 
-> Relevant folder in the Godot project: `_sdf`.
+> Relevant folder in the Godot project: `res://_sdf`.
 
 The first exhibit is an object defined by a signed distance field (SDF) and rendered using ray marching. It interacts with the rest of the scene, which is rendered using conventional methods. The presented approach can also be used to implement other ray tracing techniques.
 
@@ -93,7 +93,7 @@ However, it is also possible to implement this in the fragment shader of a norma
 
 The images below show the edges of the mesh in orange. On the left image, the mesh is not big enough to contain the object.
 
-![good and bad bounding boxes](images/1_sdf_boundingboxes.webp)
+![good and bad bounding boxes](images/sdf/boundingboxes.webp)
 
 Note that the culling mode must be changed to front face culling, so only front faces are drawn. Otherwise, the object is not rendered when the camera is inside the mesh.
 
@@ -129,11 +129,11 @@ LIGHT_VERTEX = (VIEW_MATRIX * world_hit_pos).xyz;
 
 Torus rendered using rasterization:
 
-![rasterized torus](images/1_sdf_comparison_mesh.webp)
+![rasterized torus](images/sdf/comparison_mesh.webp)
 
 Torus rendered using ray marching:
 
-![ray marched torus](images/1_sdf_comparison_sdf.webp)
+![ray marched torus](images/sdf/comparison_sdf.webp)
 
 In the rasterized torus, you can make out the vertices and edges of the mesh in the reflections. The ray marched torus has perfect reflections.
 
@@ -151,12 +151,56 @@ Alternatively, the SDF can be rendered as part of the opaque rendering pass by w
 
 ## Exhibit 2: Lenticular Card (Materials)
 
-> Relevant folder in the Godot project: `_lenticular`.
+<video alt="Recording of lenticular card that switches between two images" autoplay loop controls>
+<source src="videos/lenticular_card.webm">
+</video>
+
+> Relevant folder in the Godot project: `res://_lenticular`.
+
+The second exhibit is a lenticular print, aka "wiggle picture" or "tilt card". It also implements a time-based scrolling between two lenticular prints, similar to a scrolling billboard.
+
+### Lenticular Printing (Materials)
+
+Lenticular printing is a technique in which lenticular lenses are used to produce images with the ability to change as they are viewed from different angles. This can be used to create an illusion of depth.
+
+Video showing some lenticular cards: https://youtu.be/CMOzFkbqst8
+
+To create a lenticular print, multiple steps are necessary:
+
+1. Multiple source images are collected.
+2. An interlaced image is created from the source images.
+3. A lenticular sheet is put on top of the interlaced image.
+
+The refraction effect of a lenticular sheet is shown in this image:
+
+![Principle of operation of an animated or 3D lenticular print, showing repetition of views](images/lenticular/lenticular_printing_principle.svg.webp)
+
+source: https://en.wikipedia.org/wiki/Lenticular_printing#/media/File:Lenticular_printing_principle.svg; author: [Cmglee](https://commons.wikimedia.org/wiki/User:Cmglee); license: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0)
+
+### Implementation
+
+When implementing, I followed the three steps described above.
+
+First, I collected the source images that are used for the print. I used previous projects to take screenshots. I took 16 pictures each from slightly different angles. The pictures can be found in the Godot project under `res://_lenticular/animation_frames_crown` and `res://_lenticular/animation_frames_raytracing`.
+
+After that, I implemented a shader that slices and interlaces these images, just as it is done in real life. In Godot, the images were created in the scene `res://_lenticular/interlaced_render.tscn`. There are two nodes for creating interlaced renders. One for the crown, one for the ray tracing image. If you check the `enable` option on one of those and run the scene, a `screenshot.png` will be created containing the lenticular print. This works by applying an unlit fullscreen shader (`res://_lenticular/interlaced.gdshader`), resizing the window to the desired resolution and capturing a screenshot. Note that these images could be printed and used for real life lenticular prints.
+
+Lastly, the behaviour of a lenticular sheet is imitated with a shader (`res://_lenticular/lenticular.gdshader`). The shader reproduces the refraction effect of a lenticular sheet. Depending on the viewing angle, the interlaced image is sampled at a different location. Note that any interlaced image may be used as input for this shader. The shader is configurable for any number of source images and number of slices of the interlaced image.
+
+### Lighting
+
+To imitate the reflections of the lenticular sheet a normal map generated from a noise texture was used. It was stretched along the y texture coordinate to imitate the structure of a lenticular sheet.
+
+### Time-based Offset
+
+The billboard-like scrolling is implemented using an offset of the y texture coordinate following this function:
+
+![time based offset function](images/lenticular/time_offset.webp)
 
 ## Exhibit 3: Fur with Physics (Animated Geometry)
 
-> Relevant folder in the Godot project: `_fur`.
+> Relevant folder in the Godot project: `res://_fur`.
 
 ## Exhibit 4: Crepuscular Rays (Volumetric Rendering)
 
-> Relevant folder in the Godot project: `_crepuscular_rays`.
+> Relevant folder in the Godot project: `res://_crepuscular_rays`.
