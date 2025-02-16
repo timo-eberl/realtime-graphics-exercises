@@ -49,7 +49,9 @@ A museum that features four interactive exhibits, each focused on one of the fol
 
 ## Walkthrough Video
 
-TODO
+<video alt="Complete walkthrough" controls>
+<source src="videos/walkthrough.webm">
+</video>
 
 ## Binaries (`Forward+`)
 
