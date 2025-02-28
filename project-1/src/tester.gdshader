@@ -150,8 +150,10 @@ vec3 sky(vec3 dir) {
 	fog = pow(fog, 15.0);
 	float thetaa = acos(dir.y);
 	float phii = atan(dir.z, dir.x);
+	vec2 uv = vec2(phii/TAU, thetaa/PI);
+	uv.y = mix(-1.0, 1.0, uv.y);
 	return mix(
-		texture(environment, vec2(phii/TAU, thetaa/PI)).rgb,
+		texture(environment, uv).rgb,
 		_colorD, fog);
 }
 
